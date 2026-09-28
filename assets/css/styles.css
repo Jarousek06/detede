@@ -1,5 +1,44 @@
 /* DeTe Detail — shared site styles. Apple-inspired premium B2B: deep black, crisp white, slate/silver accent only. */
 
+/* ============================================================
+   VELKÉ MONITORY — hlavní kontejnery (Tailwind max-w-[1400px] /
+   max-w-6xl) i mapa krajů jsou navržené kolem 1400px kvůli laptopům,
+   ale na velkém desktop monitoru pak zůstává spousta prázdného
+   místa po stranách a obrázky/mapa nikdy nezvětší. Tady se stejné
+   kontejnery postupně rozšiřují s šířkou obrazovky, aby se web na
+   velkém monitoru skutečně "roztáhl" místo malého ostrůvku uprostřed.
+   ============================================================ */
+@media (min-width: 1600px) {
+  .max-w-\[1400px\] { max-width: 1600px; }
+  .max-w-6xl { max-width: 1300px; }
+}
+@media (min-width: 1920px) {
+  .max-w-\[1400px\] { max-width: 1760px; }
+  .max-w-6xl { max-width: 1450px; }
+}
+@media (min-width: 2560px) {
+  .max-w-\[1400px\] { max-width: 2000px; }
+  .max-w-6xl { max-width: 1650px; }
+}
+@media (min-width: 3440px) {
+  .max-w-\[1400px\] { max-width: 2300px; }
+  .max-w-6xl { max-width: 1850px; }
+}
+
+/* Mapa krajů — od md výš ji CSS níže (.map-scroll svg#cz-map) už roztahuje
+   na width:100%, ale Tailwind max-w-3xl (48rem/768px) na SVG to škrtí zpět
+   na notebookovou šířku. Na desktopu strop pryč, ať mapa vyplní sekci. */
+@media (min-width: 768px) {
+  #cz-map.max-w-3xl { max-width: none; }
+}
+
+/* Hero fotka motoru (motor.html) — sdílený max-w-4xl by na velkém monitoru
+   zvětšil i textové bloky jinde na webu, proto vlastní třída jen pro fotku. */
+@media (min-width: 1600px) { .motor-hero-media { max-width: 68rem; } .motor-hero-wrap { max-width: 78rem; } }
+@media (min-width: 1920px) { .motor-hero-media { max-width: 78rem; } .motor-hero-wrap { max-width: 90rem; } }
+@media (min-width: 2560px) { .motor-hero-media { max-width: 90rem; } .motor-hero-wrap { max-width: 104rem; } }
+@media (min-width: 3440px) { .motor-hero-media { max-width: 103rem; } .motor-hero-wrap { max-width: 118rem; } }
+
 html {
   scroll-behavior: smooth;
   /* Offset anchor jumps by the fixed header height (h-16 = 4rem) plus breathing

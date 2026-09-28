@@ -88,6 +88,12 @@
 /* ---------- SYSTÉMY DT / DS / DM ---------- */
 .drive-systems { max-width: 1400px; margin: 0 auto; padding: 5rem 1.5rem 1rem; }
 @media (min-width: 768px) { .drive-systems { padding: 6rem 3rem 1rem; } }
+/* Velké monitory — stejné stupně jako max-w-[1400px] v styles.css, ať systémové
+   karty a fotky profilů na velkém monitoru také zvětší, ne jen zůstanou uprostřed. */
+@media (min-width: 1600px) { .drive-systems, .drive-hero-inner { max-width: 1600px; } }
+@media (min-width: 1920px) { .drive-systems, .drive-hero-inner { max-width: 1760px; } }
+@media (min-width: 2560px) { .drive-systems, .drive-hero-inner { max-width: 2000px; } }
+@media (min-width: 3440px) { .drive-systems, .drive-hero-inner { max-width: 2300px; } }
 .drive-systems-head { margin-bottom: 2.5rem; }
 .drive-h2 { margin-top: 0.75rem; font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; color: #09090b; }
 
