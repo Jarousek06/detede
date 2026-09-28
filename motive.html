@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MOTIVE · Dekorační garnýže · Detede</title>
+  <meta name="description" content="Produktová řada MOTIVE — dekorační garnýže Quadro 35, Deco 28, Deco 20, Libero 20, Gavia 19 a Rustik 19. Kolejnicové i tyčové garnýže v kovových i matných povrchách od výrobce Detede, Mělník." />
+  <link rel="canonical" href="https://www.detede.cz/motive.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Detede" />
+  <meta property="og:locale" content="cs_CZ" />
+  <meta property="og:url" content="https://www.detede.cz/motive.html" />
+  <meta property="og:title" content="MOTIVE · Dekorační garnýže · Detede" />
+  <meta property="og:description" content="Dekorační garnýže Quadro, Deco, Libero, Gavia a Rustik — kolejnicové i tyčové, v kovových i matných povrchách." />
+  <meta property="og:image" content="https://www.detede.cz/assets/img/2.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MOTIVE · Dekorační garnýže · Detede" />
+  <meta name="twitter:description" content="Dekorační garnýže Quadro, Deco, Libero, Gavia a Rustik." />
+  <meta name="twitter:image" content="https://www.detede.cz/assets/img/2.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=8" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="assets/css/styles.css?v=9" />
+</head>
+<body class="antialiased">
+
+  <header class="fixed top-0 inset-x-0 z-50 h-16 flex items-center">
+    <div class="mx-auto max-w-[1400px] w-full px-6 md:px-12 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-1.5">
+        <img src="assets/img/logo.png" alt="Detede Logo" class="h-10 w-auto object-contain" />
+        <span class="text-[13px] tracking-[0.22em] font-medium uppercase text-zinc-950">Detedetail</span>
+      </a>
+      <nav class="flex items-center gap-4 md:gap-6 text-[13px] font-medium">
+        <span class="hidden sm:flex text-zinc-300 items-center gap-1.5 font-semibold cursor-not-allowed select-none whitespace-nowrap" title="PDF verze v přípravě">
+          <i class="fa-regular fa-file-pdf"></i> PDF verze v přípravě
+        </span>
+        <a href="index.html#katalog" aria-label="Zavřít a zpět na hlavní stranu"
+           class="flex items-center justify-center w-9 h-9 rounded-full border border-zinc-950/15 text-zinc-600 hover:bg-zinc-950 hover:text-white hover:border-zinc-950 transition-all duration-300">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="bg-background text-foreground min-h-screen pt-24 pb-16">
+
+    <h1 class="sr-only">MOTIVE — dekorační garnýže</h1>
+
+    <!-- 1. ÚROVEŇ: 6 GARNÝŽÍ (DLAŽDICE) — vykresleno z pole MOTIVE níže -->
+    <section class="px-6 md:px-12 py-8 bg-background">
+      <div class="mx-auto max-w-[1400px]">
+        <div id="motiveGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+      </div>
+    </section>
+
+    <!-- 2. ÚROVEŇ: KONFIGURÁTOR GARNÝŽE (bez mezikroku s výběrem modelu) -->
+    <div id="level3SpecificationOverlay" class="fullscreen-overlay z-[110]" role="dialog" aria-modal="true" aria-labelledby="activeModelTitle">
+      <div class="h-full flex flex-col">
+
+        <div class="shrink-0 flex items-center justify-between border-b border-zinc-200 px-6 md:px-10 py-5">
+          <button onclick="closeLevel3Specification()" class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-500 hover:text-zinc-950 transition-colors cursor-pointer">
+            <i class="fa-solid fa-arrow-left"></i> Zpět na přehled garnýží
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-6 md:px-10 py-10 md:py-14">
+          <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+
+            <!-- LEVÝ SLOUPEC: skutečná fotka zvolené barvy + schéma montáže + realizace -->
+            <div class="lg:col-span-6">
+              <div class="lg:sticky lg:top-6 space-y-4">
+                <div class="motive-preview bg-white border border-zinc-200 rounded-3xl p-6 md:p-10 flex items-center justify-center relative shadow-sm">
+                  <img id="activeModelRenderImg" src="" alt="" class="max-w-full max-h-full object-contain" />
+                  <div id="activeColorTag" class="absolute bottom-4 left-4 bg-zinc-950/5 text-zinc-600 text-[11px] font-medium px-3 py-1 rounded-full">Bílá</div>
+                </div>
+
+                <div id="activeSchemaWrap" class="motive-schema bg-white border border-zinc-200 rounded-3xl p-6 md:p-10 flex items-center justify-center relative shadow-sm">
+                  <img id="activeSchemaImg" src="" alt="" class="max-w-full max-h-full object-contain" />
+                  <div id="activeSchemaTag" class="absolute bottom-4 left-4 bg-zinc-950/5 text-zinc-600 text-[11px] font-medium px-3 py-1 rounded-full">Montáž</div>
+                </div>
+
+                <div id="activeGalleryWrap">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block mb-3">Realizace</span>
+                  <div id="activeGallery" class="motive-gallery"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRAVÝ SLOUPEC: KONFIGURÁTOR -->
+            <div class="lg:col-span-6 space-y-9">
+
+              <div>
+                <span id="activeLineBreadcrumb" class="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400">MOTIVE · Garnýže</span>
+                <h2 id="activeModelTitle" class="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-zinc-950">Quadro 35</h2>
+                <p id="activeModelDesc" class="mt-3 text-base text-zinc-500 leading-relaxed"></p>
+                <div class="motive-size-chip flex items-center gap-4 mt-5 flex-wrap">
+                  <div class="flex items-center gap-3 font-mono text-xs text-zinc-500 bg-zinc-100/70 p-3 rounded-xl border border-zinc-200/60 w-max">
+                    <div><i class="fa-solid fa-arrows-left-right"></i> <span id="activeModelSize">35 mm</span></div>
+                  </div>
+                  <img id="activeSectionImg" src="" alt="" class="hidden" />
+                </div>
+              </div>
+
+              <div class="border-t border-zinc-200 pt-7">
+                <div class="flex items-baseline justify-between mb-5">
+                  <h3 class="text-xl font-semibold tracking-tight text-zinc-950">Barva</h3>
+                  <span id="activeColorName" class="text-sm text-zinc-500">Bílá</span>
+                </div>
+                <div id="activeColorSwatches" class="flex flex-wrap gap-3"></div>
+              </div>
+
+              <div id="activeGliderWrap" class="border-t border-zinc-200 pt-7">
+                <div class="flex items-baseline justify-between mb-5">
+                  <h3 class="text-xl font-semibold tracking-tight text-zinc-950">Jezdec</h3>
+                  <span id="activeGliderName" class="text-sm text-zinc-500">—</span>
+                </div>
+                <div id="activeGliderGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+              </div>
+
+              <div id="activeMountWrap" class="border-t border-zinc-200 pt-7">
+                <div class="flex items-baseline justify-between mb-5">
+                  <h3 class="text-xl font-semibold tracking-tight text-zinc-950">Montáž</h3>
+                  <span id="activeMountName" class="text-sm text-zinc-500">—</span>
+                </div>
+                <div id="activeMountGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+              </div>
+
+              <div class="border-t border-zinc-200 pt-7">
+                <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-5 text-sm space-y-2">
+                  <div class="flex justify-between gap-4"><span class="text-zinc-500">Model</span><span id="sumModel" class="font-semibold text-zinc-950 text-right"></span></div>
+                  <div class="flex justify-between gap-4"><span class="text-zinc-500">Barva</span><span id="sumColor" class="font-semibold text-zinc-950 text-right"></span></div>
+                  <div class="flex justify-between gap-4"><span class="text-zinc-500">Jezdec</span><span id="sumGlider" class="font-semibold text-zinc-950 text-right">—</span></div>
+                  <div class="flex justify-between gap-4"><span class="text-zinc-500">Montáž</span><span id="sumMount" class="font-semibold text-zinc-950 text-right">—</span></div>
+                </div>
+                <button onclick="addToInquiry()" class="mt-4 w-full bg-zinc-950 hover:bg-zinc-900 text-white text-xs font-semibold uppercase tracking-wider py-4 rounded-xl transition-all duration-200 cursor-pointer">
+                  Přidat do nezávazné poptávky
+                </button>
+                <p class="text-[11px] text-zinc-400 text-center mt-3">Cenu a přesnou specifikaci potvrdíme. Délku vyrobíme na míru.</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTAKTNÍ SEKCE -->
+    <section id="contact" class="bg-background py-24 md:py-32 reveal">
+      <div class="mx-auto max-w-[1400px] px-6 md:px-12">
+        
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+          <div>
+            <span class="text-[11px] tracking-[0.3em] uppercase text-zinc-400 block">05 — Kontakt</span>
+            <h2 class="mt-4 text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] max-w-2xl text-zinc-950">
+              Jednejte přímo s lidmi, kteří vaši zakázku osobně konzultují.
+            </h2>
+          </div>
+          <div class="business-hours-badge flex items-center gap-3 text-sm" style="display:none;">
+            <span class="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-zinc-950 font-semibold">Právě přijímáme zakázky</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-paperclip ghost-icon"></i>
+            
+            <a href="tel:+420770128913" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-paperclip"></i>
+                <span class="mini-arrow"><i class="fa-solid fa-phone text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Příjem zakázek</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Iveta Kubínová</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="tel:+420770128913" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">+420 770 128 913</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Zavolat hned</span>
+              </a>
+              <a href="mailto:detede@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-print ghost-icon"></i>
+            
+            <a href="tel:+420770128914" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-print"></i>
+                <span class="mini-arrow"><i class="fa-solid fa-phone text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Příjem zakázek</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Veronika Šípková</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="tel:+420770128914" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">+420 770 128 914</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Zavolat hned</span>
+              </a>
+              <a href="mailto:detede@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-wrench ghost-icon"></i>
+            
+            <a href="tel:+420770128912" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-wrench"></i>
+                <span class="mini-arrow"><i class="fa-solid fa-phone text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Technická podpora</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Jaroslav Perlík</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="tel:+420770128912" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">+420 770 128 912</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Zavolat hned</span>
+              </a>
+              <a href="mailto:perlik@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-crown ghost-icon"></i>
+            
+            <a href="mailto:martin@detede.cz" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-crown"></i>
+                <span class="mini-arrow"><i class="fa-regular fa-envelope text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Poslední slovo</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Martin Jauernig</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="mailto:martin@detede.cz" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">martin@detede.cz</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Napsat e-mail</span>
+              </a>
+              <a href="mailto:martin@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-[#09090b] text-white pt-24 pb-12 px-6 md:px-12">
+    <div class="mx-auto max-w-[1400px]">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-20">
+
+        <div class="space-y-6">
+          <a href="index.html" class="flex items-center gap-2">
+            <span class="text-lg font-semibold tracking-[0.05em] uppercase">Detede</span>
+          </a>
+          <p class="text-zinc-400 text-sm leading-relaxed max-w-xs">
+            Dekorační technika pro interiérové stínění. B2B partner pro architekty, studia a developery. Preciznost v každém detailu.
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <a href="https://www.instagram.com/detedetail/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-9 h-9 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300 hover:text-white hover:border-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://youtube.com/@detedetail4929" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="w-9 h-9 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300 hover:text-white hover:border-white transition-colors"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <h4 class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-bold">Navigace</h4>
+          <ul class="space-y-4 text-sm">
+            <li><a href="index.html#katalog" class="text-zinc-300 hover:text-white transition-colors">Katalog systémů</a></li>
+            <li><a href="index.html#materialy" class="text-zinc-300 hover:text-white transition-colors">Reference</a></li>
+            <li><a href="index.html#smart" class="text-zinc-300 hover:text-white transition-colors">Smart Home</a></li>
+            <li><a href="index.html#about" class="text-zinc-300 hover:text-white transition-colors">O nás</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-6">
+          <h4 class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-bold">DeTe Detail s.r.o.</h4>
+          <div class="text-sm text-zinc-300 space-y-3">
+            <p class="leading-relaxed">Řípská 874<br>276 01 Mělník</p>
+            <div class="pt-2 text-xs text-zinc-500 space-y-1">
+              <p>IČO: <span class="font-mono text-zinc-300">06310036</span></p>
+              <p>DIČ: <span class="font-mono text-zinc-300">CZ06310036</span></p>
+            </div>
+            <a href="mailto:detede@detede.cz" class="block pt-2 text-white hover:underline underline-offset-4">detede@detede.cz</a>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <h4 class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-bold">Provozní doba</h4>
+          <div class="text-sm text-zinc-300 space-y-1">
+            <p>Pondělí — Pátek</p>
+            <p class="text-white font-semibold">7:00 — 15:30</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-zinc-800 pt-10 flex flex-col sm:flex-row justify-between items-center gap-6 text-[11px] text-zinc-500 uppercase tracking-[0.2em]">
+        <p>© 2026 Detedetail s.r.o.</p>
+        <div class="flex gap-8">
+          <a href="#" class="hover:text-white transition-colors">GDPR</a>
+          <a href="#" class="hover:text-white transition-colors">Obchodní podmínky</a>
+        </div>
+        <p>Dekorační technika Detail</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // Data garnýží převzatá z detede.net/project-05 (barvy, jezdci, montáže, rendery).
+    // Každá barva má vlastní skutečný render — žádné CSS filtry jako u kolejnic.
+    const IMG = 'assets/img/katalog/motive/';
+    const C = {
+      BN: { name: "Broušený nerez",  swatch: "linear-gradient(135deg,#a6a7a4,#6d6e6b)" },
+      BH: { name: "Broušený hliník", swatch: "linear-gradient(135deg,#e1e2e4,#a7a9ab)" },
+      BB: { name: "Broušený bronz",  swatch: "linear-gradient(135deg,#8f8763,#5b563f)" },
+      NF: { name: "Nerez finiš",     swatch: "linear-gradient(135deg,#f7f8f9,#a9aeb3)" },
+      SN: { name: "Satin",           swatch: "linear-gradient(135deg,#e6e7e8,#b6b8ba)" },
+      AN: { name: "Antik",           swatch: "linear-gradient(135deg,#dccb9c,#98865a)" },
+      BL: { name: "Bílá",            swatch: "#f4f4f5" },
+      CE: { name: "Černá",           swatch: "#1c1c1e" }
+    };
+    const color = (code, img) => ({ code, ...C[code], img: IMG + img });
+    const TEFLON = { id: "", name: "Jezdec s teflonem", img: IMG + "deco-20/jezdec-teflon.webp" };
+
+    const MOTIVE = [
+      {
+        id: "quadro-35", name: "Quadro 35", type: "Kolejnicová garnýž", size: "35 mm", isNew: true,
+        tile: "Hranatý profil 35 mm se skrytou kolejnicí. Pět povrchů včetně broušeného nerezu a bronzu.",
+        desc: "Hranatý hliníkový profil 35 mm s kolejnicí pro jezdce ukrytou uvnitř. Na stěnu, na strop i mezi stěny.",
+        cover: IMG + "prehled/quadro-35.webp",
+        colors: [color("BN", "quadro/titul-bn.webp"), color("BH", "quadro/titul-bh.webp"), color("BB", "quadro/titul-bb.webp"), color("BL", "quadro/titul-bl.webp"), color("CE", "quadro/titul-ce.webp")],
+        gliders: [{ id: "JS-01", name: "Jezdec standard", img: IMG + "quadro/jezdec-js-01.webp" }],
+        mounts: [
+          { name: "Na stěnu, jednokolejničkové", img: IMG + "quadro/montaz-stena-jednokol.webp" },
+          { name: "Na stěnu, dvoukolejničkové",  img: IMG + "quadro/montaz-stena-dvoukol.webp" },
+          { name: "Těsně na strop",              img: IMG + "quadro/montaz-strop.webp" },
+          { name: "Na strop na 3cm válečky",     img: IMG + "quadro/montaz-strop-valecky.webp" },
+          { name: "Mezi stěny",                  img: IMG + "quadro/montaz-mezistena.webp" }
+        ],
+        photos: ["quadro/foto-1.webp", "quadro/foto-3.webp", "quadro/foto-4.webp", "quadro/foto-2.webp"].map(p => IMG + p)
+      },
+      {
+        id: "deco-28", name: "Deco 28", type: "Kolejnicová garnýž", size: "28 mm", isNew: true,
+        tile: "Zaoblený profil 28 mm s integrovanou kolejnicí. Čistá linie v bílé nebo černé.",
+        desc: "Zaoblený hliníkový profil 28 mm s integrovanou kolejnicí pro jezdce. Čistá linie v bílé nebo černé.",
+        cover: IMG + "prehled/deco-28.webp",
+        colors: [color("BL", "deco-28/titul-bl.webp"), color("CE", "deco-28/titul-ce.webp")],
+        gliders: [{ id: "JS-01", name: "Jezdec standard", img: IMG + "deco-28/jezdec-js-01.webp" }],
+        mounts: [], photos: []
+      },
+      {
+        id: "deco-20", name: "Deco 20", type: "Kolejnicová garnýž", size: "20 mm", isNew: true,
+        tile: "Subtilnější verze Deco s profilem 20 mm a jezdci s teflonem.",
+        desc: "Subtilnější verze řady Deco — zaoblený profil 20 mm s jezdci s teflonem pro tichý chod.",
+        cover: IMG + "prehled/deco-20.webp",
+        colors: [color("BL", "deco-20/titul-bl.webp"), color("CE", "deco-20/titul-ce.webp")],
+        gliders: [TEFLON], mounts: [], photos: []
+      },
+      {
+        id: "libero-20", name: "Libero 20", type: "Kolejnicová garnýž", size: "20 mm",
+        tile: "Kulatý profil 20 mm s kolejnicí pro jezdce a výrazným stěnovým držákem.",
+        desc: "Kulatý profil 20 mm s kolejnicí pro jezdce na spodní straně a výrazným kulatým stěnovým držákem.",
+        cover: IMG + "prehled/libero-20.webp",
+        colors: [color("NF", "libero/titul-nf.webp"), color("BL", "libero/titul-bl.webp"), color("CE", "libero/titul-ce.webp")],
+        gliders: [TEFLON], mounts: [], photos: []
+      },
+      {
+        id: "gavia-19", name: "Gavia 19", type: "Tyčová garnýž", size: "Ø 19 mm", section: IMG + "tyc-19.webp",
+        tile: "Tyčová garnýž Ø 19 mm s kroužky. Na stěnu, mezi stěny i do rohů a arkýřů.",
+        desc: "Tyčová garnýž z trubky Ø 19 mm s kroužky. Jedno- i dvoutyčové provedení, montáž mezi stěny a rohové spojky pro arkýře.",
+        cover: IMG + "prehled/gavia-19.webp",
+        colors: [color("NF", "gavia/titul-nf.webp"), color("SN", "gavia/titul-sn.webp"), color("AN", "gavia/titul-an.webp"), color("BL", "gavia/titul-bl.webp"), color("CE", "gavia/titul-ce.webp")],
+        gliders: [],
+        mounts: [
+          { name: "Na stěnu, jednotyčové",   img: IMG + "gavia/montaz-jednotyc.webp" },
+          { name: "Na stěnu, dvoutyčové",    img: IMG + "gavia/montaz-dvoutyc.webp" },
+          { name: "Mezi stěny",              img: IMG + "gavia/montaz-mezistena.webp" },
+          { name: "Rohy a arkýře",           img: IMG + "gavia/montaz-arkyr.webp" }
+        ],
+        photos: []
+      },
+      {
+        id: "rustik-19", name: "Rustik 19", type: "Tyčová garnýž", size: "Ø 19 mm", section: IMG + "tyc-19.webp",
+        tile: "Tyčová garnýž Ø 19 mm s tvarovanými koncovkami v rustikálním stylu.",
+        desc: "Tyčová garnýž z trubky Ø 19 mm s kroužky a tvarovanými koncovkami — pro klasické a rustikální interiéry.",
+        cover: IMG + "prehled/rustik-19.webp",
+        colors: [color("AN", "rustik/titul-an.webp"), color("SN", "rustik/titul-sn.webp"), color("CE", "rustik/titul-ce.webp")],
+        gliders: [], mounts: [], photos: []
+      }
+    ];
+
+    // 1. ÚROVEŇ — dlaždice ve stejném stylu jako kolejnice.html
+    document.getElementById('motiveGrid').innerHTML = MOTIVE.map((m, i) => `
+      <div role="button" tabindex="0" onclick="openLevel3Specification(${i})" class="premium-grid-card p-3 flex flex-col justify-between aspect-[3/3.8] reveal" style="transition-delay:${(i % 3) * 50}ms;">
+        <div class="img-container aspect-[4/3] bg-zinc-50 border border-zinc-100">
+          <img loading="lazy" src="${m.cover}" alt="${m.name} — ${m.type.toLowerCase()}" class="prod-img w-full h-full object-contain p-4" />
+          ${m.isNew ? '<span class="absolute top-4 left-4 bg-zinc-950/80 backdrop-blur text-white text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-md">Novinka</span>' : ''}
+        </div>
+        <div class="p-5 flex-1 flex flex-col justify-between mt-2">
+          <div>
+            <span class="text-[10px] uppercase tracking-widest text-zinc-400 font-bold block">${m.type} · ${m.size}</span>
+            <h3 class="text-2xl font-bold text-zinc-950 tracking-tight mt-1">${m.name}</h3>
+            <p class="text-sm text-zinc-500 mt-2 leading-relaxed">${m.tile}</p>
+          </div>
+          <div class="open-link-style mt-4">Konfigurovat →</div>
+        </div>
+      </div>`).join('');
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('level3SpecificationOverlay').classList.contains('active')) {
+        closeLevel3Specification();
+        return;
+      }
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const el = document.activeElement;
+      if (el && el.matches('[role="button"][onclick]')) {
+        e.preventDefault();
+        el.click();
+      }
+    });
+
+    // 2. ÚROVEŇ — konfigurátor
+    let cfg = {};
+
+    // Plynulá výměna obrázku: zprůhlednit, přepnout src, po načtení zase zobrazit.
+    function swapImg(el, src, alt) {
+      if (el.getAttribute('src') === src) return;
+      el.classList.add('is-fading');
+      setTimeout(() => {
+        el.onload = () => el.classList.remove('is-fading');
+        el.src = src;
+        el.alt = alt;
+      }, 150);
+    }
+
+    function applyColor(c) {
+      cfg.color = c;
+      swapImg(document.getElementById('activeModelRenderImg'), c.img, `${cfg.model.name} — ${c.name}`);
+      document.getElementById('activeColorName').textContent = c.name;
+      document.getElementById('activeColorTag').textContent = c.name;
+      updateSummary();
+    }
+    function renderColorSwatches(colors) {
+      const wrap = document.getElementById('activeColorSwatches');
+      wrap.innerHTML = colors.map((c, i) => `<button type="button" class="cfg-swatch${i === 0 ? ' is-sel' : ''}" style="background:${c.swatch}" title="${c.name}" aria-label="${c.name}" data-ci="${i}"></button>`).join('');
+      wrap.querySelectorAll('.cfg-swatch').forEach(btn => btn.addEventListener('click', () => {
+        wrap.querySelectorAll('.cfg-swatch').forEach(b => b.classList.remove('is-sel'));
+        btn.classList.add('is-sel');
+        applyColor(colors[+btn.dataset.ci]);
+      }));
+    }
+
+    function optionCard(o, i) {
+      const thumb = o.img ? `<img src="${o.img}" alt="" loading="lazy" />` : `<i class="fa-solid fa-grip-lines-vertical"></i>`;
+      const code = o.id ? `<span class="font-mono text-[10px] text-zinc-400 block">${o.id}</span>` : '';
+      return `<button type="button" class="cfg-option${i === 0 ? ' is-sel' : ''}" data-i="${i}"><span class="flex items-center gap-3 text-left min-w-0"><span class="cfg-thumb">${thumb}</span><span class="min-w-0">${code}<span class="text-sm font-semibold text-zinc-950 leading-tight block">${o.name}</span></span></span><i class="fa-solid fa-check cfg-check text-xs shrink-0"></i></button>`;
+    }
+    function renderOptionGroup(items, gridId, wrapId, nameId, onSelect) {
+      const wrap = document.getElementById(wrapId);
+      if (!items.length) { wrap.style.display = 'none'; onSelect(null); return; }
+      wrap.style.display = '';
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = items.map(optionCard).join('');
+      grid.querySelectorAll('.cfg-option').forEach(btn => btn.addEventListener('click', () => {
+        grid.querySelectorAll('.cfg-option').forEach(b => b.classList.remove('is-sel'));
+        btn.classList.add('is-sel');
+        const s = items[+btn.dataset.i];
+        document.getElementById(nameId).textContent = s.name;
+        onSelect(s);
+        updateSummary();
+      }));
+      document.getElementById(nameId).textContent = items[0].name;
+      onSelect(items[0]);
+    }
+
+    function applyMount(m) {
+      cfg.mount = m;
+      const wrap = document.getElementById('activeSchemaWrap');
+      if (!m) { wrap.style.display = 'none'; return; }
+      wrap.style.display = '';
+      swapImg(document.getElementById('activeSchemaImg'), m.img, `Montáž — ${m.name}`);
+      document.getElementById('activeSchemaTag').textContent = m.name;
+    }
+
+    function updateSummary() {
+      document.getElementById('sumModel').textContent = cfg.model ? cfg.model.name : '';
+      document.getElementById('sumColor').textContent = cfg.color ? cfg.color.name : '';
+      document.getElementById('sumGlider').textContent = cfg.glider ? cfg.glider.name : '—';
+      document.getElementById('sumMount').textContent = cfg.mount ? cfg.mount.name : '—';
+    }
+
+    function openLevel3Specification(index) {
+      const model = MOTIVE[index];
+      if (!model) return;
+      cfg = { model };
+      // Přednačíst všechny barvy, ať přepínání neproblikne.
+      model.colors.forEach(c => { new Image().src = c.img; });
+
+      document.getElementById('activeLineBreadcrumb').textContent = `MOTIVE · ${model.type}`;
+      document.getElementById('activeModelTitle').textContent = model.name;
+      document.getElementById('activeModelDesc').textContent = model.desc;
+      document.getElementById('activeModelSize').textContent = model.size;
+
+      const sec = document.getElementById('activeSectionImg');
+      if (model.section) { sec.src = model.section; sec.alt = `Profil ${model.size}`; sec.title = `Profil ${model.size}`; sec.classList.remove('hidden'); }
+      else { sec.classList.add('hidden'); }
+
+      const render = document.getElementById('activeModelRenderImg');
+      render.classList.remove('is-fading');
+      render.src = model.colors[0].img;
+
+      renderColorSwatches(model.colors);
+      applyColor(model.colors[0]);
+      renderOptionGroup(model.gliders, 'activeGliderGrid', 'activeGliderWrap', 'activeGliderName', s => { cfg.glider = s; });
+      document.getElementById('activeSchemaImg').removeAttribute('src');
+      renderOptionGroup(model.mounts, 'activeMountGrid', 'activeMountWrap', 'activeMountName', applyMount);
+
+      const gal = document.getElementById('activeGalleryWrap');
+      gal.style.display = model.photos.length ? '' : 'none';
+      document.getElementById('activeGallery').innerHTML = model.photos.map(p => `<img src="${p}" alt="Realizace — ${model.name}" loading="lazy" />`).join('');
+
+      updateSummary();
+      const overlay = document.getElementById('level3SpecificationOverlay');
+      overlay.classList.add('active');
+      overlay.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+      history.replaceState(null, '', '#' + model.id);
+    }
+
+    function closeLevel3Specification() {
+      document.getElementById('level3SpecificationOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+
+    function addToInquiry() {
+      window.detedeInquiry = window.detedeInquiry || [];
+      window.detedeInquiry.push({
+        model: cfg.model.name, code: cfg.model.id,
+        color: cfg.color ? cfg.color.name : '', colorCode: cfg.color ? cfg.color.code : '',
+        glider: cfg.glider ? cfg.glider.name : '', gliderCode: cfg.glider ? cfg.glider.id : '',
+        mount: cfg.mount ? cfg.mount.name : ''
+      });
+      closeLevel3Specification();
+      setTimeout(scrollToContact, 50);
+    }
+
+    // Přímý odkaz na konkrétní garnýž, např. motive.html#gavia-19 — i při změně jen #hashe
+    // (replaceState v open/close hashchange nespouští, takže se to nezacyklí).
+    function openFromHash() {
+      const i = MOTIVE.findIndex(m => '#' + m.id === location.hash);
+      if (i >= 0) openLevel3Specification(i);
+    }
+    window.addEventListener('hashchange', openFromHash);
+    openFromHash();
+  </script>
+  <script src="assets/js/site.js?v=8"></script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="834" viewBox="0 0 1300 834" role="img" aria-label="N4-Novara — fotografie připravujeme">
+  <!-- Dočasný obrázek pro N4-Novara, dokud nedorazí render/fotka profilu. -->
+  <defs>
+    <linearGradient id="rail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f4f5" />
+      <stop offset="1" stop-color="#d4d4d8" />
+    </linearGradient>
+  </defs>
+  <g transform="rotate(-24 650 400)">
+    <rect x="170" y="370" width="960" height="54" rx="10" fill="url(#rail)" stroke="#d4d4d8" stroke-width="3" />
+    <rect x="170" y="424" width="960" height="10" rx="5" fill="#e4e4e7" />
+  </g>
+  <text x="650" y="700" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="46" font-weight="700" fill="#a1a1aa">N4-Novara</text>
+  <text x="650" y="752" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="30" fill="#a1a1aa">Fotografie připravujeme</text>
+</svg>

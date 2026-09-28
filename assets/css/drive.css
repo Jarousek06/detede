@@ -1,0 +1,307 @@
+/* DRIVES (drive.html) — světlá verze ve stylu Kolejnic a Motive: světlé pozadí, bílé karty,
+   barvy systémů DT / DS / DM jen jako akcent (tečka, podtitul, jemná záře při najetí). */
+
+.drive-main { padding-top: 0; }
+
+/* ---------- ÚVOD: fotka přes celou hero sekci ---------- */
+.drive-eyebrow { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: #a1a1aa; }
+
+.drive-hero {
+  position: relative; height: 92vh; height: 92svh; min-height: 600px; max-height: 1020px;
+  overflow: hidden; isolation: isolate; background: #1c1917; color: #fff;
+}
+.drive-hero-media { position: absolute; inset: 0; z-index: 0; }
+.drive-hero-img, .drive-hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+.drive-hero-video { opacity: 0; transition: opacity 1.4s ease; }
+.drive-hero.has-video .drive-hero-video { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .drive-hero-img { animation: driveDrift 32s ease-in-out infinite alternate; transform-origin: 70% 45%; }
+  .drive-hero.has-video .drive-hero-img { animation: none; }
+}
+@keyframes driveDrift { from { transform: scale(1.02); } to { transform: scale(1.08) translate3d(-1%, -0.6%, 0); } }
+/* Ztmavení jen nahoře (hlavička), vlevo a dole (text) — západ slunce a závěsy zůstávají světlé. */
+.drive-hero-shade {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(12, 10, 9, 0.5) 0%, rgba(12, 10, 9, 0) 20%),
+    linear-gradient(90deg, rgba(12, 10, 9, 0.6) 0%, rgba(12, 10, 9, 0.25) 38%, rgba(12, 10, 9, 0) 62%),
+    linear-gradient(0deg, rgba(12, 10, 9, 0.68) 0%, rgba(12, 10, 9, 0) 46%);
+}
+.drive-hero-inner {
+  position: relative; z-index: 2; height: 100%; max-width: 1400px; margin: 0 auto;
+  padding: 0 1.5rem 4.5rem; display: flex; align-items: flex-end;
+}
+@media (min-width: 768px) { .drive-hero-inner { padding: 0 3rem 5.5rem; } }
+.drive-hero-copy { max-width: 60rem; }
+.drive-hero .drive-eyebrow { color: rgba(255, 255, 255, 0.78); }
+.drive-title {
+  margin-top: 1rem; font-size: clamp(2.5rem, 5.6vw, 5.5rem); font-weight: 700;
+  line-height: 0.98; letter-spacing: -0.045em; color: #fff; text-shadow: 0 2px 40px rgba(0, 0, 0, 0.25);
+}
+.drive-lead { margin-top: 1.25rem; max-width: 32rem; font-size: 1.15rem; line-height: 1.6; color: rgba(255, 255, 255, 0.84); }
+
+/* Rychlé odkazy na systémy — skleněné pilulky s barevnou tečkou. */
+.drive-jump { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.drive-jump a {
+  display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.65rem 1.15rem;
+  background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 9999px;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font-size: 13px; font-weight: 600; color: #fff; text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.drive-jump a:hover { background: #fff; border-color: #fff; color: #09090b; transform: translateY(-2px); }
+.drive-dot { width: 0.55rem; height: 0.55rem; flex-shrink: 0; border-radius: 9999px; background: var(--accent); box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.75); }
+
+/* Ukazatel posouvání dole uprostřed. */
+.drive-scroll { position: absolute; left: 50%; bottom: 4.25rem; z-index: 2; width: 1px; height: 3rem; transform: translateX(-50%); }
+.drive-scroll-line { position: absolute; inset: 0; overflow: hidden; background: rgba(255, 255, 255, 0.28); }
+.drive-scroll-line::after {
+  content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: #fff;
+  animation: driveScrollDot 2.4s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+}
+@keyframes driveScrollDot { to { top: 100%; } }
+@media (max-width: 767px) {
+  .drive-scroll { display: none; }
+  .drive-hero-img, .drive-hero-video { object-position: 66% 50%; }
+}
+
+/* Nástup textu po načtení. */
+.drive-hero-copy > * { opacity: 0; transform: translate3d(0, 18px, 0); animation: driveUp 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.drive-hero-copy > :nth-child(1) { animation-delay: 0.15s; }
+.drive-hero-copy > :nth-child(2) { animation-delay: 0.3s; }
+.drive-hero-copy > :nth-child(3) { animation-delay: 0.45s; }
+.drive-hero-copy > :nth-child(4) { animation-delay: 0.6s; }
+@keyframes driveUp { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .drive-hero-copy > * { opacity: 1; transform: none; animation: none; }
+  .drive-scroll-line::after { animation: none; }
+}
+
+/* Hlavička: nad fotkou bílé logo (třída .over-hero z JS v drive.html), nad světlou částí zpět tmavé. */
+.drive-page header.over-hero .text-zinc-950 { color: #fff; }
+.drive-page header.over-hero img { filter: brightness(0) invert(1); }
+.drive-page header.over-hero .text-zinc-300 { color: rgba(255, 255, 255, 0.6); }
+.drive-page header.over-hero a[aria-label^="Zavřít"] { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+.drive-page header.over-hero a[aria-label^="Zavřít"]:hover { background: #fff; color: #09090b; border-color: #fff; }
+.drive-page header img { transition: filter 0.4s ease; }
+
+/* ---------- SYSTÉMY DT / DS / DM ---------- */
+.drive-systems { max-width: 1400px; margin: 0 auto; padding: 5rem 1.5rem 1rem; }
+@media (min-width: 768px) { .drive-systems { padding: 6rem 3rem 1rem; } }
+.drive-systems-head { margin-bottom: 2.5rem; }
+.drive-h2 { margin-top: 0.75rem; font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; color: #09090b; }
+
+.sys-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+@media (max-width: 899px) { .sys-grid { grid-template-columns: 1fr; gap: 1.25rem; } }
+
+.sys-card {
+  position: relative; display: flex; flex-direction: column; padding: 0.75rem;
+  background: #fff; border: 1px solid rgba(228, 228, 231, 0.8); border-radius: 1.75rem;
+  transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.6, 0.2, 1), border-color 0.6s ease;
+}
+.sys-card:hover { transform: translateY(-6px); border-color: var(--accent-line); box-shadow: 0 34px 60px -36px var(--accent); }
+
+.sys-media {
+  position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 1.25rem;
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  background:
+    radial-gradient(85% 75% at 55% 45%, var(--accent-soft), transparent 72%),
+    linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
+}
+.sys-render {
+  width: 116%; max-width: none; height: auto;
+  filter: drop-shadow(0 24px 22px rgba(0, 0, 0, 0.16)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+  transition: transform 1.2s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.sys-card:hover .sys-render { transform: scale(1.04) translate3d(-1%, -1%, 0); }
+.sys-badge {
+  position: absolute; top: 1rem; left: 1rem; z-index: 1; display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.85); border: 1px solid #e4e4e7; border-radius: 9999px;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  font: 600 11px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.08em; color: #52525b;
+}
+/* DS / DM zatím bez renderu: ztlumená silueta + štítek (nahradit skutečným renderem). */
+.sys-placeholder { position: relative; width: 100%; display: flex; align-items: center; justify-content: center; }
+.sys-placeholder img { width: 116%; max-width: none; opacity: 0.12; filter: grayscale(1); }
+.sys-placeholder span {
+  position: absolute; padding: 0.5rem 1rem; background: #fff; border: 1px solid #e4e4e7; border-radius: 9999px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #71717a; white-space: nowrap;
+}
+
+.sys-body { display: flex; flex: 1; flex-direction: column; padding: 1.5rem 1.25rem 1.1rem; }
+.sys-name { font-size: clamp(3rem, 4.8vw, 4.5rem); font-weight: 700; line-height: 0.9; letter-spacing: -0.05em; color: #09090b; }
+.sys-sub { margin-top: 0.85rem; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.sys-desc { margin-top: 1rem; font-size: 0.95rem; line-height: 1.6; color: #71717a; }
+.sys-foot { margin-top: auto; padding-top: 1.75rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+
+.sys-cta {
+  display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.8rem 1.25rem;
+  border: 1px solid rgba(9, 9, 11, 0.15); border-radius: 9999px;
+  font-size: 13px; font-weight: 500; color: #09090b; text-decoration: none; white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.sys-cta i { font-size: 11px; transition: transform 0.3s ease; }
+.sys-cta:hover { background: #09090b; border-color: #09090b; color: #fff; }
+.sys-card:hover .sys-cta i { transform: translateX(3px); }
+.sys-cta:focus-visible { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px rgba(9, 9, 11, 0.35); }
+
+/* Malý technický řez s kótovacími čarami (bez čísel, dokud nemáme ověřené rozměry). */
+.sys-profile { position: relative; flex-shrink: 0; width: 88px; aspect-ratio: 1; margin: 0; padding: 0 0 10px 10px; }
+.sys-profile::before { content: ""; position: absolute; left: 0; top: 8%; bottom: 16px; border-left: 1px solid rgba(9, 9, 11, 0.18); }
+.sys-profile::after { content: ""; position: absolute; left: 16px; right: 4%; bottom: 0; border-bottom: 1px solid rgba(9, 9, 11, 0.18); }
+.sys-profile img { width: 100%; height: 100%; object-fit: contain; }
+.sys-profile-empty {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center;
+  border: 1px dashed #d4d4d8; border-radius: 0.6rem;
+  font-size: 9px; font-weight: 600; line-height: 1.5; letter-spacing: 0.16em; text-transform: uppercase; color: #a1a1aa;
+}
+
+@media (min-width: 900px) and (max-width: 1150px) {
+  .sys-foot { flex-direction: column-reverse; align-items: flex-start; }
+}
+
+/* ---------- TELEFON v hero (ukázka smart ovládání) ---------- */
+.drive-phone-wrap {
+  position: absolute; z-index: 2; right: clamp(2rem, 6vw, 9rem); bottom: 4rem;
+  width: clamp(220px, 16vw, 258px); perspective: 1400px; display: none;
+}
+@media (min-width: 1280px) { .drive-phone-wrap { display: block; } }
+.drive-phone {
+  position: relative; aspect-ratio: 9 / 19; padding: 9px; border-radius: 2.6rem;
+  background: linear-gradient(145deg, #4a4540 0%, #161412 50%, #2d2823 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 50px 80px -30px rgba(0, 0, 0, 0.7), 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+  transform: rotateY(-16deg) rotateX(4deg) rotateZ(6deg);
+  animation: dpFloat 7s ease-in-out infinite alternate;
+}
+@keyframes dpFloat {
+  from { transform: rotateY(-16deg) rotateX(4deg) rotateZ(6deg) translate3d(0, 0, 0); }
+  to { transform: rotateY(-12deg) rotateX(3deg) rotateZ(5deg) translate3d(0, -10px, 0); }
+}
+.drive-phone-screen {
+  position: relative; height: 100%; overflow: hidden; display: flex; flex-direction: column;
+  padding: 0.55rem 0.8rem 0.8rem; border-radius: 2.1rem;
+  background: linear-gradient(180deg, #1c1b1a 0%, #0e0d0c 100%); color: #f5f5f4;
+}
+.dp-status { display: flex; align-items: center; justify-content: space-between; height: 1.4rem; padding: 0 0.35rem; font-size: 10px; font-weight: 600; }
+.dp-island { width: 32%; height: 1rem; border-radius: 9999px; background: #000; }
+.dp-icons { display: flex; gap: 0.25rem; font-size: 7px; }
+.dp-top { margin-top: 0.6rem; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: rgba(255, 255, 255, 0.7); }
+.dp-room { margin-top: 0.7rem; text-align: center; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+.dp-state { margin-top: 0.15rem; text-align: center; font-size: 9px; color: rgba(255, 255, 255, 0.55); font-variant-numeric: tabular-nums; }
+.dp-slider { position: relative; height: 18px; margin: 0.8rem 0.25rem 0.45rem; cursor: pointer; touch-action: none; }
+.dp-slider::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(255, 255, 255, 0.22); }
+.dp-slider-fill { position: absolute; left: 0; top: 50%; height: 1px; width: 80%; background: #fff; transition: width 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.dp-slider-knob {
+  position: absolute; top: 50%; left: 80%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 9999px;
+  background: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15); transition: left 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.dp-slider:focus-visible { outline: none; }
+.dp-slider:focus-visible .dp-slider-knob { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5); }
+.dp-preview {
+  position: relative; flex: 1; min-height: 0; overflow: hidden; border-radius: 0.9rem;
+  background: url("../img/katalog/drives/hero-luxury.webp") 70% 42% / auto 175% no-repeat;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.dp-curtain {
+  position: absolute; top: 0; bottom: 0; width: 14.8%;
+  background: repeating-linear-gradient(90deg, rgba(255, 250, 240, 0.62) 0 5px, rgba(255, 250, 240, 0.34) 5px 10px);
+  transition: width 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.dp-curtain--l { left: 0; box-shadow: 4px 0 12px rgba(0, 0, 0, 0.18); }
+.dp-curtain--r { right: 0; box-shadow: -4px 0 12px rgba(0, 0, 0, 0.18); }
+.drive-phone.is-dragging .dp-curtain, .drive-phone.is-dragging .dp-slider-fill, .drive-phone.is-dragging .dp-slider-knob { transition: none; }
+.dp-controls { display: flex; align-items: center; justify-content: center; gap: 1.1rem; margin-top: 0.75rem; }
+.dp-btn {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08); color: #fff; font-size: 10px; cursor: pointer; transition: background-color 0.25s ease, transform 0.2s ease;
+}
+.dp-btn:hover { background: rgba(255, 255, 255, 0.2); }
+.dp-btn:active { transform: scale(0.92); }
+.dp-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6); }
+.dp-btn--main { width: 38px; height: 38px; background: #e7e5e4; color: #1c1917; font-size: 12px; }
+.dp-btn--main:hover { background: #fff; }
+.dp-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; margin-top: 0.75rem; }
+.dp-tile {
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding: 0.55rem 0 0.45rem;
+  border-radius: 0.7rem; background: rgba(255, 255, 255, 0.06); font-size: 8px; color: rgba(255, 255, 255, 0.72);
+}
+.dp-tile i { font-size: 10px; color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .drive-phone { animation: none; }
+  .dp-curtain, .dp-slider-fill, .dp-slider-knob { transition: none; }
+}
+
+/* ---------- PŘECHOD hero → světlá část ---------- */
+/* Světlý „list“ se zaoblenými rohy přejede přes fotku (fotka se posouvá pomaleji) — žádná tvrdá hrana. */
+.drive-sheet {
+  position: relative; z-index: 3; margin-top: -2.75rem;
+  background: #f8f8f8; border-radius: 2.75rem 2.75rem 0 0;
+  box-shadow: 0 -28px 60px -24px rgba(0, 0, 0, 0.45);
+}
+@media (max-width: 767px) { .drive-sheet { margin-top: -1.75rem; border-radius: 1.75rem 1.75rem 0 0; } }
+.drive-hero-media, .drive-hero-copy { will-change: transform; }
+/* Nad fotkou (i po scrollu) tmavé sklo místo světlé lišty; světlá hlavička až nad světlým listem. */
+body.drive-page header.over-hero.scrolled {
+  background: rgba(12, 10, 9, 0.28) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ---------- Typ kolejnice + podporované motory (Technická podpora Motory 11/24) ---------- */
+.sys-rail { margin-top: 0.45rem; font-size: 12px; color: #a1a1aa; }
+.sys-motors { margin-top: 1.25rem; padding-top: 1.1rem; border-top: 1px solid #f4f4f5; }
+.sys-motors-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #a1a1aa; }
+.sys-motor-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.65rem 0 0; padding: 0; list-style: none; }
+.sys-motor-list li {
+  display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.32rem 0.65rem;
+  background: var(--accent-soft); border-radius: 9999px; font-size: 12px; color: #27272a; white-space: nowrap;
+}
+.sys-motor-list b { font: 600 10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.04em; color: var(--accent); }
+
+/* Celá karta je klikací: odkaz „Zobrazit detail“ je roztažený přes celou kartu. */
+.sys-card { cursor: pointer; }
+.sys-cta::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: 1.75rem; }
+.sys-card:focus-within { border-color: var(--accent-line); box-shadow: 0 0 0 3px #f8f8f8, 0 0 0 5px var(--accent-line); }
+
+/* ---------- Karty v barvách systémů: tři odstíny zelené (DT modrozelená, DS sytá zelená, DM tyrkys) ---------- */
+#dt { --sys-bg: linear-gradient(160deg, #36706f 0%, #2a5b5e 45%, #1d4447 100%); --sys-ink: #214a4e; --sys-glow: rgba(150, 215, 210, 0.28); }
+#ds { --sys-bg: linear-gradient(160deg, #27935f 0%, #1f7a55 45%, #155a3c 100%); --sys-ink: #17603f; --sys-glow: rgba(150, 235, 180, 0.26); }
+#dm { --sys-bg: linear-gradient(160deg, #31a38b 0%, #25907a 45%, #196b5c 100%); --sys-ink: #1b6f5f; --sys-glow: rgba(170, 245, 225, 0.26); }
+.sys-card {
+  overflow: hidden; border: 0; color: #fff; background: var(--sys-bg);
+  box-shadow: 0 24px 50px -34px rgba(0, 0, 0, 0.45);
+}
+/* Jemná světelná záře a diagonální pruh — barva nepůsobí jako plochý blok. */
+.sys-card::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit;
+  background:
+    radial-gradient(70% 45% at 70% 18%, var(--sys-glow), transparent 70%),
+    linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.07) 50%, transparent 60%);
+}
+.sys-card > * { position: relative; z-index: 1; }
+.sys-card:hover { border-color: transparent; box-shadow: 0 40px 70px -32px var(--sys-ink); }
+.sys-card:focus-within { box-shadow: 0 0 0 3px #f8f8f8, 0 0 0 5px var(--sys-ink); }
+
+.sys-media { background: radial-gradient(80% 70% at 55% 45%, rgba(255, 255, 255, 0.18), transparent 72%), rgba(255, 255, 255, 0.06); }
+.sys-render { filter: drop-shadow(0 26px 24px rgba(0, 0, 0, 0.3)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15)); }
+.sys-badge { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.28); color: #fff; }
+.sys-badge .drive-dot { background: #fff; box-shadow: none; }
+.sys-placeholder img { opacity: 0.2; filter: grayscale(1) brightness(2.2); }
+.sys-placeholder span {
+  background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.3); color: #fff;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+
+.sys-name { color: #fff; }
+.sys-sub { color: rgba(255, 255, 255, 0.9); }
+.sys-rail { color: rgba(255, 255, 255, 0.62); }
+.sys-desc { color: rgba(255, 255, 255, 0.82); }
+.sys-motors { border-top-color: rgba(255, 255, 255, 0.16); }
+.sys-motors-label { color: rgba(255, 255, 255, 0.62); }
+.sys-motor-list li { background: rgba(255, 255, 255, 0.13); color: #fff; }
+.sys-motor-list b { color: rgba(255, 255, 255, 0.72); }
+
+.sys-cta { border-color: rgba(255, 255, 255, 0.45); color: #fff; }
+.sys-cta:hover { background: #fff; border-color: #fff; color: var(--sys-ink); }
+.sys-profile::before { border-left-color: rgba(255, 255, 255, 0.35); }
+.sys-profile::after { border-bottom-color: rgba(255, 255, 255, 0.35); }
+.sys-profile-empty { border-color: rgba(255, 255, 255, 0.35); color: rgba(255, 255, 255, 0.7); }

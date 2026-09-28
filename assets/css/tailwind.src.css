@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+/* Skenuj všechny stránky (včetně tříd v inline <script> šablonách) */
+@source "../../*.html";
+
+/* Custom barvy, které web používá (bg-background / text-foreground) —
+   nastaveny na stejné hodnoty jako v styles.css, ať se nic vizuálně neposune. */
+@theme {
+  --color-background: #f8f8f8;
+  --color-foreground: #09090b;
+}

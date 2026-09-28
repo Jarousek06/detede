@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Technická specifikace produktu · Detede</title>
+  <meta name="description" content="Technická specifikace a projektová data produktů Detede — kolejnicové systémy, dekorační lišty a motorizované pohony pro architektonické interiéry." />
+  <!-- Content here is filled in client-side from a query string, so a static canonical would be
+       misleading across the many ?id= variants — noindex instead, keep the real catalog pages indexable. -->
+  <meta name="robots" content="noindex, follow" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Detede" />
+  <meta property="og:locale" content="cs_CZ" />
+  <meta property="og:title" content="Technická specifikace produktu · Detede" />
+  <meta property="og:description" content="Technická specifikace a projektová data produktů Detede pro architektonické interiéry." />
+  <meta property="og:image" content="https://www.detede.cz/assets/img/1.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Technická specifikace produktu · Detede" />
+  <meta name="twitter:description" content="Technická specifikace a projektová data produktů Detede pro architektonické interiéry." />
+  <meta name="twitter:image" content="https://www.detede.cz/assets/img/1.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=8" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="assets/css/styles.css?v=8" />
+</head>
+<body class="antialiased">
+
+  <header class="fixed top-0 inset-x-0 z-50 h-16 flex items-center">
+    <div class="mx-auto max-w-[1400px] w-full px-6 md:px-12 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-1.5">
+        <img src="assets/img/logo.png" alt="Detede Logo" class="h-10 w-auto object-contain" />
+        <span class="text-[13px] tracking-[0.22em] font-medium uppercase text-zinc-950">Detedetail</span>
+      </a>
+      <a id="backToCatalogLink" href="index.html#katalog" class="text-[13px] text-zinc-600 hover:text-zinc-950 transition-colors flex items-center gap-2 font-medium">
+        <i class="fa-solid fa-arrow-left text-[11px]"></i> <span id="backButtonText">Zpět do katalogu</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="min-h-screen pt-24 pb-16">
+
+    <div class="mx-auto max-w-[1400px] px-6 md:px-12 mt-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <div class="lg:col-span-7 space-y-4">
+          <div class="bg-white border border-zinc-200 p-2 rounded-3xl overflow-hidden aspect-[4/3] shadow-sm">
+            <img id="mainProductImg" src="assets/img/1.png" alt="Produkt" class="w-full h-full object-cover rounded-2xl" />
+          </div>
+          
+          <div class="bg-white border border-zinc-200 p-8 rounded-3xl flex flex-col md:flex-row items-center gap-6 shadow-sm">
+            <div class="w-24 h-24 shrink-0 bg-zinc-50 rounded-xl border border-zinc-200 p-2 flex items-center justify-center">
+              <img loading="lazy" src="assets/img/skica.jpg" alt="Nákres" class="max-w-full max-h-full object-contain mix-blend-multiply" />
+            </div>
+            <div>
+              <h4 class="text-xs font-mono uppercase tracking-wider text-zinc-400">Technická dokumentace a kótování</h4>
+              <p class="text-xs text-zinc-500 mt-1">Odpovídá standardizovanému CAD bloku pro architektonické výkresy. DWG/DXF podklady zašleme projektantům obratem na vyžádání.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 space-y-8 bg-white border border-zinc-200 p-8 md:p-10 rounded-3xl shadow-sm">
+          <div>
+            <div class="flex items-center justify-between">
+              <span id="productCategory" class="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">Kategorie</span>
+              <span id="productCode" class="font-mono text-xs bg-zinc-100 text-zinc-600 px-2.5 py-0.5 rounded-md">KL-000</span>
+            </div>
+            <h1 id="productTitle" class="text-3xl md:text-4xl font-bold tracking-tight text-zinc-950 mt-3">Název produktu</h1>
+            <p id="productDesc" class="mt-4 text-sm text-zinc-500 leading-relaxed">Načítání popisu produktu...</p>
+          </div>
+
+          <div class="border-t border-zinc-100 pt-6 space-y-4">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-950">Dostupné povrchové úpravy</h3>
+            <div class="flex flex-wrap gap-2">
+              <div class="flex items-center gap-2 border border-zinc-200 bg-zinc-50 px-3 py-2 rounded-xl text-xs font-medium">
+                <span class="w-3 h-3 rounded-full bg-white border border-zinc-300 inline-block"></span> Bílá (RAL 9016)
+              </div>
+              <div class="flex items-center gap-2 border border-zinc-200 bg-zinc-50 px-3 py-2 rounded-xl text-xs font-medium">
+                <span class="w-3 h-3 rounded-full bg-zinc-900 inline-block"></span> Černá matná
+              </div>
+              <div class="flex items-center gap-2 border border-zinc-200 bg-zinc-50 px-3 py-2 rounded-xl text-xs font-medium">
+                <span class="w-3 h-3 rounded-full bg-zinc-400 inline-block"></span> Kartáčovaný hliník
+              </div>
+            </div>
+          </div>
+
+          <div class="border-t border-zinc-100 pt-6">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-950 mb-4">Projektová technická data</h3>
+            <div class="divide-y divide-zinc-100 text-xs">
+              <div class="py-3 flex justify-between"><span class="text-zinc-400" id="labelParam1">Materiál profilu</span><span id="paramMaterial" class="font-medium text-zinc-950">-</span></div>
+              <div class="py-3 flex justify-between"><span class="text-zinc-400" id="labelParam2">Rozměry / Drážka</span><span id="paramSlot" class="font-medium text-zinc-950">-</span></div>
+              <div class="py-3 flex justify-between"><span class="text-zinc-400" id="labelParam3">Max. zatížení</span><span id="paramLoad" class="font-medium text-zinc-950">-</span></div>
+              <div class="py-3 flex justify-between"><span class="text-zinc-400" id="labelParam4">Délka v kuse</span><span id="paramLength" class="font-medium text-zinc-950">-</span></div>
+              <div class="py-3 flex justify-between"><span class="text-zinc-400" id="labelParam5">Možnosti tvarování</span><span id="paramBending" class="font-medium text-zinc-950">-</span></div>
+            </div>
+          </div>
+
+          <div class="border-t border-zinc-100 pt-6">
+            <button onclick="scrollToContact()" class="w-full text-center bg-zinc-950 hover:bg-zinc-900 text-white text-xs font-semibold uppercase tracking-wider py-4 rounded-xl transition-all duration-200 cursor-pointer shadow-sm tracking-widest">
+              Konzultovat projekt s technikem
+            </button>
+            <p class="text-[10px] text-zinc-400 text-center mt-3">Komponenty dodáváme výhradně formou zakázkového zpracování na míru pro architektonická studia.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <section id="contact" class="bg-background pt-32 pb-12">
+      <div class="mx-auto max-w-[1400px] px-6 md:px-12">
+        
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+          <div>
+            <span class="text-[11px] tracking-[0.3em] uppercase text-zinc-400 block">05 — Kontakt</span>
+            <h2 class="mt-4 text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] max-w-2xl text-zinc-950">
+              Jednejte přímo s lidmi, kteří vaši zakázku osobně konzultují.
+            </h2>
+          </div>
+          <div class="business-hours-badge flex items-center gap-3 text-sm" style="display:none;">
+            <span class="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-zinc-950 font-semibold">Právě přijímáme zakázky</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-paperclip ghost-icon"></i>
+            
+            <a href="tel:+420770128913" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-paperclip"></i>
+                <span class="mini-arrow"><i class="fa-solid fa-phone text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Příjem zakázek</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Iveta Kubínová</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="tel:+420770128913" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">+420 770 128 913</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Zavolat hned</span>
+              </a>
+              <a href="mailto:detede@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-print ghost-icon"></i>
+            
+            <a href="tel:+420770128914" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-print"></i>
+                <span class="mini-arrow"><i class="fa-solid fa-phone text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Příjem zakázek</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Veronika Šípková</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="tel:+420770128914" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">+420 770 128 914</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Zavolat hned</span>
+              </a>
+              <a href="mailto:detede@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-wrench ghost-icon"></i>
+            
+            <a href="tel:+420770128912" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-wrench"></i>
+                <span class="mini-arrow"><i class="fa-solid fa-phone text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Technická podpora</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Jaroslav Perlík</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="tel:+420770128912" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">+420 770 128 912</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Zavolat hned</span>
+              </a>
+              <a href="mailto:perlik@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="premium-contact-card group">
+            <span class="sweep-bg"></span>
+            <i class="fa-solid fa-crown ghost-icon"></i>
+            
+            <a href="mailto:martin@detede.cz" class="relative flex items-center gap-4 cursor-pointer select-none z-10 no-underline text-inherit">
+              <span class="icon-box">
+                <i class="fa-solid fa-crown"></i>
+                <span class="mini-arrow"><i class="fa-regular fa-envelope text-[7px]"></i></span>
+              </span>
+              <div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-zinc-400">Poslední slovo</div>
+                <div class="mt-1 font-bold text-base tracking-tight text-zinc-900 group-hover:text-white transition-colors">Martin Jauernig</div>
+              </div>
+            </a>
+
+            <div class="relative mt-12 flex items-center justify-between border-t border-zinc-100 group-hover:border-zinc-800 pt-5 text-sm font-semibold tracking-tight transition-colors">
+              <a href="mailto:martin@detede.cz" class="text-animate-container text-zinc-600 group-hover:text-white cursor-pointer z-10 no-underline">
+                <span class="text-animate-move">martin@detede.cz</span>
+                <span class="text-animate-move text-zinc-100 absolute top-full left-0 font-medium">Napsat e-mail</span>
+              </a>
+              <a href="mailto:martin@detede.cz" title="Napsat e-mail" class="arrow-box cursor-pointer z-20">
+                <i class="fa-regular fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-[#09090b] text-white pt-24 pb-12 px-6 md:px-12">
+    <div class="mx-auto max-w-[1400px]">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-20">
+
+        <div class="space-y-6">
+          <a href="index.html" class="flex items-center gap-2">
+            <span class="text-lg font-semibold tracking-[0.05em] uppercase">Detede</span>
+          </a>
+          <p class="text-zinc-400 text-sm leading-relaxed max-w-xs">
+            Dekorační technika pro interiérové stínění. B2B partner pro architekty, studia a developery. Preciznost v každém detailu.
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <a href="https://www.instagram.com/detedetail/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-9 h-9 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300 hover:text-white hover:border-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://youtube.com/@detedetail4929" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="w-9 h-9 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300 hover:text-white hover:border-white transition-colors"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <h4 class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-bold">Navigace</h4>
+          <ul class="space-y-4 text-sm">
+            <li><a href="index.html#katalog" class="text-zinc-300 hover:text-white transition-colors">Katalog systémů</a></li>
+            <li><a href="index.html#materialy" class="text-zinc-300 hover:text-white transition-colors">Reference</a></li>
+            <li><a href="index.html#smart" class="text-zinc-300 hover:text-white transition-colors">Smart Home</a></li>
+            <li><a href="index.html#about" class="text-zinc-300 hover:text-white transition-colors">O nás</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-6">
+          <h4 class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-bold">DeTe Detail s.r.o.</h4>
+          <div class="text-sm text-zinc-300 space-y-3">
+            <p class="leading-relaxed">Řípská 874<br>276 01 Mělník</p>
+            <div class="pt-2 text-xs text-zinc-500 space-y-1">
+              <p>IČO: <span class="font-mono text-zinc-300">06310036</span></p>
+              <p>DIČ: <span class="font-mono text-zinc-300">CZ06310036</span></p>
+            </div>
+            <a href="mailto:detede@detede.cz" class="block pt-2 text-white hover:underline underline-offset-4">detede@detede.cz</a>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <h4 class="text-[11px] uppercase tracking-[0.2em] text-zinc-500 font-bold">Provozní doba</h4>
+          <div class="text-sm text-zinc-300 space-y-1">
+            <p>Pondělí — Pátek</p>
+            <p class="text-white font-semibold">7:00 — 15:30</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-zinc-800 pt-10 flex flex-col sm:flex-row justify-between items-center gap-6 text-[11px] text-zinc-500 uppercase tracking-[0.2em]">
+        <p>© 2026 Detedetail s.r.o.</p>
+        <div class="flex gap-8">
+          <a href="#" class="hover:text-white transition-colors">GDPR</a>
+          <a href="#" class="hover:text-white transition-colors">Obchodní podmínky</a>
+        </div>
+        <p>Dekorační technika Detail</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    const comprehensiveDatabase = {
+      // 1. SKUPINA: KOLEJNICE (KL-)
+      "KL-100": {
+        title: "Strop Slim 18", category: "Stropní systémy", code: "KL-100", img: "assets/img/1.png", backUrl: "kolejnice.html", backText: "Zpět na Kolejnice",
+        desc: "Zapuštěná, téměř neviditelná hliníková lišta s konstrukční výškou pouhých 18 mm. Je navržena speciálně pro zapuštění do sádrokartonových podhledů nebo přímou montáž do čistých stropních omítek, kde tvoří naprosto minimalistickou linii.",
+        labels: ["Materiál profilu", "Šířka drážky", "Maximální nosnost", "Délka v kuse", "Možnosti ohybu"],
+        specs: ["AlMgSi 0.5 F22 Tuhost", "6.0 mm (Standard)", "25 kg / běžný metr", "6 000 mm", "Ano (Min. poloměr 150 mm)"]
+      },
+      "KL-110": {
+        title: "Strop Pro 25", category: "Stropní systémy", code: "KL-110", img: "assets/img/hlavni2.webp", backUrl: "kolejnice.html", backText: "Zpět na Kolejnice",
+        desc: "Zesílený vysokozátěžový hliníkový profil konstruovaný pro extrémní zatížení v komerčních a rezidenčních objektech. Bezpečně unese těžké divadelní, akustické nebo stoprocentní blackoutové závěsy.",
+        labels: ["Materiál profilu", "Šířka drážky", "Maximální nosnost", "Délka v kuse", "Možnosti ohybu"],
+        specs: ["AlMgSi 0.7 T6 Zesílený", "6.0 mm (Heavy duty)", "60 kg / běžný metr", "7 000 mm", "Pouze na zakázku v dílně"]
+      },
+      "KL-200": {
+        title: "Wall Mount Curve", category: "Stěnové systémy", code: "KL-200", img: "assets/img/hotel 2.jpg", backUrl: "kolejnice.html", backText: "Zpět na Kolejnice",
+        desc: "Architektonické boční uchycení na stěnu pro prostory s napínanými stropy. Obsahuje elegantní hliníkovou krycí clonu, která stoprocentně schová montážní konzoly a zachovává čistý dojem.",
+        labels: ["Materiál profilu", "Šířka drážky", "Maximální nosnost", "Délka v kuse", "Možnosti ohybu"],
+        specs: ["AlMgSi 0.5 Premium", "6.0 mm", "20 kg / běžný metr", "6 000 mm", "Ano (Pouze horizontální směr)"]
+      },
+      "KL-300": {
+        title: "Roleta Compact", category: "Římské roletky", code: "KL-300", img: "assets/img/3.png", backUrl: "kolejnice.html", backText: "Zpět na Kolejnice",
+        desc: "Integrovaný hliníkový kazetový profil se skrytým mechanickým převodem a samosvornou brzdou. Zajišťuje naprosto hladké, plynulé a rovnoměrné skládání látky římských rolet.",
+        labels: ["Materiál profilu", "Vnitřní převod", "Maximální nosnost", "Výrobní šířka", "Způsob tvarování"],
+        specs: ["Extrudovaný legovaný Al", "Integrovaná šestihranná hřídel", "Do 6.0 kg celkové váhy", "Maximálně 2 400 mm", "Nelze ohýbat"]
+      },
+      "KL-400": {
+        title: "Panel Wall 5T", category: "Panelové stěny", code: "KL-400", img: "assets/img/2.png", backUrl: "kolejnice.html", backText: "Zpět na Kolejnice",
+        desc: "Exkluzivní vícekanálová (5-drážková) lišta určená pro japonské posuvné panely. Nabízí tichý, nezávislý pojezd textilních stěn a slouží jako variabilní prvek pro rozdělení velkých místností.",
+        labels: ["Materiál profilu", "Počet pojezdových drah", "Nosnost systému", "Délka v kuse", "Způsob tvarování"],
+        specs: ["AlMgSi 0.5 T66", "5 paralelních drah", "15 kg na jeden panel", "5 800 mm", "Konstrukčně nelze ohýbat"]
+      },
+      "KL-901": {
+        title: "Spojka & koncovka", category: "Příslušenství", code: "KL-901", img: "assets/img/skica.jpg", backUrl: "kolejnice.html", backText: "Zpět na Kolejnice",
+        desc: "Přesný nerezový spojovací prvek opatřený teflonovou vrstvou. Slouží k naprosto dokonalému napojení lišt na velkých prosklených fasádách, kde zajišťuje stoprocentní přejezd jezdců bez zadrhávání.",
+        labels: ["Složení komponentu", "Změna šířky drážky", "Vliv na nosnost", "Celková délka", "Typ spojení"],
+        specs: ["Nerezová ocel / PTFE vložka", "Žádná (0 mm tolerance)", "Nezasahuje do parametrů lišty", "80 mm", "Přímý pevný vnitřní spoj"]
+      },
+
+      // 2. SKUPINA: MOTIVE (MT-)
+      "MT-100": {
+        title: "Decor Line Slim", category: "Dekorační kolejnice", code: "MT-100", img: "assets/img/2.png", backUrl: "motive.html", backText: "Zpět na MOTIVE",
+        desc: "Pohledová designová lišta z eloxovaného hliníku. Je vyvinuta jako svébytný estetický prvek moderní architektury. Špičkový povrch je vysoce imunní vůči oděru a otiskům prstů.",
+        labels: ["Materiál slitiny", "Úprava kluzné dráhy", "Max. nosnost", "Délka v kuse", "Ohybová pružnost"],
+        specs: ["Extrudovaný hliník EN-6060", "Teflonový suchý film", "30 kg / běžný metr", "6 000 mm", "Ano (Min. poloměr 200 mm)"]
+      },
+      "MT-150": {
+        title: "Decor Line Round", category: "Dekorační kolejnice", code: "MT-150", img: "assets/img/hlavni2.webp", backUrl: "motive.html", backText: "Zpět na MOTIVE",
+        desc: "Jemný oblý pohledový profil z prémiové řady MOTIVE. Navržen speciálně pro organické tvary moderních rezidencí, zaoblené prosklené rohy a interiéry pracující s křivkami.",
+        labels: ["Materiál profilu", "Šířka drážky", "Maximální nosnost", "Délka v kuse", "Možnosti ohybu"],
+        specs: ["AlMgSi 0.5 F22", "6.0 mm", "25 kg / běžný metr", "6 000 mm", "Vynikající horizontální ohyb"]
+      },
+      "MT-220": {
+        title: "Garnýž Classic 28", category: "Garnýže", code: "MT-220", img: "assets/img/zaluzie.jpg", backUrl: "motive.html", backText: "Zpět na MOTIVE",
+        desc: "Masivní kruhová garnýž o průměru 28 mm kombinující tradiční design s integrovanou vnitřní technickou drážkou. Na výběr je ušlechtilý kartáčovaný kov nebo lakované tvrdé dřevo.",
+        labels: ["Použitý materiál", "Vnitřní pojezd", "Celková nosnost", "Maximální délka", "Způsob tvarování"],
+        specs: ["Broušená ocel / Tvrdé dřevo", "Skrytý vnitřní kanálek", "Až 40 kg celkem", "4 000 mm", "Nelze tvarovat do oblouků"]
+      },
+      "MT-240": {
+        title: "Garnýž Modern 19", category: "Garnýže", code: "MT-240", img: "assets/img/1.png", backUrl: "motive.html", backText: "Zpět na MOTIVE",
+        desc: "Subtilní hliníková garnýž o průměru pouhých 19 mm určená pro minimalistické interiéry s lehkými tkaninami. Lakováno hlubokými matnými architektonickými barvami.",
+        labels: ["Materiál profilu", "Typ drážky", "Maximální nosnost", "Délka v kuse", "Možnosti ohybu"],
+        specs: ["AlMgSi 0.5 T66", "Spodní skrytá drážka", "15 kg / běžný metr", "5 000 mm", "Pouze přímé linie"]
+      },
+      "MT-500": {
+        title: "Koncovka Cone", category: "Koncovky", code: "MT-500", img: "assets/img/3.png", backUrl: "motive.html", backText: "Zpět na MOTIVE",
+        desc: "Geometricky čisté zakončení profilů ve tvaru kuželu. Každý jednotlivý kus prochází precizním finálním ručním leštěním v našich dílnách v Mělníku pro stoprocentní detail.",
+        labels: ["Materiálové složení", "Povrchová úprava", "Vliv na nosnost", "Rozměr (délka)", "Typ komponentu"],
+        specs: ["Broušený dural / Mosaz", "Ruční zrcadlový lesk", "Žádný (koncový prvek)", "120 mm", "Designové zakončení řady"]
+      },
+      "MT-700": {
+        title: "Stěnový držák Pro", category: "Držáky", code: "MT-700", img: "assets/img/skica.jpg", backUrl: "motive.html", backText: "Zpět na MOTIVE",
+        desc: "Zátěžový stěnový držák s kompletně skrytým kotevním mechanismem. Umožňuje přesnou milimetrovou korekci vzdálenosti profilu od stěny (osa Z) i po dokončení montáže.",
+        labels: ["Materiál držáku", "Způsob kotvení", "Tuhost sestavy", "Maximální vyložení", "Typ nastavení"],
+        specs: ["Zesílená zinková slitina", "Skrytá vnitřní rozetka", "Zvyšuje stabilizační sílu", "160 mm od stěny", "Milimetrová kalibrace v ose Z"]
+      },
+
+      // 3. SKUPINA: DRIVES (DR-)
+      "DR-500": {
+        title: "Silent Drive 30", category: "Tiché pohony", code: "DR-500", img: "assets/img/hlavni2.webp", backUrl: "drive.html", backText: "Zpět na DRIVES",
+        desc: "Elektrický pohon s revolučně tichým chodem (hlučnost pod 28 dB). Je vybaven technologií plynulého rozjezdu a dojezdu (Soft Start/Stop), což zabraňuje rázům látky.",
+        labels: ["Hlučnost motoru", "Provozní napětí", "Krouticí moment", "Rychlost posuvu", "Třída ochrany IP"],
+        specs: ["< 28 dB (Absolutně tichý)", "230V AC / 50 Hz", "1.2 Nm s plynulým náběhem", "20 cm / sekundu", "IP 44 certifikace"]
+      },
+      "DR-520": {
+        title: "Smart Drive KNX", category: "Smart Home", code: "DR-520", img: "assets/img/skica.jpg", backUrl: "drive.html", backText: "Zpět na DRIVES",
+        desc: "Inteligentní sběrnicový motor určený pro přímé zapojení do drátových systémů měření a regulace (KNX, Loxone). Obsahuje integrovaný procesor pro hlášení přesné polohy v %.",
+        labels: ["Typ sběrnice", "Přesnost polohování", "Zpětná vazba", "Napájení logiky", "Doporučená kabeláž"],
+        specs: ["Nativní KNX / RS485", "0.5 mm přesnost", "Ano (Hlášení stavu v %)", "Přes sběrnici", "Stíněný bus kabel (UTP)"]
+      },
+      "DR-540": {
+        title: "HomeKit & Matter", category: "Smart Home", code: "DR-540", img: "assets/img/interier.jpg", backUrl: "drive.html", backText: "Zpět na DRIVES",
+        desc: "Bezdrátový pohon podporující nejnovější globální IoT standard Matter. Spárování s Apple HomeKit, Google Home nebo Home Assistant probíhá okamžitě přes naskenování QR kódu.",
+        labels: ["Komunikační protokol", "Smart ekosystémy", "Potřeba bridge/brány", "Zabezpečení přenosu", "Aktualizace firmware"],
+        specs: ["Thread / Matter bezdrátový", "Apple, Google, Alexa", "Ne (Přímé nativní spojení)", "Šifrování AES-128 bit", "Automatické (OTA)"]
+      },
+      "DR-560": {
+        title: "Roleta Motor Pro", category: "Motorizované", code: "DR-560", img: "assets/img/3.png", backUrl: "drive.html", backText: "Zpět na DRIVES",
+        desc: "Hřídelový motor s vysokým točivým momentem vyvinutý pro pohon velkoformátových římských rolet. Robustní vnitřní kovová převodovka zaručuje bezporuchový chod po desítky let.",
+        labels: ["Krouticí moment", "Maximální zvedací váha", "Koncové dorazy", "Tepelná pojistka", "Materiál převodovky"],
+        specs: ["4.5 Nm vysoká síla", "Až 12 kg váhy tkaniny", "Elektronické (Samokalibrace)", "Ano (Integrovaný senzor)", "Celokovová soukolí"]
+      },
+      "DR-580": {
+        title: "Solar Edition", category: "Solar systémy", code: "DR-580", img: "assets/img/1.png", backUrl: "drive.html", backText: "Zpět na DRIVES",
+        desc: "Zcela autonomní bateriový motor s integrovaným akumulátorem. Součástí balení je ultra-tenký solární fotovoltaický panel, který se lepí z vnitřní strany na sklo oken.",
+        labels: ["Kapacita akumulátoru", "Typ solárního panelu", "Potřeba kabeláže", "Výdrž bez slunce", "Záložní dobíjení"],
+        specs: ["4400 mAh Li-ion integrovaná", "Amorfní křemíkový flexibilní", "0% (Naprosto bez drátů)", "Až 6 měsíců provozu", "USB-C konektor v hlavě"]
+      }
+    };
+
+    function renderDynamicProductDetail() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id') || "KL-100"; // Fallback na první kolejničku
+      const item = comprehensiveDatabase[id];
+
+      if (item) {
+        // Nastavení hlavní textové vrstvy
+        document.title = `${item.title} · Technická specifikace Detede`;
+        document.getElementById('productTitle').innerText = item.title;
+        document.getElementById('productCategory').innerText = item.category;
+        document.getElementById('productCode').innerText = item.code;
+        document.getElementById('productDesc').innerText = item.desc;
+        document.getElementById('mainProductImg').src = item.img;
+        document.getElementById('mainProductImg').alt = item.title;
+
+        // Nastavení zpětného inteligentního odkazu
+        document.getElementById('backToCatalogLink').href = item.backUrl;
+        document.getElementById('backButtonText').innerText = item.backText;
+
+        // Přepsání popisků v tabulce specifikací
+        document.getElementById('labelParam1').innerText = item.labels[0];
+        document.getElementById('labelParam2').innerText = item.labels[1];
+        document.getElementById('labelParam3').innerText = item.labels[2];
+        document.getElementById('labelParam4').innerText = item.labels[3];
+        document.getElementById('labelParam5').innerText = item.labels[4];
+
+        // Vyplnění hodnot tabulky specifikací
+        document.getElementById('paramMaterial').innerText = item.specs[0];
+        document.getElementById('paramSlot').innerText = item.specs[1];
+        document.getElementById('paramLoad').innerText = item.specs[2];
+        document.getElementById('paramLength').innerText = item.specs[3];
+        document.getElementById('paramBending').innerText = item.specs[4];
+      } else {
+        document.getElementById('productTitle').innerText = "Specifikace nenalezena";
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', renderDynamicProductDetail);
+  </script>
+  <script src="assets/js/site.js?v=8"></script>
+
+</body>
+</html>

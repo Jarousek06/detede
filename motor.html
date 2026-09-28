@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Motor DTI Inteligent · DRIVES · Detede</title>
+  <meta name="description" content="Technická specifikace motorů DRIVES — DTI Inteligent, DTD Driver, DTZ Zero a DTS Slim/Horizontal pro motorizované kolejnice Detede." />
+  <!-- Obsah se plní podle ?id v URL (dti/dtd/dtz/dts), proto neindexovat jednotlivé varianty. -->
+  <meta name="robots" content="noindex, follow" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=8" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="assets/css/styles.css?v=8" />
+
+  <style>
+    /* Barevný akcent motoru — nastavuje se z JS podle ?id */
+    :root { --accent: #0d9488; --accent-soft: rgba(13,148,136,0.10); }
+
+    .motor-hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(60% 55% at 50% 38%, var(--accent-soft), transparent 70%);
+    }
+    .accent-chip {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      padding: 0.4rem 0.9rem; border-radius: 9999px;
+      background: var(--accent-soft); color: var(--accent);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .accent-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: var(--accent); }
+    .spec-row { transition: background 0.3s ease; }
+    .spec-row:hover { background: #fafafa; }
+    .gallery-item { cursor: zoom-in; }
+    .gallery-item img { transition: transform 0.6s cubic-bezier(0.2,0.6,0.2,1); }
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    /* Lightbox */
+    #motorLightbox { display: none; }
+    #motorLightbox.open { display: flex; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <header class="fixed top-0 inset-x-0 z-50 h-16 flex items-center bg-white/80 backdrop-blur-md border-b border-zinc-200/60">
+    <div class="mx-auto max-w-[1400px] w-full px-6 md:px-12 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-1.5">
+        <img src="assets/img/logo.png" alt="Detede Logo" class="h-10 w-auto object-contain" />
+        <span class="text-[13px] tracking-[0.22em] font-medium uppercase text-zinc-950">Detedetail</span>
+      </a>
+      <a href="drive.html" aria-label="Zavřít a zpět na DRIVES"
+         class="flex items-center justify-center w-9 h-9 rounded-full border border-zinc-950/15 text-zinc-600 hover:bg-zinc-950 hover:text-white hover:border-zinc-950 transition-all duration-300">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="pt-16">
+
+    <!-- HERO -->
+    <section class="relative overflow-hidden bg-white">
+      <div class="motor-hero-glow"></div>
+      <div class="relative mx-auto max-w-[1100px] px-6 md:px-12 pt-16 md:pt-24 pb-10 text-center">
+        <a href="drive.html" class="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wider text-zinc-400 hover:text-zinc-700 transition-colors mb-8">
+          <i class="fa-solid fa-arrow-left text-[10px]"></i> DRIVES
+        </a>
+        <div class="mb-6"><span class="accent-chip"><span class="accent-dot"></span><span id="motorBadge">Tichý pohon</span></span></div>
+        <h1 id="motorName" class="text-[15vw] md:text-[9rem] leading-[0.9] tracking-[-0.045em] font-extrabold text-zinc-950">DT</h1>
+        <p id="motorTagline" class="mt-6 text-lg md:text-2xl text-zinc-500 max-w-2xl mx-auto leading-relaxed font-light">
+          Tichý lineární pohon pro kolejnicové systémy.
+        </p>
+        <div class="mt-12 relative">
+          <div class="mx-auto max-w-4xl rounded-[2rem] border border-zinc-200/70 bg-gradient-to-b from-white to-zinc-50 overflow-hidden shadow-[0_40px_80px_-32px_rgba(0,0,0,0.18)]">
+            <img id="motorHeroImg" src="assets/img/katalog/motory/motor-07.webp" alt="Motorizovaný pohon DT" class="w-full h-full object-cover" fetchpriority="high" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPECIFIKACE -->
+    <section class="bg-[#f8f8f8] border-t border-zinc-200/70">
+      <div class="mx-auto max-w-[900px] px-6 md:px-12 py-20 md:py-28">
+        <div class="text-center mb-14">
+          <span class="text-[11px] tracking-[0.3em] uppercase text-zinc-400 font-bold">Technická specifikace</span>
+          <h2 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-zinc-950">Každý detail promyšlený.</h2>
+        </div>
+        <div id="specTable" class="bg-white rounded-3xl border border-zinc-200/70 overflow-hidden divide-y divide-zinc-100 shadow-sm">
+          <!-- plněno z JS -->
+        </div>
+        <p class="mt-6 text-center text-[12px] text-zinc-400">Uvedené hodnoty jsou orientační a podléhají technickému vývoji.</p>
+      </div>
+    </section>
+
+    <!-- GALERIE -->
+    <section class="bg-white border-t border-zinc-200/70">
+      <div class="mx-auto max-w-[1400px] px-6 md:px-12 py-20 md:py-28">
+        <div class="max-w-2xl mb-12">
+          <span class="text-[11px] tracking-[0.3em] uppercase text-zinc-400 font-bold">Galerie & konstrukce</span>
+          <h2 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-zinc-950">Systém do posledního dílu.</h2>
+          <p class="mt-4 text-zinc-500 leading-relaxed">Stropní montáž, řez profilem, převodovka i kompletní sestava s jezdci. Klikněte pro zvětšení.</p>
+        </div>
+        <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- plněno z JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-zinc-950 text-zinc-100">
+      <div class="mx-auto max-w-[1100px] px-6 md:px-12 py-20 md:py-24 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Zajímá vás <span id="ctaName">DT</span> do projektu?</h2>
+        <p class="mt-4 text-zinc-400 max-w-xl mx-auto">Ozvěte se — připravíme technické podklady, ceny a vzorky pro architekty a studia.</p>
+        <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="tel:+420770128913" class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-zinc-950" style="background: var(--accent); filter: brightness(1.05);">
+            <i class="fa-solid fa-phone"></i> Zavolat
+          </a>
+          <a href="mailto:detede@detede.cz" class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.12em] border border-white/20 text-white hover:bg-white/10 transition-colors">
+            <i class="fa-solid fa-envelope"></i> Napsat e-mail
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div id="motorLightbox" class="fixed inset-0 z-[130] items-center justify-center bg-zinc-950/92 p-6 md:p-12 cursor-zoom-out">
+    <button type="button" aria-label="Zavřít náhled" class="absolute top-5 right-6 text-white/70 hover:text-white text-2xl cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+    <img id="motorLightboxImg" src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-2xl bg-white" />
+  </div>
+
+  <script>
+    // Data 4 motorů podle detede.net/project-03 (DRIVES). Parametry jsou jen ty,
+    // které Detede uvádí — nic nedomýšlet (hlučnost, moment apod. zatím neznáme).
+    const SMART = [
+      ["Přijímač", "Integrovaný v motoru"],
+      ["Vývod", "5žilový"],
+      ["Chytrá domácnost", "Připojení k inteligentním systémům"],
+      ["Spouštění", "One touch"],
+      ["Koncové polohy", "Automatické nastavení koncových doteků"],
+    ];
+    const MOTORS = {
+      // Systémy DRIVES z drive.html — zatím jen název, popis a barva. Technické údaje doplnit,
+      // až je Detede dodá (sekce specifikace se bez údajů skryje). DS/DM zatím bez vlastního renderu.
+      dt: {
+        kind: "Systém", name: "DT", badge: "Minimalistický a univerzální", hero: "assets/img/katalog/drives/dt-render.webp",
+        accent: "#2a585c", accentSoft: "rgba(42,88,92,0.12)",
+        tagline: "Elegantní řešení pro moderní interiéry. Čistý design a spolehlivý chod v každém prostoru.",
+        specs: [
+          ["Typ kolejnice", "Technická přisazená"],
+          ["Podporované motory", "DTI Inteligent / WiFi, DTD Driver, DTS Slim, DTB Battery, DTS Horizontal, DTZ Zero, Glydea"],
+        ],
+      },
+      ds: {
+        kind: "Systém", name: "DS", badge: "Designový a sofistikovaný", hero: "motor-07.webp",
+        accent: "#1d7453", accentSoft: "rgba(29,116,83,0.12)",
+        tagline: "Prémiový vzhled s důrazem na detail. Ideální volba pro náročné interiéry, kde záleží na estetice.",
+        specs: [
+          ["Typ kolejnice", "Uložená do sádrokartonu"],
+          ["Podporované motory", "DTI Inteligent / WiFi, DTD Driver, DTS Slim, DTB Battery, DTZ Zero, Glydea"],
+        ],
+      },
+      dm: {
+        kind: "Systém", name: "DM", badge: "Diskrétní a moderní", hero: "motor-07.webp",
+        accent: "#26957f", accentSoft: "rgba(38,149,127,0.12)",
+        tagline: "Nenápadné řešení, které perfektně splyne s interiérem. Minimalismus v té nejčistší podobě.",
+        specs: [
+          ["Typ kolejnice", "Mini"],
+          ["Podporované motory", "DTS Slim, DTB Battery"],
+        ],
+      },
+      dti: {
+        name: "DTI Inteligent", badge: "Inteligentní pohon", hero: "motor-07.webp",
+        accent: "#0d9488", accentSoft: "rgba(13,148,136,0.10)",
+        tagline: "Motor s integrovaným přijímačem pro připojení k chytrým systémům.",
+        specs: [
+          ...SMART,
+          ["Nosnost", "do 50 kg"],
+          ["Montáž", "Na strop, uložení do sádrokartonu"],
+        ],
+      },
+      dtd: {
+        name: "DTD Driver", badge: "Nosnost do 100 kg", hero: "motor-03.webp",
+        accent: "#dc2626", accentSoft: "rgba(220,38,38,0.10)",
+        tagline: "Motor s integrovaným přijímačem a nosností až 100 kg pro těžké závěsy.",
+        specs: [
+          ...SMART,
+          ["Nosnost", "do 100 kg"],
+        ],
+      },
+      dtz: {
+        name: "DTZ Zero", badge: "Bez přijímače", hero: "motor-08.webp",
+        accent: "#16a34a", accentSoft: "rgba(22,163,74,0.10)",
+        tagline: "Základní motor bez přijímače — připojíte k němu jakýkoliv přijímač.",
+        specs: [
+          ["Přijímač", "Bez přijímače, vhodný k připojení jakéhokoliv"],
+          ["Ovládání", "Tlačítkové"],
+          ["Nosnost", "do 50 kg"],
+        ],
+      },
+      dts: {
+        name: "DTS Slim/Horizontal", badge: "Štíhlý pohon", hero: "motor-01.webp",
+        accent: "#2563eb", accentSoft: "rgba(37,99,235,0.10)",
+        tagline: "Velmi štíhlý motor pro vertikální i horizontální uložení.",
+        specs: [
+          ["Uložení motoru", "Vertikální i horizontální"],
+          ["Konstrukce", "Velmi štíhlý motor"],
+          ...SMART,
+          ["Nosnost", "do 50 kg"],
+        ],
+      },
+    };
+
+    // Galerie — všechny rendery s popiskem
+    const GALLERY = [
+      ["motor-07.webp", "Stropní montáž"],
+      ["motor-03.webp", "Kompletní sestava s pohonem"],
+      ["motor-08.webp", "Sestava s jezdci"],
+      ["motor-09.webp", "Detail kolejnice a jezdců"],
+      ["motor-01.webp", "Instalace u stropu"],
+      ["motor-02.webp", "Řez profilem"],
+      ["motor-10.webp", "Rozpad převodovky"],
+      ["motor-04.webp", "Rozpad koncové sestavy"],
+      ["motor-05.webp", "Rozpad kompletního systému"],
+      ["motor-06.webp", "Rozpad — pohled z boku"],
+    ];
+
+    function getId() {
+      const id = new URLSearchParams(location.search).get('id');
+      return MOTORS[id] ? id : 'dti';
+    }
+
+    function render() {
+      const id = getId();
+      const m = MOTORS[id];
+      document.documentElement.style.setProperty('--accent', m.accent);
+      document.documentElement.style.setProperty('--accent-soft', m.accentSoft);
+      document.title = `${m.kind || 'Motor'} ${m.name} · DRIVES · Detede`;
+      const code = m.name.split(' ')[0];
+      const suffix = m.name.slice(code.length + 1);
+      document.getElementById('motorName').innerHTML = suffix ? `${code}<span class="block mt-4 text-2xl md:text-4xl font-semibold tracking-tight text-zinc-400">${suffix}</span>` : code;
+      const hero = document.getElementById('motorHeroImg');
+      hero.src = m.hero.includes('/') ? m.hero : `assets/img/katalog/motory/${m.hero}`;
+      hero.alt = `${m.kind || 'Motor'} ${m.name}`;
+      document.getElementById('motorBadge').textContent = m.badge;
+      document.getElementById('motorTagline').textContent = m.tagline;
+      document.getElementById('ctaName').textContent = m.name;
+
+      const st = document.getElementById('specTable');
+      // Bez ověřených technických údajů sekci specifikace vůbec neukazovat.
+      st.closest('section').hidden = !m.specs.length;
+      st.innerHTML = m.specs.map(([k, v]) => `
+        <div class="spec-row grid grid-cols-2 gap-4 px-6 md:px-8 py-4">
+          <span class="text-sm text-zinc-500">${k}</span>
+          <span class="text-sm font-semibold text-zinc-950 text-right">${v}</span>
+        </div>`).join('');
+
+      const gg = document.getElementById('galleryGrid');
+      gg.innerHTML = GALLERY.map(([file, cap]) => `
+        <figure class="gallery-item" onclick="openLb('assets/img/katalog/motory/${file}')">
+          <div class="aspect-[16/9] rounded-2xl border border-zinc-200/70 bg-zinc-50 overflow-hidden">
+            <img loading="lazy" decoding="async" src="assets/img/katalog/motory/${file}" alt="${cap}" class="w-full h-full object-cover" />
+          </div>
+          <figcaption class="mt-2.5 text-[12px] text-zinc-500">${cap}</figcaption>
+        </figure>`).join('');
+    }
+
+    function openLb(src) {
+      const lb = document.getElementById('motorLightbox');
+      document.getElementById('motorLightboxImg').src = src;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+      document.getElementById('motorLightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('motorLightbox').addEventListener('click', closeLb);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLb(); });
+
+    render();
+  </script>
+</body>
+</html>
