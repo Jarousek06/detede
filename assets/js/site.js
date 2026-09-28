@@ -36,7 +36,7 @@ document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
 
   btn.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
-  window.addEventListener('resize', () => { if (window.innerWidth >= 768) setOpen(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setOpen(false); });
 });
 
 // "Právě přijímáme zakázky" badge — only shown during real business hours

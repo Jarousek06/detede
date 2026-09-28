@@ -130,13 +130,24 @@ header.scrolled {
   border: 0;
   width: 100%;
 }
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .mobile-menu-btn {
     display: inline-flex;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .mobile-menu {
+    display: none !important;
+  }
+}
+/* Hlavní stránka: Tailwind ukazuje plnou navigaci (4 odkazy + "Rychlý kontakt")
+   už od md (768px), ale na 768–1023px se to vedle loga nevejde — mezery mezi
+   prvky klesnou na ~2px a text se vizuálně slepí. Schovat zpět do 1023px a
+   nechat tam viditelný hamburger (viz pravidla výše), plná navigace až od
+   1024px, kde je konečně dost místa. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  nav.hidden.md\:flex,
+  button.hidden.md\:inline-block {
     display: none !important;
   }
 }
