@@ -1,0 +1,318 @@
+/* =====================================================================
+   KLIENTSKÁ ZÓNA — přihlášení, košík, objednávky, ke stažení.
+   Vlastní CSS (Tailwind je statický build, nové utility třídy v něm nejsou).
+   ===================================================================== */
+:root {
+  --kz-bg: #f8f8f8;
+  --kz-card: #ffffff;
+  --kz-ink: #09090b;
+  --kz-ink-2: #3f3f46;
+  --kz-muted: #52525b;
+  --kz-line: #e4e4e7;
+  --kz-soft: #f4f4f5;
+  --kz-ok: #15803d;
+  --kz-err: #b91c1c;
+  --kz-radius: 1.25rem;
+}
+
+.kz-main { min-height: 100vh; padding: 6.5rem clamp(1rem, 4vw, 3rem) 5rem; background: var(--kz-bg); color: var(--kz-ink); }
+@media (max-width: 479px) { .kz-hide-sm { display: none; } }
+.kz-wrap { max-width: 1100px; margin: 0 auto; }
+.kz-narrow { max-width: 440px; margin: 0 auto; }
+
+.kz-eyebrow { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--kz-muted); }
+.kz-h1 { margin: 0.5rem 0 0; font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; }
+.kz-lead { margin: 0.75rem 0 0; color: var(--kz-muted); font-size: 15px; line-height: 1.6; }
+
+.kz-card { background: var(--kz-card); border: 1px solid var(--kz-line); border-radius: var(--kz-radius); padding: 1.75rem; }
+@media (min-width: 640px) { .kz-card { padding: 2.25rem; } }
+
+/* ---- Formuláře ---- */
+.kz-form { display: grid; gap: 1rem; margin-top: 1.75rem; }
+.kz-field { display: grid; gap: 0.4rem; }
+.kz-label { font-size: 13px; font-weight: 600; color: var(--kz-ink-2); }
+.kz-input, .kz-textarea {
+  width: 100%; font: inherit; font-size: 15px; color: var(--kz-ink);
+  background: #fff; border: 1px solid #d4d4d8; border-radius: 0.85rem; padding: 0.8rem 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.kz-textarea { min-height: 5.5rem; resize: vertical; }
+.kz-input:focus, .kz-textarea:focus { outline: none; border-color: var(--kz-ink); box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.08); }
+.kz-pass { position: relative; }
+.kz-pass .kz-input { padding-right: 3rem; }
+.kz-pass-toggle {
+  position: absolute; right: 0.4rem; top: 50%; transform: translateY(-50%);
+  width: 2.4rem; height: 2.4rem; border: 0; background: none; color: var(--kz-muted); cursor: pointer; border-radius: 0.6rem;
+}
+.kz-pass-toggle:hover { color: var(--kz-ink); background: var(--kz-soft); }
+
+.kz-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.95rem 1.25rem; border-radius: 0.9rem; cursor: pointer; text-decoration: none;
+  border: 1px solid var(--kz-ink); background: var(--kz-ink); color: #fff; transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+.kz-btn:hover { background: #27272a; }
+.kz-btn[disabled] { opacity: 0.55; cursor: progress; }
+.kz-btn--ghost { background: transparent; color: var(--kz-ink); border-color: #d4d4d8; }
+.kz-btn--ghost:hover { background: var(--kz-ink); color: #fff; border-color: var(--kz-ink); }
+.kz-btn--block { width: 100%; }
+.kz-btn:focus-visible, .kz-tab:focus-visible, .kz-link:focus-visible, .kz-icon-btn:focus-visible {
+  outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px rgba(9, 9, 11, 0.35);
+}
+
+.kz-link { font: inherit; font-size: 13px; color: var(--kz-ink-2); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.kz-link:hover { color: var(--kz-ink); }
+.kz-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+.kz-msg { margin: 0; padding: 0.8rem 1rem; border-radius: 0.85rem; font-size: 14px; line-height: 1.5; }
+.kz-msg--err { background: #fef2f2; color: var(--kz-err); border: 1px solid #fecaca; }
+.kz-msg--ok { background: #f0fdf4; color: var(--kz-ok); border: 1px solid #bbf7d0; }
+.kz-msg--info { background: var(--kz-soft); color: var(--kz-ink-2); border: 1px solid var(--kz-line); }
+.kz-note { margin: 1.5rem 0 0; font-size: 13px; color: var(--kz-muted); line-height: 1.6; text-align: center; }
+.kz-note a { color: var(--kz-ink); }
+
+/* ---- Zóna: hlavička účtu a záložky ---- */
+.kz-account { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.kz-tabs { display: flex; gap: 0.4rem; padding: 0.35rem; background: #fff; border: 1px solid var(--kz-line); border-radius: 999px; overflow-x: auto; scrollbar-width: none; margin-bottom: 1.5rem; }
+.kz-tabs::-webkit-scrollbar { display: none; }
+@media (max-width: 479px) {
+  /* Tři záložky vedle sebe: delší název („Nová objednávka“) se zalomí na dva řádky. */
+  .kz-tabs { gap: 0.2rem; border-radius: 1.1rem; overflow: visible; }
+  .kz-tabs .kz-tab {
+    flex: 1 1 0; min-width: 0; justify-content: center; text-align: center; gap: 0.3rem;
+    padding: 0.55rem 0.35rem; font-size: 12.5px; line-height: 1.2; white-space: normal; border-radius: 0.85rem;
+  }
+  .kz-tabs .kz-tab > i { display: none; }
+}
+.kz-tab {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 0.5rem;
+  font: inherit; font-size: 14px; font-weight: 600; color: var(--kz-muted);
+  padding: 0.65rem 1.1rem; border-radius: 999px; border: 0; background: none; cursor: pointer; text-decoration: none;
+}
+.kz-tab:hover { color: var(--kz-ink); }
+.kz-tab[aria-selected="true"] { background: var(--kz-ink); color: #fff; }
+.kz-badge { min-width: 1.35rem; height: 1.35rem; padding: 0 0.35rem; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; background: var(--kz-soft); color: var(--kz-ink); }
+.kz-tab[aria-selected="true"] .kz-badge { background: #fff; color: var(--kz-ink); }
+
+/* ---- Košík ---- */
+.kz-cart { display: grid; gap: 1.5rem; }
+@media (min-width: 960px) { .kz-cart { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; } }
+.kz-items { display: grid; gap: 0.75rem; }
+.kz-item {
+  display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 1rem; align-items: start;
+  background: #fff; border: 1px solid var(--kz-line); border-radius: var(--kz-radius); padding: 1rem;
+}
+@media (min-width: 640px) { .kz-item { grid-template-columns: 120px minmax(0, 1fr) auto; padding: 1.1rem 1.25rem; } }
+.kz-thumb { aspect-ratio: 4 / 3; border-radius: 0.85rem; background: linear-gradient(#fafafa, #fff); border: 1px solid var(--kz-soft); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.kz-thumb img { max-width: 92%; max-height: 92%; object-fit: contain; }
+.kz-item-name { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+.kz-item-code { margin: 0.15rem 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--kz-muted); }
+.kz-specs { margin: 0.6rem 0 0; display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; font-size: 13px; color: var(--kz-ink-2); }
+.kz-specs span { white-space: nowrap; }
+.kz-specs b { font-weight: 600; color: var(--kz-ink); }
+.kz-dot { display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 999px; border: 1px solid rgba(0,0,0,0.15); vertical-align: -1px; margin-right: 0.3rem; }
+.kz-item-side { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+@media (min-width: 640px) { .kz-item-side { grid-column: auto; flex-direction: column; align-items: flex-end; justify-content: space-between; align-self: stretch; } }
+.kz-price { text-align: right; }
+.kz-price-line { font-size: 16px; font-weight: 700; white-space: nowrap; }
+.kz-price-unit { font-size: 12px; color: var(--kz-muted); white-space: nowrap; }
+.kz-price-ask { font-size: 13px; font-weight: 600; color: var(--kz-ink-2); }
+
+.kz-qty { display: inline-flex; align-items: center; border: 1px solid #d4d4d8; border-radius: 0.75rem; overflow: hidden; background: #fff; }
+.kz-qty button { width: 2.25rem; height: 2.25rem; border: 0; background: none; cursor: pointer; color: var(--kz-ink-2); }
+.kz-qty button:hover { background: var(--kz-soft); color: var(--kz-ink); }
+.kz-qty input { width: 2.75rem; height: 2.25rem; border: 0; border-inline: 1px solid var(--kz-line); text-align: center; font: inherit; font-size: 14px; font-weight: 600; }
+.kz-qty input:focus { outline: none; background: var(--kz-soft); }
+.kz-icon-btn { width: 2.25rem; height: 2.25rem; border-radius: 0.75rem; border: 1px solid transparent; background: none; color: var(--kz-muted); cursor: pointer; }
+.kz-icon-btn:hover { color: var(--kz-err); border-color: #fecaca; background: #fef2f2; }
+.kz-item-actions { display: flex; align-items: center; gap: 0.5rem; }
+
+.kz-summary { position: sticky; top: 5.5rem; }
+.kz-summary h2 { margin: 0 0 1rem; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+.kz-sum-row { display: flex; justify-content: space-between; gap: 1rem; font-size: 14px; padding: 0.4rem 0; color: var(--kz-ink-2); }
+.kz-sum-total { border-top: 1px solid var(--kz-line); margin-top: 0.5rem; padding-top: 0.9rem; font-size: 18px; font-weight: 700; color: var(--kz-ink); }
+.kz-sum-note { font-size: 12px; color: var(--kz-muted); line-height: 1.5; margin: 0.6rem 0 0; }
+
+.kz-empty { text-align: center; padding: 3.5rem 1.5rem; }
+.kz-empty i { font-size: 1.75rem; color: #a1a1aa; }
+.kz-empty h2 { margin: 1rem 0 0.4rem; font-size: 20px; font-weight: 700; }
+.kz-empty p { margin: 0 0 1.5rem; color: var(--kz-muted); font-size: 14px; }
+
+/* ---- Objednávky ---- */
+.kz-orders { display: grid; gap: 0.75rem; }
+.kz-order { background: #fff; border: 1px solid var(--kz-line); border-radius: var(--kz-radius); overflow: hidden; }
+.kz-order summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 0.25rem 1rem; padding: 1.1rem 1.25rem; align-items: center; }
+.kz-order summary::-webkit-details-marker { display: none; }
+@media (min-width: 640px) { .kz-order summary { grid-template-columns: 9rem 1fr auto auto; } }
+.kz-order-no { font-weight: 700; }
+.kz-order-date { font-size: 13px; color: var(--kz-muted); }
+.kz-order-total { font-weight: 700; text-align: right; white-space: nowrap; }
+.kz-status { justify-self: start; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.6rem; border-radius: 999px; background: var(--kz-soft); color: var(--kz-ink-2); }
+.kz-status--prijata { background: #eff6ff; color: #1d4ed8; }
+.kz-status--vyrizena { background: #f0fdf4; color: var(--kz-ok); }
+.kz-status--zrusena { background: #fef2f2; color: var(--kz-err); }
+.kz-order-body { border-top: 1px solid var(--kz-line); padding: 0.5rem 1.25rem 1.1rem; overflow-x: auto; }
+.kz-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+.kz-table th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--kz-muted); padding: 0.6rem 0.5rem; }
+.kz-table td { padding: 0.6rem 0.5rem; border-top: 1px solid var(--kz-soft); vertical-align: top; }
+.kz-table .num { text-align: right; white-space: nowrap; }
+.kz-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+
+/* ---- Ke stažení ---- */
+.kz-files { background: #fff; border: 1px solid var(--kz-line); border-radius: var(--kz-radius); overflow: hidden; }
+.kz-file { width: 100%; display: flex; align-items: center; gap: 0.9rem; padding: 1rem 1.25rem; border: 0; border-top: 1px solid var(--kz-soft); background: none; font: inherit; text-align: left; cursor: pointer; color: var(--kz-ink); }
+.kz-file:first-child { border-top: 0; }
+.kz-file:hover { background: #fafafa; }
+.kz-file i.kz-file-ico { width: 2.25rem; height: 2.25rem; border-radius: 0.7rem; display: inline-flex; align-items: center; justify-content: center; background: var(--kz-soft); color: var(--kz-ink-2); flex: 0 0 auto; }
+.kz-file-name { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.kz-file-meta { font-size: 12px; color: var(--kz-muted); white-space: nowrap; }
+.kz-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 0.9rem; font-size: 13px; color: var(--kz-muted); }
+
+.kz-loading { padding: 2.5rem; text-align: center; color: var(--kz-muted); font-size: 14px; }
+
+/* ---- Odkaz do zóny v hlavičce ostatních stránek ---- */
+.kz-head-link { position: relative; display: inline-flex; align-items: center; gap: 0.45rem; font-size: 13px; font-weight: 500; color: #52525b; text-decoration: none; white-space: nowrap; }
+.kz-head-link:hover { color: #09090b; }
+.kz-head-count { position: absolute; top: -0.45rem; left: 0.55rem; min-width: 1.05rem; height: 1.05rem; padding: 0 0.25rem; border-radius: 999px; background: #09090b; color: #fff; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.kz-head-count[hidden] { display: none; }
+
+/* =====================================================================
+   SPRÁVA (spravce.html)
+   ===================================================================== */
+.kz-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.kz-toolbar .kz-input { max-width: 320px; padding-block: 0.65rem; }
+.kz-panel { background: #fff; border: 1px solid var(--kz-line); border-radius: var(--kz-radius); overflow-x: auto; }
+.kz-admin-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 760px; }
+.kz-admin-table th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--kz-muted); padding: 0.85rem 1rem; border-bottom: 1px solid var(--kz-line); white-space: nowrap; }
+.kz-admin-table td { padding: 0.85rem 1rem; border-top: 1px solid var(--kz-soft); vertical-align: middle; }
+.kz-admin-table tr:first-child td { border-top: 0; }
+.kz-admin-table .num { text-align: right; white-space: nowrap; }
+.kz-admin-table .acts { text-align: right; white-space: nowrap; }
+.kz-sub { display: block; font-size: 12px; color: var(--kz-muted); margin-top: 0.15rem; }
+.kz-btn--sm { padding: 0.5rem 0.75rem; font-size: 11px; border-radius: 0.65rem; }
+.kz-btn--danger { background: #fff; color: var(--kz-err); border-color: #fecaca; }
+.kz-btn--danger:hover { background: var(--kz-err); color: #fff; border-color: var(--kz-err); }
+.kz-pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 0.25rem 0.55rem; border-radius: 999px; background: #f0fdf4; color: var(--kz-ok); }
+.kz-pill--off { background: #fef2f2; color: var(--kz-err); }
+.kz-select { font: inherit; font-size: 13px; padding: 0.45rem 0.6rem; border: 1px solid #d4d4d8; border-radius: 0.6rem; background: #fff; color: var(--kz-ink); }
+.kz-select:focus { outline: none; border-color: var(--kz-ink); }
+.kz-input--sm { padding: 0.5rem 0.65rem; font-size: 14px; border-radius: 0.6rem; }
+
+.kz-grid-form { display: grid; gap: 1rem; }
+@media (min-width: 640px) { .kz-grid-form { grid-template-columns: 1fr 1fr; } .kz-grid-form .kz-span { grid-column: 1 / -1; } }
+
+/* Dialog */
+.kz-modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-start; justify-content: center; padding: 5vh 1rem; overflow-y: auto; }
+.kz-modal-backdrop { position: fixed; inset: 0; background: rgba(9, 9, 11, 0.45); }
+.kz-modal-card { position: relative; width: 100%; max-width: 560px; background: #fff; border-radius: 1.4rem; padding: 1.75rem; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.35); }
+.kz-modal-card h2 { margin: 0 0 0.35rem; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.kz-modal-close { position: absolute; top: 1rem; right: 1rem; width: 2.25rem; height: 2.25rem; border-radius: 999px; border: 0; background: var(--kz-soft); cursor: pointer; color: var(--kz-ink-2); }
+.kz-modal-close:hover { background: var(--kz-ink); color: #fff; }
+.kz-modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1.5rem; }
+
+/* Přihlašovací údaje nového klienta */
+.kz-cred { margin-top: 1.25rem; border: 1px solid var(--kz-line); border-radius: 1rem; background: #fafafa; padding: 1rem 1.1rem; display: grid; gap: 0.6rem; }
+.kz-cred-row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; flex-wrap: wrap; }
+.kz-cred-row span { font-size: 12px; color: var(--kz-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.kz-cred-row b { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 16px; letter-spacing: 0.02em; overflow-wrap: anywhere; }
+
+.kz-code-group { padding: 1rem 1.1rem; border-top: 1px solid var(--kz-soft); }
+.kz-code-group:first-child { border-top: 0; }
+.kz-code-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.6rem; }
+.kz-bands { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; }
+.kz-band { display: flex; align-items: center; gap: 0.4rem; border: 1px solid var(--kz-line); border-radius: 0.75rem; padding: 0.4rem 0.4rem 0.4rem 0.65rem; font-size: 13px; }
+.kz-band span { color: var(--kz-muted); white-space: nowrap; }
+.kz-band input { width: 100%; min-width: 0; border: 0; font: inherit; font-weight: 600; text-align: right; padding: 0.3rem; border-radius: 0.4rem; }
+.kz-band input:focus { outline: none; background: var(--kz-soft); }
+.kz-band button { border: 0; background: none; color: #a1a1aa; cursor: pointer; width: 1.6rem; height: 1.6rem; border-radius: 0.4rem; }
+.kz-band button:hover { color: var(--kz-err); background: #fef2f2; }
+
+/* =====================================================================
+   KOŠÍK — panel vyjíždějící zprava (Apple styl: rozostřené pozadí,
+   pružný nájezd, položky naskakují postupně, nová položka krátce zazáří)
+   ===================================================================== */
+.kz-drawer { position: fixed; inset: 0; z-index: 300; }
+.kz-drawer-backdrop {
+  position: absolute; inset: 0; background: rgba(9, 9, 11, 0.28);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1); backdrop-filter: blur(6px) saturate(1.1);
+  opacity: 0; transition: opacity 0.45s ease;
+}
+.kz-drawer-panel {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(440px, 100%);
+  display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+  box-shadow: -30px 0 80px -30px rgba(0, 0, 0, 0.35);
+  transform: translateX(104%); transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+}
+@media (min-width: 640px) {
+  .kz-drawer-panel { top: 0.75rem; right: 0.75rem; bottom: 0.75rem; border-radius: 1.6rem; }
+}
+.kz-drawer.is-open .kz-drawer-backdrop { opacity: 1; }
+.kz-drawer.is-open .kz-drawer-panel { transform: translateX(0); }
+
+.kz-drawer-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding: 1.4rem 1.4rem 1rem; }
+.kz-drawer-ok { display: inline-flex; align-items: center; gap: 0.55rem; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--kz-ink); }
+.kz-drawer-ok i { width: 1.6rem; height: 1.6rem; border-radius: 999px; background: var(--kz-ink); color: #fff; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+.kz-drawer-count { margin: 0.35rem 0 0; font-size: 13px; color: var(--kz-muted); }
+.kz-drawer-x { width: 2.25rem; height: 2.25rem; border-radius: 999px; border: 0; background: var(--kz-soft); color: var(--kz-ink-2); cursor: pointer; flex: 0 0 auto; transition: background 0.2s ease, color 0.2s ease; }
+.kz-drawer-x:hover { background: var(--kz-ink); color: #fff; }
+
+.kz-drawer-body { flex: 1; overflow-y: auto; padding: 0.25rem 1.4rem 1rem; overscroll-behavior: contain; }
+.kz-drawer-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.kz-drawer-item {
+  display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 0.85rem; align-items: center;
+  padding: 0.7rem; border-radius: 1.1rem; background: #fff; border: 1px solid var(--kz-line);
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.32, 0.72, 0, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  transition-delay: calc(0.18s + var(--i, 0) * 0.06s);
+}
+.kz-drawer.is-open .kz-drawer-item { opacity: 1; transform: none; }
+.kz-drawer-item.is-new { border-color: #09090b; box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.35); }
+.kz-drawer-item.is-new .kz-drawer-tag { display: inline-block; }
+.kz-drawer-thumb { aspect-ratio: 4 / 3; border-radius: 0.75rem; background: linear-gradient(#fafafa, #fff); border: 1px solid var(--kz-soft); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.kz-drawer-thumb img { max-width: 90%; max-height: 90%; object-fit: contain; }
+.kz-drawer-name { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--kz-ink); }
+.kz-drawer-tag { display: none; margin-left: 0.35rem; vertical-align: 1px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.15rem 0.45rem; border-radius: 999px; background: var(--kz-ink); color: #fff; }
+.kz-drawer-meta { margin: 0.2rem 0 0; font-size: 12px; color: var(--kz-muted); line-height: 1.45; }
+.kz-drawer-price { text-align: right; font-size: 14px; font-weight: 700; white-space: nowrap; color: var(--kz-ink); }
+.kz-drawer-price small { display: block; font-size: 11px; font-weight: 500; color: var(--kz-muted); }
+.kz-drawer-more { margin: 0.8rem 0 0; font-size: 13px; color: var(--kz-muted); text-align: center; }
+
+.kz-drawer-foot { padding: 1rem 1.4rem 1.4rem; border-top: 1px solid var(--kz-line); display: grid; gap: 0.6rem; background: rgba(255, 255, 255, 0.9); }
+@media (min-width: 640px) { .kz-drawer-foot { border-radius: 0 0 1.6rem 1.6rem; } }
+.kz-drawer-sum { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; color: var(--kz-ink-2); }
+.kz-drawer-sum b { font-size: 20px; letter-spacing: -0.02em; color: var(--kz-ink); }
+.kz-drawer-note { margin: -0.2rem 0 0.4rem; font-size: 12px; color: var(--kz-muted); }
+
+/* Položka, na kterou právě „přilétá“ kartička z potvrzení — do přistání neviditelná, bez vlastní animace. */
+.kz-drawer-item.is-landing { opacity: 0 !important; transform: none !important; transition: none !important; }
+
+/* ---- Potvrzovací kartička uprostřed (před přeletem do panelu) ---- */
+.kz-pop { position: fixed; inset: 0; z-index: 310; display: flex; align-items: center; justify-content: center; padding: 1rem; pointer-events: auto; }
+.kz-pop-card {
+  width: min(360px, 100%); background: rgba(255, 255, 255, 0.97);
+  -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+  border-radius: 1.6rem; padding: 1.6rem 1.25rem 1.25rem; text-align: center;
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  animation: kzPopIn 0.55s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+@keyframes kzPopIn { from { opacity: 0; transform: scale(0.86) translateY(10px); } to { opacity: 1; transform: none; } }
+.kz-pop-check { width: 3rem; height: 3rem; margin: 0 auto; border-radius: 999px; background: var(--kz-ink); display: flex; align-items: center; justify-content: center; animation: kzPopIn 0.5s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.kz-pop-check svg { width: 1.5rem; height: 1.5rem; fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; animation: kzDraw 0.45s 0.3s ease-out forwards; }
+@keyframes kzDraw { to { stroke-dashoffset: 0; } }
+.kz-pop-title { margin: 0.85rem 0 1rem; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--kz-ink); }
+.kz-pop-item {
+  display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 0.85rem; align-items: center; text-align: left;
+  padding: 0.7rem; border-radius: 1.1rem; background: #fff; border: 1px solid #09090b;
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.35);
+}
+/* Během přeletu je položka vytržená z kartičky a letí sama (pozici nastaví JS). */
+.kz-pop-item.is-flying { position: fixed; margin: 0; z-index: 320; transform-origin: 0 0; will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kz-drawer-panel, .kz-drawer-backdrop, .kz-drawer-item { transition: opacity 0.2s ease; transform: none; }
+  .kz-pop-card, .kz-pop-check, .kz-pop-check svg { animation: none; stroke-dashoffset: 0; }
+}
+
+[hidden] { display: none !important; }

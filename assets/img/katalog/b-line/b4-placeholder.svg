@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="834" viewBox="0 0 1300 834" role="img" aria-label="B4-Botel — fotografie připravujeme">
+  <!-- Dočasný obrázek pro B4-Botel, dokud nedorazí render/fotka profilu. Blok více kolejnic jako ostatní B line. -->
+  <defs>
+    <linearGradient id="rail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f4f5" />
+      <stop offset="1" stop-color="#d4d4d8" />
+    </linearGradient>
+  </defs>
+  <g transform="rotate(-18 650 380)">
+    <rect x="200" y="300" width="900" height="150" rx="12" fill="url(#rail)" stroke="#d4d4d8" stroke-width="3" />
+    <rect x="200" y="450" width="900" height="12" rx="6" fill="#e4e4e7" />
+    <line x1="230" y1="345" x2="1070" y2="345" stroke="#a1a1aa" stroke-width="5" stroke-linecap="round" />
+    <line x1="230" y1="405" x2="1070" y2="405" stroke="#a1a1aa" stroke-width="5" stroke-linecap="round" />
+  </g>
+  <text x="650" y="700" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="46" font-weight="700" fill="#a1a1aa">B4-Botel</text>
+  <text x="650" y="752" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="30" fill="#a1a1aa">Fotografie připravujeme</text>
+</svg>
