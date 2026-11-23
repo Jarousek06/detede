@@ -18,9 +18,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="assets/css/styles.css?v=34" />
-  <link rel="stylesheet" href="assets/css/klient.css?v=7" />
+  <link rel="stylesheet" href="assets/css/klient.css?v=10" />
 </head>
-<body class="antialiased">
+<body class="antialiased" data-no-cart-fab>
 
   <header class="fixed top-0 inset-x-0 z-50 h-16 flex items-center">
     <div class="mx-auto max-w-[1400px] w-full px-6 md:px-12 flex items-center justify-between">
@@ -191,7 +191,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
   <script src="assets/js/klient-config.js?v=2"></script>
-  <script src="assets/js/klient.js?v=4"></script>
+  <script src="assets/js/klient.js?v=6"></script>
   <script>
   (() => {
     const $ = id => document.getElementById(id);
@@ -277,6 +277,8 @@
               ${it.mount ? `<span>Montáž <b>${esc(it.mount)}</b></span>` : ''}
               <span>Rozměr <b>${esc(it.dimensionText)}</b></span>
             </p>
+            <input class="kz-note-input" data-note type="text" maxlength="120" value="${esc(it.note || '')}"
+                   placeholder="Poznámka k položce (pokoj, místnost…)" aria-label="Poznámka k položce" />
           </div>
           <div class="kz-item-side">
             <div class="kz-price" data-price>…</div>
@@ -321,6 +323,8 @@
     });
     $('cartItems').addEventListener('change', e => {
       const row = e.target.closest('[data-i]'); if (!row || e.target.tagName !== 'INPUT') return;
+      // Poznámka se jen uloží (bez překreslení, ať neodskočí kurzor), množství přepočítá ceny.
+      if (e.target.matches('[data-note]')) { Klient.cart.setNote(+row.dataset.i, e.target.value); return; }
       Klient.cart.setQty(+row.dataset.i, e.target.value); renderCart();
     });
     $('cartItems').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur(); });
@@ -371,7 +375,7 @@
               <table class="kz-table">
                 <thead><tr><th>Kód</th><th>Model</th><th>Barva</th><th>Rozměr</th><th class="num">Ks</th><th class="num">Cena/ks</th><th class="num">Celkem</th></tr></thead>
                 <tbody>${(o.order_items || []).sort((a, b) => a.id - b.id).map(it => `
-                  <tr><td class="kz-mono">${esc(it.code)}</td><td>${esc(it.model)}</td><td>${esc(it.color)}</td><td>${esc(it.dimension_text)}</td>
+                  <tr><td class="kz-mono">${esc(it.code)}</td><td>${esc(it.model)}${it.data && it.data.note ? `<br><span class="kz-item-note"><i class="fa-regular fa-note-sticky"></i> ${esc(it.data.note)}</span>` : ''}</td><td>${esc(it.color)}</td><td>${esc(it.dimension_text)}</td>
                   <td class="num">${it.quantity}</td><td class="num">${it.unit_price_czk == null ? 'na dotaz' : Klient.czk(Number(it.unit_price_czk))}</td>
                   <td class="num">${it.line_total_czk == null ? 'na dotaz' : Klient.czk(Number(it.line_total_czk))}</td></tr>`).join('')}
                 </tbody>

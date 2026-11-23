@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
   const rows = items.map((it: any) => `
     <tr>
       <td style="padding:8px;border-bottom:1px solid #e4e4e7;font-family:monospace">${esc(it.code)}</td>
-      <td style="padding:8px;border-bottom:1px solid #e4e4e7">${esc(it.model)}${it.variant ? "<br><small>" + esc(it.variant) + "</small>" : ""}</td>
+      <td style="padding:8px;border-bottom:1px solid #e4e4e7">${esc(it.model)}${it.variant ? "<br><small>" + esc(it.variant) + "</small>" : ""}${it.data?.note ? "<br><b>Poznámka: " + esc(it.data.note) + "</b>" : ""}</td>
       <td style="padding:8px;border-bottom:1px solid #e4e4e7">${esc(it.color)}</td>
       <td style="padding:8px;border-bottom:1px solid #e4e4e7">${esc(it.mount)}</td>
       <td style="padding:8px;border-bottom:1px solid #e4e4e7">${esc(it.dimension_text)}</td>

@@ -34,8 +34,8 @@
     count: () => readCart().reduce((n, it) => n + (it.quantity || 1), 0),
     add(item) {
       const items = readCart();
-      // Stejná konfigurace (kód vč. délky) se jen přičte, nevzniká nový řádek.
-      const same = items.find(it => it.code === item.code);
+      // Stejná konfigurace (kód vč. délky) se stejnou poznámkou se jen přičte; jiná poznámka (jiný pokoj) = nový řádek.
+      const same = items.find(it => it.code === item.code && (it.note || '') === (item.note || ''));
       if (same) { same.quantity = Math.min(999, same.quantity + item.quantity); same.addedAt = Date.now(); }
       else items.push({ ...item, addedAt: Date.now() });
       writeCart(items);
@@ -44,6 +44,12 @@
       const items = readCart();
       if (!items[index]) return;
       items[index].quantity = Math.max(1, Math.min(999, parseInt(qty, 10) || 1));
+      writeCart(items);
+    },
+    setNote(index, note) {
+      const items = readCart();
+      if (!items[index]) return;
+      items[index].note = String(note || '').replace(/\s+/g, ' ').trim().slice(0, 120);
       writeCart(items);
     },
     remove(index) { const items = readCart(); items.splice(index, 1); writeCart(items); },
@@ -132,7 +138,7 @@
     const payload = items.map(it => ({
       code: it.code, base_code: it.baseCode, model: it.model, variant: it.variant || null,
       color: it.color, mount: it.mount, dimension_text: it.dimensionText,
-      total_len_cm: it.totalLenCm, quantity: it.quantity, data: it.data || {}
+      total_len_cm: it.totalLenCm, quantity: it.quantity, data: { ...(it.data || {}), note: it.note || '' }
     }));
     const { data: orderId, error } = await sb.rpc('place_order', { p_items: payload, p_note: note || null });
     if (error) throw new Error(czMsg(error));
@@ -148,7 +154,7 @@
 
   async function orders() {
     const { data, error } = await sb.from('orders')
-      .select('id, number, status, note, total_czk, created_at, order_items(id, code, model, variant, color, mount, dimension_text, quantity, unit_price_czk, line_total_czk)')
+      .select('id, number, status, note, total_czk, created_at, order_items(id, code, model, variant, color, mount, dimension_text, quantity, unit_price_czk, line_total_czk, data)')
       .order('created_at', { ascending: false });
     if (error) throw new Error(czMsg(error));
     return data || [];
@@ -180,6 +186,38 @@
   }
   listeners.add(paintHeader);
   ready.then(paintHeader);
+
+  // ---- Plovoucí tlačítko „Objednávka“ — vidět na každé stránce i nad okny katalogu ----
+  // Jen pro přihlášeného klienta. Stránka může mít vlastní panel (window.openCartDrawer), jinak vede do zóny.
+  // Na stránkách se záložkou objednávky (klient.html, spravce.html) se vypne atributem <body data-no-cart-fab>.
+  let fab = null, lastCount = null;
+  function mountFab() {
+    if (fab || document.body.hasAttribute('data-no-cart-fab')) return;
+    fab = document.createElement('a');
+    fab.href = 'klient.html#kosik';
+    fab.className = 'kz-fab';
+    fab.hidden = true;
+    fab.setAttribute('aria-label', 'Vaše objednávka');
+    fab.innerHTML = '<i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span class="kz-fab-label">Vaše objednávka</span><span class="kz-fab-count">0</span>';
+    fab.addEventListener('click', e => {
+      if (typeof window.openCartDrawer === 'function') { e.preventDefault(); window.openCartDrawer(null); }
+    });
+    document.body.appendChild(fab);
+  }
+  function paintFab(s) {
+    if (!fab) return;
+    fab.hidden = !s.client;
+    const n = s.cartCount;
+    fab.querySelector('.kz-fab-count').textContent = n;
+    fab.classList.toggle('is-empty', !n);
+    fab.setAttribute('aria-label', n ? `Vaše objednávka, ${n} ks` : 'Vaše objednávka je prázdná');
+    if (lastCount !== null && n > lastCount) { fab.classList.remove('is-bump'); void fab.offsetWidth; fab.classList.add('is-bump'); }
+    lastCount = n;
+  }
+  const startFab = () => { mountFab(); ready.then(paintFab); listeners.add(paintFab); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startFab); else startFab();
+  // Změna košíku v jiné záložce prohlížeče se promítne i sem.
+  window.addEventListener('storage', e => { if (e.key && e.key.startsWith('detede.cart.')) emit(); });
 
   window.Klient = {
     enabled, ready, cart, czk, czMsg,

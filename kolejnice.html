@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link rel="stylesheet" href="assets/css/styles.css?v=34" />
-  <link rel="stylesheet" href="assets/css/klient.css?v=7" />
+  <link rel="stylesheet" href="assets/css/klient.css?v=10" />
 </head>
 <body class="antialiased">
 
@@ -258,6 +258,14 @@
                   </div>
                 </div>
                 <span class="cfg-caption cfg-caption--field">počet kusů</span>
+
+                <!-- POZNÁMKA K POLOŽCE — kam kolejnice patří (pokoj, místnost, okno…). Nepovinné. -->
+                <div class="cfg-note">
+                  <label class="cfg-note-label" for="itemNote"><i class="fa-regular fa-note-sticky"></i> Poznámka k položce <span>nepovinné</span></label>
+                  <input id="itemNote" class="cfg-note-input" type="text" maxlength="120" autocomplete="off" enterkeyhint="done"
+                         placeholder="Např. pokoj 306, kuchyně, obývák – levé okno" />
+                  <span class="cfg-caption cfg-caption--field">pomůže nám i montážníkům poznat, kam kolejnice patří</span>
+                </div>
               </div>
 
               <!-- MONTÁŽ — jen u modelů bez provedení (N2–N4); u N1 se montáž volí na dlaždici provedení.
@@ -276,6 +284,7 @@
                   <div class="flex justify-between gap-4"><span class="text-zinc-500">Barva</span><span id="sumColor" class="font-semibold text-zinc-950 text-right"></span></div>
                   <div class="flex justify-between gap-4"><span id="sumDimLabel" class="text-zinc-500">Váš poptávaný rozměr</span><span id="sumDim" class="font-semibold text-zinc-950 text-right">Nezadáno</span></div>
                   <div class="flex justify-between gap-4"><span class="text-zinc-500">Množství</span><span id="sumQty" class="font-semibold text-zinc-950 text-right">1 ks</span></div>
+                  <div id="sumNoteRow" class="flex justify-between gap-4" hidden><span class="text-zinc-500">Poznámka</span><span id="sumNote" class="font-semibold text-zinc-950 text-right" style="overflow-wrap:anywhere"></span></div>
                   <!-- Jen pro přihlášeného klienta: cena z jeho ceníku (počítá server). -->
                   <div id="sumPriceRow" class="flex justify-between gap-4 border-t border-zinc-200 pt-2" hidden><span class="text-zinc-500">Cena</span><span id="sumPrice" class="font-semibold text-zinc-950 text-right">—</span></div>
                 </div>
@@ -352,6 +361,7 @@
           <div>
             <p class="kz-drawer-name" id="cartPopName"></p>
             <p class="kz-drawer-meta" id="cartPopMeta"></p>
+            <p class="kz-item-note" id="cartPopNote" hidden><i class="fa-regular fa-note-sticky"></i><span></span></p>
           </div>
         </div>
       </div>
@@ -577,7 +587,7 @@
   <!-- Klientská zóna (Supabase): bez vyplněné konfigurace web běží jako dřív (poptávka). -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
   <script src="assets/js/klient-config.js?v=2"></script>
-  <script src="assets/js/klient.js?v=4"></script>
+  <script src="assets/js/klient.js?v=6"></script>
   <script>
     // Strukturovaná data řad přímo z tvého PDF a textového zadání
     // Provedení kolejnice (požadavek dodavatele) — kód se skládá z modelu + kódu provedení, např. „N1 11“.
@@ -1360,6 +1370,8 @@
       document.getElementById('sumColor').textContent = cfg.color ? `${cfg.color.name} · ${colorNote(cfg.color)}` : '';
       document.getElementById('sumDim').textContent = cfg.shape ? dimSummary() : 'Nezadáno';
       document.getElementById('sumQty').textContent = cfg.qty ? `${cfg.qty} ks` : '—';
+      document.getElementById('sumNoteRow').hidden = !cfg.note;
+      document.getElementById('sumNote').textContent = cfg.note || '';
     }
     function openLevel3Specification(modelIndex, variantIndex) {
       const model = currentActiveModelsArray[modelIndex];
@@ -1376,6 +1388,8 @@
       document.getElementById('level3BackLabel').textContent = variant ? 'Zpět na výběr provedení' : 'Zpět na výběr modelů';
       document.getElementById('dimError').hidden = true;
       qtyInput.value = '1';
+      cfg.note = '';
+      document.getElementById('itemNote').value = '';
       const photo = document.getElementById('activeModelRenderImg');
       photo.src = model.img;
       photo.alt = `${model.name} — náhled profilu`;
@@ -1442,10 +1456,16 @@
         dimensions: Object.fromEntries(dimSides().map(s => [s.key, +cfg.dims[s.key]])),
         dimensionUnit: 'cm',
         dimensionText: dimSummary(),
-        quantity: Math.max(1, parseInt(cfg.qty, 10) || 1)
+        quantity: Math.max(1, parseInt(cfg.qty, 10) || 1),
+        note: cfg.note || ''
       });
       openInquiryModal(window.detedeInquiry[window.detedeInquiry.length - 1]);
     }
+
+    // POZNÁMKA K POLOŽCE — ukládá se do konfigurace, ukáže se v rekapitulaci; Enter pole opustí.
+    const itemNote = document.getElementById('itemNote');
+    itemNote.addEventListener('input', () => { cfg.note = itemNote.value.replace(/\s+/g, ' ').trim().slice(0, 120); updateSummary(); });
+    itemNote.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); itemNote.blur(); } });
 
     // KOŠÍK — položka pro přihlášeného klienta (uloží se v prohlížeči, objednávka se odesílá v zóně).
     function addToCart() {
@@ -1458,6 +1478,7 @@
         mount: cfg.mount ? cfg.mount.name : '',
         dimensionText: dimSummary(), totalLenCm: totalLenCm(),
         quantity: Math.max(1, parseInt(cfg.qty, 10) || 1),
+        note: cfg.note || '',
         data: {
           shape: DIM_SHAPES[cfg.shape].label,
           dimensions: Object.fromEntries(dimSides().map(s => [s.key, +cfg.dims[s.key]])), dimensionUnit: 'cm',
@@ -1484,6 +1505,9 @@
       img.src = item.img; img.style.filter = item.imgFilter || 'none';
       document.getElementById('cartPopName').textContent = item.variant ? `${item.variant} · ${item.model}` : item.model;
       document.getElementById('cartPopMeta').innerHTML = `${escHtml(item.color)}<br>${escHtml(item.dimensionText)} · ${item.quantity} ks`;
+      const popNote = document.getElementById('cartPopNote');
+      popNote.hidden = !item.note;
+      popNote.lastChild.textContent = item.note ? ` ${item.note}` : '';
 
       // Znovu spustit vstupní animace (při opakovaném přidání).
       [card, pop.querySelector('.kz-pop-check'), pop.querySelector('.kz-pop-check svg')].forEach(el => { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
@@ -1548,11 +1572,12 @@
         ? `V objednávce ${all.length === 1 ? 'je 1 položka' : all.length <= 4 ? `jsou ${all.length} položky` : `je ${all.length} položek`} · ${pcs(pieces)}`
         : 'Objednávka je zatím prázdná';
       document.getElementById('cartDrawerList').innerHTML = shown.map((it, i) => `
-        <li class="kz-drawer-item${it.code === newCode ? ' is-new' + (landing ? ' is-landing' : '') : ''}" style="--i:${i}" data-code="${escHtml(it.code)}">
+        <li class="kz-drawer-item${newCode && i === 0 && it.code === newCode ? ' is-new' + (landing ? ' is-landing' : '') : ''}" style="--i:${i}" data-k="${i}">
           <div class="kz-drawer-thumb"><img src="${escHtml(it.img)}" alt="" style="filter:${escHtml(it.imgFilter || 'none')}" /></div>
           <div>
             <p class="kz-drawer-name">${escHtml(it.variant ? `${it.variant} · ${it.model}` : it.model)}<span class="kz-drawer-tag">Nové</span></p>
             <p class="kz-drawer-meta">${escHtml(it.color)}<br>${escHtml(it.dimensionText)} · ${it.quantity} ks</p>
+            ${it.note ? `<p class="kz-item-note"><i class="fa-regular fa-note-sticky"></i> ${escHtml(it.note)}</p>` : ''}
           </div>
           <div class="kz-drawer-price" data-price>…</div>
         </li>`).join('');
@@ -1570,11 +1595,11 @@
       // Ceny podle ceníku klienta (mezisoučet za celý košík, nejen za zobrazené).
       document.getElementById('cartDrawerTotal').textContent = '…';
       let total = 0, unknown = false;
-      await Promise.all(all.map(async it => {
+      await Promise.all(all.map(async (it, k) => {
         let unit = null;
         try { unit = await Klient.price(it.baseCode, it.totalLenCm); } catch (e) { unit = null; }
         if (unit == null) unknown = true; else total += unit * it.quantity;
-        const box = cartDrawer.querySelector(`[data-code="${CSS.escape(it.code)}"] [data-price]`);
+        const box = cartDrawer.querySelector(`[data-k="${k}"] [data-price]`);
         if (box) box.innerHTML = unit == null ? '<small>Cena</small>na dotaz' : `${Klient.czk(unit * it.quantity)}${it.quantity > 1 ? `<small>${Klient.czk(unit)} / ks</small>` : ''}`;
       }));
       document.getElementById('cartDrawerTotal').textContent = !all.length ? '0 Kč' : unknown ? (total ? `${Klient.czk(total)} + na dotaz` : 'Na dotaz') : Klient.czk(total);

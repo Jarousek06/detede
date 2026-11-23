@@ -16,9 +16,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="assets/css/styles.css?v=34" />
-  <link rel="stylesheet" href="assets/css/klient.css?v=7" />
+  <link rel="stylesheet" href="assets/css/klient.css?v=10" />
 </head>
-<body class="antialiased">
+<body class="antialiased" data-no-cart-fab>
 
   <header class="fixed top-0 inset-x-0 z-50 h-16 flex items-center">
     <div class="mx-auto max-w-[1400px] w-full px-6 md:px-12 flex items-center justify-between">
@@ -196,7 +196,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
   <script src="assets/js/klient-config.js?v=2"></script>
-  <script src="assets/js/klient.js?v=4"></script>
+  <script src="assets/js/klient.js?v=6"></script>
   <script>
   (() => {
     const $ = id => document.getElementById(id);
@@ -380,7 +380,7 @@
     async function loadOrders() {
       const box = $('ordersBox');
       box.innerHTML = '<div class="kz-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Načítám objednávky…</div>';
-      let q = sb.from('orders').select('id, number, status, note, total_czk, created_at, email_sent_at, clients(company, contact_name, phone), order_items(id, code, model, variant, color, mount, dimension_text, quantity, unit_price_czk, line_total_czk)').order('created_at', { ascending: false });
+      let q = sb.from('orders').select('id, number, status, note, total_czk, created_at, email_sent_at, clients(company, contact_name, phone), order_items(id, code, model, variant, color, mount, dimension_text, quantity, unit_price_czk, line_total_czk, data)').order('created_at', { ascending: false });
       if ($('orderFilter').value) q = q.eq('status', $('orderFilter').value);
       const { data, error } = await q;
       if (error) { box.innerHTML = `<p class="kz-msg kz-msg--err">${esc(Klient.czMsg(error))}</p>`; return; }
@@ -398,7 +398,7 @@
             <table class="kz-table">
               <thead><tr><th>Kód</th><th>Model</th><th>Barva</th><th>Montáž</th><th>Rozměr</th><th class="num">Ks</th><th class="num">Cena/ks</th><th class="num">Celkem</th></tr></thead>
               <tbody>${(o.order_items || []).sort((a, b) => a.id - b.id).map(it => `
-                <tr><td class="kz-mono">${esc(it.code)}</td><td>${esc(it.model)}${it.variant ? `<span class="kz-sub">${esc(it.variant)}</span>` : ''}</td><td>${esc(it.color)}</td><td>${esc(it.mount)}</td><td>${esc(it.dimension_text)}</td>
+                <tr><td class="kz-mono">${esc(it.code)}</td><td>${esc(it.model)}${it.variant ? `<span class="kz-sub">${esc(it.variant)}</span>` : ''}${it.data && it.data.note ? `<br><span class="kz-item-note"><i class="fa-regular fa-note-sticky"></i> ${esc(it.data.note)}</span>` : ''}</td><td>${esc(it.color)}</td><td>${esc(it.mount)}</td><td>${esc(it.dimension_text)}</td>
                 <td class="num">${it.quantity}</td><td class="num">${czk(it.unit_price_czk)}</td><td class="num">${czk(it.line_total_czk)}</td></tr>`).join('')}
               </tbody>
             </table>
