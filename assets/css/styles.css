@@ -675,6 +675,181 @@ header.scrolled {
 
 @media (prefers-reduced-motion: reduce) { .sh-drape, .sh-glow { transition: none !important; } }
 
+/* SMART HOME — „Váš den“ (index.html #sdDay): časová osa dne řídí scénu okna
+   (nebe, slunce/měsíc, závěsy, lampa) i telefon se seznamem automatizací. */
+.sd { margin-top: 7rem; }
+@media (min-width: 768px) { .sd { margin-top: 10rem; } }
+.sd-head { max-width: 40rem; margin-bottom: 3rem; }
+@media (min-width: 768px) { .sd-head { margin-bottom: 4rem; } }
+.sd-title { font-size: 32px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 600; color: #09090b; }
+@media (min-width: 768px) { .sd-title { font-size: 44px; } }
+.sd-lead { margin-top: 1.25rem; font-size: 17px; line-height: 1.6; color: #71717a; }
+
+.sd-card {
+  display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center;
+  background: #fff; border-radius: 2.5rem; padding: 1.25rem;
+  box-shadow: 0 40px 90px -50px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+@media (min-width: 768px) { .sd-card { padding: 2rem; } }
+@media (min-width: 1024px) { .sd-card { grid-template-columns: 0.62fr 1.38fr; gap: 4rem; padding: 3.5rem; } }
+.sd-phone-col { display: none; }
+@media (min-width: 1024px) { .sd-phone-col { display: block; } }
+.sd-iphone { width: min(270px, 100%); }
+.sd-screen { background: #f2f2f4; }
+.sd-screen-body { position: absolute; inset: 0; padding: 62px 14px 26px; display: flex; flex-direction: column; }
+.sd-app-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #09090b; padding: 0 4px; margin-top: 84px; }
+.sd-app-sub { font-size: 11px; color: #a1a1aa; padding: 2px 4px 12px; }
+.sd-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.sd-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 11px; border-radius: 15px; background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: background .5s ease, color .5s ease, transform .5s ease;
+}
+.sd-item-icon {
+  flex: none; width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center;
+  font-size: 12px; background: #f4f4f5; color: #52525b; transition: background .5s ease, color .5s ease;
+}
+.sd-item-main { flex: 1; min-width: 0; }
+.sd-item-time { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; color: #09090b; line-height: 1.1; transition: color .5s ease; }
+.sd-item-name { font-size: 10.5px; color: #71717a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .5s ease; }
+.sd-toggle { flex: none; width: 30px; height: 18px; border-radius: 99px; background: #34c759; position: relative; }
+.sd-toggle::after { content: ''; position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+.sd-item.is-active { background: #09090b; transform: scale(1.03); }
+.sd-item.is-active .sd-item-time { color: #fff; }
+.sd-item.is-active .sd-item-name { color: #a1a1aa; }
+.sd-item.is-active .sd-item-icon { background: rgba(255,255,255,0.12); color: #fff; }
+
+/* notifikace na zamčené obrazovce */
+.sd-notif {
+  position: absolute; z-index: 7; left: 9px; right: 9px; top: 48px; display: flex; gap: 9px; align-items: center;
+  padding: 10px 11px; border-radius: 18px; background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 26px -10px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(0,0,0,0.04);
+  transform: translateY(-140%); opacity: 0; transition: transform .6s cubic-bezier(.2,.9,.3,1.15), opacity .4s ease;
+}
+.sd-notif.is-in { transform: translateY(0); opacity: 1; }
+.sd-notif-icon { flex: none; width: 30px; height: 30px; border-radius: 8px; object-fit: cover; }
+.sd-notif-text { flex: 1; min-width: 0; }
+.sd-notif-top { display: flex; justify-content: space-between; font-size: 9.5px; text-transform: uppercase; letter-spacing: .06em; color: #8e8e93; }
+.sd-notif-title { font-size: 12px; font-weight: 700; color: #09090b; margin-top: 1px; }
+.sd-notif-body { font-size: 11px; color: #3f3f46; line-height: 1.3; }
+
+/* scéna */
+.sd-scene {
+  position: relative; aspect-ratio: 16 / 11; border-radius: 1.75rem; overflow: hidden; background: #e7e4dd;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+.sd-sky { position: absolute; left: 7%; right: 7%; top: 9%; bottom: 7%; opacity: 0; transition: opacity 1.8s ease; }
+.sd-sky.is-on { opacity: 1; }
+.sd-sky-0 { background: linear-gradient(180deg, #a9c6e0 0%, #f3d9c2 62%, #f8c79b 100%); }
+.sd-sky-1 { background: linear-gradient(180deg, #6fa8dc 0%, #a9cff0 55%, #dcecf6 100%); }
+.sd-sky-2 { background: linear-gradient(180deg, #3b3f73 0%, #b56a7f 55%, #f19a6b 100%); }
+.sd-sky-3 { background: linear-gradient(180deg, #0b1026 0%, #18213f 70%, #24304f 100%); }
+.sd-stars {
+  position: absolute; left: 7%; right: 7%; top: 9%; bottom: 40%; opacity: 0; transition: opacity 1.8s ease;
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 22%, #fff 99%, transparent), radial-gradient(1px 1px at 28% 48%, #fff 99%, transparent),
+    radial-gradient(1.2px 1.2px at 44% 14%, #fff 99%, transparent), radial-gradient(1px 1px at 63% 36%, #fff 99%, transparent),
+    radial-gradient(1.5px 1.5px at 78% 18%, #fff 99%, transparent), radial-gradient(1px 1px at 88% 52%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 36% 70%, #fff 99%, transparent), radial-gradient(1.2px 1.2px at 55% 62%, #fff 99%, transparent);
+}
+.sd-scene.is-night .sd-stars { opacity: .85; }
+.sd-orb {
+  position: absolute; width: 9%; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%);
+  left: 22%; top: 62%; background: #fff6dc;
+  box-shadow: 0 0 0 10px rgba(255,240,200,.25), 0 0 60px 20px rgba(255,214,150,.55);
+  transition: left 2s cubic-bezier(.4,0,.2,1), top 2s cubic-bezier(.4,0,.2,1), background 1.6s ease, box-shadow 1.6s ease;
+}
+.sd-scene.is-night .sd-orb { background: #eef1f7; box-shadow: inset -8px -4px 0 0 #c9cfdb, 0 0 40px 6px rgba(200,215,255,.25); }
+.sd-hills {
+  position: absolute; left: 7%; right: 7%; bottom: 7%; height: 22%; opacity: .5; filter: blur(2px);
+  background:
+    radial-gradient(60% 130% at 18% 100%, #7f8f86 0 46%, transparent 48%),
+    radial-gradient(70% 150% at 50% 100%, #8b9a91 0 50%, transparent 52%),
+    radial-gradient(55% 120% at 82% 100%, #75857c 0 46%, transparent 48%);
+}
+/* okenní rám: vnější rám vyřezaný stínem, příčky */
+.sd-frame {
+  position: absolute; left: 7%; right: 7%; top: 9%; bottom: 7%; border: 9px solid #f1f2f3; border-radius: 4px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.12), inset 0 0 30px rgba(0,0,0,.08);
+}
+.sd-mv { position: absolute; top: 0; bottom: 0; left: 50%; width: 8px; transform: translateX(-50%); background: linear-gradient(90deg,#d8dcde,#f3f5f6 50%,#d8dcde); }
+.sd-mh { position: absolute; left: 0; right: 0; top: 52%; height: 8px; background: linear-gradient(180deg,#f3f5f6,#d8dcde); }
+/* šero v místnosti + teplá lampa večer */
+.sd-dim { position: absolute; inset: 0; z-index: 7; pointer-events: none; background: #0d1020; opacity: 0; transition: opacity 1.8s ease; }
+.sd-lamp {
+  position: absolute; z-index: 8; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.8s ease;
+  background: radial-gradient(55% 70% at 50% 100%, rgba(255,190,120,.45), transparent 70%);
+}
+.sd-rail { top: calc(9% - 6px); left: 4%; right: 4%; }
+.sd-drape {
+  position: absolute; z-index: 4; top: calc(9% + 4px); bottom: 3%; width: 47%;
+  transition: transform 2.2s cubic-bezier(0.22, 0.61, 0.36, 1); will-change: transform;
+}
+.sd-drape-l { left: 4%; transform-origin: left center; }
+.sd-drape-r { right: 4%; transform-origin: right center; }
+.sd-scene.is-night .sh-drape-fabric { filter: brightness(.82) sepia(.15); }
+.sh-drape-fabric { transition: filter 1.8s ease; }
+
+.sd-badge {
+  position: absolute; z-index: 9; left: 1rem; bottom: 1rem; padding: .7rem 1rem; border-radius: 1.1rem;
+  background: rgba(255,255,255,0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px -10px rgba(0,0,0,.3);
+}
+@media (min-width: 768px) { .sd-badge { left: 1.5rem; bottom: 1.5rem; } }
+.sd-badge-time { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; color: #09090b; line-height: 1; font-variant-numeric: tabular-nums; }
+.sd-badge-state { font-size: 12px; color: #52525b; margin-top: 4px; }
+
+.sd-caption { margin-top: 1.75rem; min-height: 5.5rem; }
+.sd-cap-title { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: #09090b; }
+.sd-cap-text { margin-top: .35rem; font-size: 16px; line-height: 1.55; color: #71717a; max-width: 36rem; }
+.sd-caption.is-swap .sd-cap-title, .sd-caption.is-swap .sd-cap-text { animation: sdFade .7s ease both; }
+@keyframes sdFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* časová osa */
+.sd-track { position: relative; height: 64px; margin-top: 1rem; }
+.sd-line { position: absolute; left: 0; right: 0; top: 13px; height: 2px; border-radius: 2px; background: #e4e4e7; overflow: hidden; }
+.sd-line-fill { height: 100%; width: 0; background: #09090b; transition: width 1.6s cubic-bezier(.4,0,.2,1); }
+.sd-stop {
+  position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center;
+  gap: 8px; background: none; border: 0; padding: 0; cursor: pointer; font: inherit;
+}
+.sd-stop:first-of-type { transform: translateX(-20%); }
+.sd-stop:last-of-type { transform: translateX(-80%); }
+@media (max-width: 639px) {
+  .sd-badge { left: .6rem; bottom: .6rem; padding: .45rem .65rem; border-radius: .8rem; }
+  .sd-badge-time { font-size: 18px; }
+  .sd-badge-state { font-size: 10.5px; margin-top: 2px; }
+  .sd-dot { width: 24px; height: 24px; font-size: 10px; }
+  .sd-stop-label { font-size: 11px; }
+  .sd-line { top: 11px; }
+}
+.sd-dot {
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 11px;
+  background: #fff; color: #a1a1aa; box-shadow: inset 0 0 0 1.5px #e4e4e7; transition: all .4s ease;
+}
+.sd-stop:hover .sd-dot { color: #09090b; box-shadow: inset 0 0 0 1.5px #a1a1aa; }
+.sd-stop.is-past .sd-dot { color: #09090b; box-shadow: inset 0 0 0 1.5px #09090b; }
+.sd-stop.is-active .sd-dot { background: #09090b; color: #fff; box-shadow: 0 0 0 6px rgba(9,9,11,.08); }
+.sd-stop-label { font-size: 12px; font-weight: 600; color: #a1a1aa; font-variant-numeric: tabular-nums; transition: color .4s ease; }
+.sd-stop.is-active .sd-stop-label { color: #09090b; }
+.sd-stop:focus-visible { outline: none; }
+.sd-stop:focus-visible .sd-dot { outline: 2px solid #09090b; outline-offset: 3px; }
+
+/* další možnosti */
+.sd-features { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+@media (min-width: 640px) { .sd-features { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .sd-features { grid-template-columns: repeat(4, 1fr); } }
+.sd-feat { background: #fff; border-radius: 1.75rem; padding: 1.75rem; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04); }
+.sd-feat-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: #f4f4f5; color: #09090b; font-size: 15px; }
+.sd-feat-title { margin-top: 1.25rem; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: #09090b; }
+.sd-feat-text { margin-top: .35rem; font-size: 14px; line-height: 1.55; color: #71717a; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-sky, .sd-orb, .sd-drape, .sd-dim, .sd-lamp, .sd-line-fill, .sd-notif, .sd-item { transition: none !important; }
+  .sd-caption.is-swap .sd-cap-title, .sd-caption.is-swap .sd-cap-text { animation: none; }
+}
+
+
 /* PARALLAX REFERENCE IMAGE (index.html hotel section) */
 .parallax-wrap {
   overflow: hidden !important;
