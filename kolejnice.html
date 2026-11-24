@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link rel="stylesheet" href="assets/css/styles.css?v=34" />
+  <link rel="stylesheet" href="assets/css/klient.css?v=10" />
 </head>
 <body class="antialiased">
 
@@ -45,6 +46,10 @@
         <span class="text-[13px] tracking-[0.22em] font-medium uppercase text-zinc-950">Detedetail</span>
       </a>
       <nav class="flex items-center gap-4 md:gap-6 text-[13px] font-medium">
+        <a href="klient.html" class="kz-head-link" aria-label="Klientská zóna">
+          <i class="fa-regular fa-user"></i><span data-klient-label class="hidden sm:inline">Klientská zóna</span>
+          <span class="kz-head-count" data-cart-count hidden>0</span>
+        </a>
         <span class="hidden sm:flex text-zinc-300 items-center gap-1.5 font-semibold cursor-not-allowed select-none whitespace-nowrap" title="PDF verze v přípravě">
           <i class="fa-regular fa-file-pdf"></i> PDF verze v přípravě
         </span>
@@ -253,6 +258,14 @@
                   </div>
                 </div>
                 <span class="cfg-caption cfg-caption--field">počet kusů</span>
+
+                <!-- POZNÁMKA K POLOŽCE — kam kolejnice patří (pokoj, místnost, okno…). Nepovinné. -->
+                <div class="cfg-note">
+                  <label class="cfg-note-label" for="itemNote"><i class="fa-regular fa-note-sticky"></i> Poznámka k položce <span>nepovinné</span></label>
+                  <input id="itemNote" class="cfg-note-input" type="text" maxlength="120" autocomplete="off" enterkeyhint="done"
+                         placeholder="Např. pokoj 306, kuchyně, obývák – levé okno" />
+                  <span class="cfg-caption cfg-caption--field">pomůže nám i montážníkům poznat, kam kolejnice patří</span>
+                </div>
               </div>
 
               <!-- MONTÁŽ — jen u modelů bez provedení (N2–N4); u N1 se montáž volí na dlaždici provedení.
@@ -264,18 +277,21 @@
               </div>
 
               <div class="border-t border-zinc-200 pt-5">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block mb-3">Rekapitulace poptávky</span>
+                <span id="sumTitle" class="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block mb-3">Rekapitulace poptávky</span>
                 <div class="bg-zinc-50 border border-zinc-200 rounded-2xl p-5 text-sm space-y-2">
                   <div class="flex justify-between gap-4"><span class="text-zinc-500">Model</span><span id="sumModel" class="font-semibold text-zinc-950 text-right"></span></div>
                   <div id="sumMountRow" class="flex justify-between gap-4" style="display:none;"><span class="text-zinc-500">Montáž</span><span id="sumMount" class="font-semibold text-zinc-950 text-right"></span></div>
                   <div class="flex justify-between gap-4"><span class="text-zinc-500">Barva</span><span id="sumColor" class="font-semibold text-zinc-950 text-right"></span></div>
-                  <div class="flex justify-between gap-4"><span class="text-zinc-500">Váš poptávaný rozměr</span><span id="sumDim" class="font-semibold text-zinc-950 text-right">Nezadáno</span></div>
+                  <div class="flex justify-between gap-4"><span id="sumDimLabel" class="text-zinc-500">Váš poptávaný rozměr</span><span id="sumDim" class="font-semibold text-zinc-950 text-right">Nezadáno</span></div>
                   <div class="flex justify-between gap-4"><span class="text-zinc-500">Množství</span><span id="sumQty" class="font-semibold text-zinc-950 text-right">1 ks</span></div>
+                  <div id="sumNoteRow" class="flex justify-between gap-4" hidden><span class="text-zinc-500">Poznámka</span><span id="sumNote" class="font-semibold text-zinc-950 text-right" style="overflow-wrap:anywhere"></span></div>
+                  <!-- Jen pro přihlášeného klienta: cena z jeho ceníku (počítá server). -->
+                  <div id="sumPriceRow" class="flex justify-between gap-4 border-t border-zinc-200 pt-2" hidden><span class="text-zinc-500">Cena</span><span id="sumPrice" class="font-semibold text-zinc-950 text-right">—</span></div>
                 </div>
-                <button onclick="addToInquiry()" class="mt-4 w-full bg-zinc-950 hover:bg-zinc-900 text-white text-xs font-semibold uppercase tracking-wider py-4 rounded-xl transition-all duration-200 cursor-pointer">
+                <button id="addBtn" onclick="addToInquiry()" class="mt-4 w-full bg-zinc-950 hover:bg-zinc-900 text-white text-xs font-semibold uppercase tracking-wider py-4 rounded-xl transition-all duration-200 cursor-pointer">
                   Přidat do nezávazné poptávky
                 </button>
-                <p class="text-[11px] text-zinc-400 text-center mt-3">Cenu a přesnou specifikaci potvrdíme. Zakázková výroba ±1 mm.</p>
+                <p id="addNote" class="text-[11px] text-zinc-400 text-center mt-3">Cenu a přesnou specifikaci potvrdíme. Zakázková výroba ±1 mm.</p>
               </div>
 
               <details class="border-t border-zinc-200 pt-6">
@@ -303,7 +319,7 @@
         <button type="button" class="inq-close" onclick="closeInquiryModal()" aria-label="Zavřít"><i class="fa-solid fa-xmark"></i></button>
         <span class="inq-icon"><i class="fa-solid fa-check"></i></span>
         <h2 id="inqTitle" class="inq-title">Přidáno do poptávky</h2>
-        <p class="inq-sub">Ve vaší poptávce je:</p>
+        <p id="inqSub" class="inq-sub">Ve vaší poptávce je:</p>
         <div class="inq-item">
           <div class="inq-thumb"><img id="inqThumb" src="" alt="" /></div>
           <div>
@@ -327,8 +343,53 @@
         <p id="inqCount" class="inq-count" hidden></p>
         <div class="inq-actions">
           <button type="button" class="inq-btn inq-btn--primary" onclick="inquiryContinue()">Pokračovat k odeslání poptávky</button>
+          <button type="button" id="inqMoreBtn" class="inq-btn kz-btn--ghost" onclick="closeInquiryModal()" hidden style="margin-top:0.5rem;border:1px solid #d4d4d8;background:#fff;color:#09090b">Vybrat další kolejnici</button>
         </div>
       </div>
+    </div>
+
+    <!-- POTVRZENÍ PŘIDÁNÍ (jen přihlášený klient) — kartička uprostřed, pak se kolejnice
+         „přelije“ do panelu košíku vpravo (magic move). -->
+    <div id="cartPop" class="kz-pop" role="status" aria-live="polite" hidden>
+      <div class="kz-pop-card">
+        <span class="kz-pop-check" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9" /></svg>
+        </span>
+        <p class="kz-pop-title">Přidáno do objednávky</p>
+        <div class="kz-pop-item" id="cartPopItem">
+          <div class="kz-drawer-thumb"><img id="cartPopImg" src="" alt="" /></div>
+          <div>
+            <p class="kz-drawer-name" id="cartPopName"></p>
+            <p class="kz-drawer-meta" id="cartPopMeta"></p>
+            <p class="kz-item-note" id="cartPopNote" hidden><i class="fa-regular fa-note-sticky"></i><span></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KOŠÍK (jen přihlášený klient) — panel vyjede zprava po přidání kolejnice.
+         Nahoře právě přidaná položka, pod ní posledních 5 v košíku, mezisoučet a dvě cesty dál. -->
+    <div id="cartDrawer" class="kz-drawer" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle" hidden>
+      <div class="kz-drawer-backdrop" data-drawer-close></div>
+      <aside class="kz-drawer-panel">
+        <header class="kz-drawer-head">
+          <div>
+            <span class="kz-drawer-ok"><i class="fa-solid fa-check"></i> <span id="cartDrawerTitle">Přidáno do objednávky</span></span>
+            <p class="kz-drawer-count" id="cartDrawerCount"></p>
+          </div>
+          <button type="button" class="kz-drawer-x" data-drawer-close aria-label="Zavřít"><i class="fa-solid fa-xmark"></i></button>
+        </header>
+        <div class="kz-drawer-body">
+          <ul id="cartDrawerList" class="kz-drawer-list"></ul>
+          <p id="cartDrawerMore" class="kz-drawer-more" hidden></p>
+        </div>
+        <footer class="kz-drawer-foot">
+          <div class="kz-drawer-sum"><span>Mezisoučet</span><b id="cartDrawerTotal">—</b></div>
+          <p class="kz-drawer-note" id="cartDrawerNote">Ceny podle vašeho ceníku.</p>
+          <a href="klient.html#kosik" class="kz-btn kz-btn--block" id="cartDrawerGo">Přejít do objednávky <i class="fa-solid fa-arrow-right"></i></a>
+          <button type="button" class="kz-btn kz-btn--ghost kz-btn--block" id="cartDrawerMoreBtn">Pokračovat ve výběru</button>
+        </footer>
+      </aside>
     </div>
 
     <!-- KONTAKTNÍ SEKCE -->
@@ -523,6 +584,10 @@
     </div>
   </footer>
 
+  <!-- Klientská zóna (Supabase): bez vyplněné konfigurace web běží jako dřív (poptávka). -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+  <script src="assets/js/klient-config.js?v=2"></script>
+  <script src="assets/js/klient.js?v=6"></script>
   <script>
     // Strukturovaná data řad přímo z tvého PDF a textového zadání
     // Provedení kolejnice (požadavek dodavatele) — kód se skládá z modelu + kódu provedení, např. „N1 11“.
@@ -703,7 +768,75 @@
       },
       // Pro konzistenci a testování nasadíme stejnou logiku pro případné další řady
       "T-line": { title: "Kolejnice řady T line", models: [] },
-      "B-line": { title: "Kolejnice řady B line", models: [] },
+      // B line — zdroje: B1 = leták B1 Basso (detede.net), B2/B3 = katalog „Line“ str. 36 a 38.
+      // Jen stropní montáž (`mounts`). Barvy s vlastním renderem mají `img` (místo CSS filtru).
+      // Kódy NE/BE pro elox B1 jsou zatím pracovní — v podkladech kód není, ověřit s majitelem.
+      "B-line": {
+        title: "Kolejnice řady B line",
+        models: [
+          {
+            id: "B1", name: "B1-Basso", setCode: "21", h: "8,5 mm", w: "78 mm", mounts: ["S"],
+            img: "assets/img/katalog/b-line/b1-basso-bila.webp",
+            holder: { id: "", name: "Skrytý kovový držák" },
+            desc: "Nízká kompaktní dvoukolejnice pro záclonu a závěs.",
+            colors: [
+              {code:"9016",name:"Bílá",swatch:"#f4f4f5",img:"assets/img/katalog/b-line/b1-basso-bila.webp"},
+              {code:"9005",name:"Černá",swatch:"#1c1c1e",img:"assets/img/katalog/b-line/b1-basso-cerna.webp"},
+              {code:"NE",name:"Nerez elox",swatch:"#b7bcc0",img:"assets/img/katalog/b-line/b1-basso-nerez.webp"},
+              {code:"BE",name:"Bronz elox",swatch:"#7a6a4a",img:"assets/img/katalog/b-line/b1-basso-bronz.webp"}
+            ],
+            features: [
+              "Kompaktní dvoukolejnice pro záclonu a závěs", "Výška pouze 8,5 mm včetně kovového držáku",
+              "Šířka 78 mm", "Rozteč pojezdových drážek 65 mm", "Lehké až střední zatížení, do 500 g/m²",
+              "Elegantní průhyb profil zpevňuje", "Při montáži potřeba 2 cm prostoru na otočení držáku",
+              "Další barvy RAL na zakázku"
+            ],
+            accessories: []
+          },
+          {
+            id: "B2", name: "B2-Bergamo", setCode: "21", h: "13,4 mm", w: "82 mm", mounts: ["S"],
+            img: "assets/img/katalog/b-line/b2-bergamo-bila.webp",
+            holder: { id: "", name: "Skrytý držák" },
+            desc: "Dvoukolejnice v jednom bloku pro upevnění na strop.",
+            colors: [
+              {code:"9016",name:"Bílá",swatch:"#f4f4f5",img:"assets/img/katalog/b-line/b2-bergamo-bila.webp"},
+              {code:"9005",name:"Černá",swatch:"#1c1c1e",filter:"brightness(0.30) contrast(1.15) saturate(0.5)"},
+              {code:"BH",name:"Broušený hliník",swatch:"#cdcdcb",img:"assets/img/katalog/b-line/b2-bergamo-bh.webp"}
+            ],
+            features: [
+              "Dvoukolejnice v jednom bloku", "Skryté držáky umožňují čistý design", "Elegantní konzolky",
+              "Rozteč pojezdových drážek 67 mm", "Lehké až střední zatížení, do 250 g/m²", "Hliník 6063"
+            ],
+            accessories: [ { id: "B2-03", name: "Nacvakávací kovový držák s odsazením pro nerovné stropy" } ]
+          },
+          {
+            id: "B3", name: "B3-Bolzano", setCode: "31", h: "13,4 mm", w: "82 mm", mounts: ["S"],
+            img: "assets/img/katalog/b-line/b3-bolzano-bila.webp",
+            holder: { id: "B3-04", name: "Držák B3-04" },
+            desc: "Trojkolejnice v jednom bloku, velmi vhodná pro hotely.",
+            colors: [
+              {code:"9016",name:"Bílá",swatch:"#f4f4f5",img:"assets/img/katalog/b-line/b3-bolzano-bila.webp"}
+            ],
+            features: [
+              "Trojkolejnice v jednom bloku", "Dvě přední drážky pro závěs: oponové překrývání bez překrývacích ramínek",
+              "Velmi vhodná pro hotely a penziony", "Skryté držáky umožňují čistý design",
+              "Rozteč drážek 67 mm a 49 mm", "Lehké až střední zatížení, do 250 g/m²", "Hliník 6063"
+            ],
+            accessories: [ { id: "B3-04", name: "Držák" }, { id: "B2-03", name: "Nacvakávací kovový držák s odsazením pro nerovné stropy" } ]
+          },
+          {
+            // B4-Botel — přidán na přání uživatele (jen bílá). Rozměry, popis, držák ani foto zatím nemáme
+            // (není v katalogu ani na detede.net) → zástupný obrázek, bez rozměrů a bez `kota`.
+            id: "B4", name: "B4-Botel", setCode: "21", h: "", w: "", mounts: ["S"],
+            img: "assets/img/katalog/b-line/b4-placeholder.svg",
+            holder: { id: "", name: "Držák" },
+            desc: "",
+            colors: [ {code:"9016",name:"Bílá",swatch:"#f4f4f5",filter:"none"} ],
+            features: [],
+            accessories: []
+          }
+        ]
+      },
       "S-line": { title: "Kolejnice řady S line", models: [] },
       "E-line": { title: "Kolejnice řady E line", models: [] },
       "H-line": { title: "Kolejnice řady H line", models: [] }
@@ -819,6 +952,10 @@
       "Stop jezdce — 2 ks",
       "Koncovky — 2 ks"
     ];
+    // U modelů s vlastním držákem (B line) se v obsahu sestavy ukáže jejich držák místo plastového.
+    const setContents = () => cfg.model && cfg.model.holder
+      ? SET_CONTENTS.map(s => s.startsWith('Plastové držáky') ? `${cfg.model.holder.name} — dle délky` : s)
+      : SET_CONTENTS;
     // Druhý řádek pod názvem barvy: lakované barvy mají RAL kód (9016, 9005), broušené kovy jsou anodizace.
     const colorNote = c => /^\d{4}$/.test(c.code) ? `RAL ${c.code}` : 'Anodizace';
     // Barva v kódu výrobku: bílá BL, černá CE, broušené kovy BN/BH/BB (vše velkými).
@@ -827,7 +964,9 @@
     // Kód výrobku model-provedení-montáž-barva-rozměr (u L/U všechny strany za sebou), např. N1-11-S-BL-455.
     function productCode() {
       const parts = [cfg.model.id];
+      // Provedení: zvolené na dlaždici (N1), nebo pevné u modelu (B line: B1/B2 = 21 dvojkolejnička, B3 = 31 trojkolejnička).
       if (cfg.variant) parts.push(cfg.variant.code);
+      else if (cfg.model.setCode) parts.push(cfg.model.setCode);
       if (cfg.mount) parts.push(cfg.mount.code);
       if (cfg.color) parts.push(colorCodeOf(cfg.color));
       if (dimsComplete()) parts.push(dimSides().map(s => cfg.dims[s.key]).join('-'));
@@ -853,7 +992,11 @@
       document.getElementById('activeColorNote').textContent = colorNote(c);
       placeColorCaption();
       document.getElementById('activeColorTag').textContent = c.name;
-      document.getElementById('activeModelRenderImg').style.filter = c.filter || 'none';
+      // Barva s vlastním renderem (B line) vymění fotku, jinak se bílá fotka obarví CSS filtrem.
+      const photo = document.getElementById('activeModelRenderImg');
+      const src = c.img || cfg.model.img;
+      if (photo.getAttribute('src') !== src) photo.src = src;
+      photo.style.filter = c.img ? 'none' : (c.filter || 'none');
       drawDimensions();
       updateSummary();
     }
@@ -1178,27 +1321,75 @@
       setQty(Math.max(1, (parseInt(cfg.qty, 10) || 0) + +btn.dataset.qtyStep), true);
     }));
 
+    // KLIENTSKÁ ZÓNA — přihlášený klient vidí cenu a přidává do košíku místo do poptávky.
+    const isClient = () => !!(window.Klient && Klient.enabled && Klient.client);
+    // Kód bez délky (podle něj se hledá cena v ceníku), např. N1-11-S-BL nebo B1-21-S-CE.
+    function baseCode() {
+      const parts = [cfg.model.id];
+      if (cfg.variant) parts.push(cfg.variant.code);
+      else if (cfg.model.setCode) parts.push(cfg.model.setCode);
+      if (cfg.mount) parts.push(cfg.mount.code);
+      if (cfg.color) parts.push(colorCodeOf(cfg.color));
+      return parts.join('-');
+    }
+    // Celková délka kolejnice v cm (u tvaru L/U součet stran) — podle ní se vybírá cenové pásmo.
+    const totalLenCm = () => dimsComplete() ? dimSides().reduce((n, s) => n + (+cfg.dims[s.key] || 0), 0) : 0;
+    function paintClientMode() {
+      const on = isClient();
+      document.getElementById('addBtn').textContent = on ? 'Přidat do objednávky' : 'Přidat do nezávazné poptávky';
+      document.getElementById('sumTitle').textContent = on ? 'Rekapitulace objednávky' : 'Rekapitulace poptávky';
+      document.getElementById('sumDimLabel').textContent = on ? 'Rozměr' : 'Váš poptávaný rozměr';
+      document.getElementById('addNote').textContent = on
+        ? 'Cena podle vašeho ceníku. Zakázková výroba ±1 mm.'
+        : 'Cenu a přesnou specifikaci potvrdíme. Zakázková výroba ±1 mm.';
+      document.getElementById('sumPriceRow').hidden = !on;
+    }
+    let priceReq = 0;
+    async function updatePrice() {
+      if (!isClient() || !cfg.model) return;
+      const el = document.getElementById('sumPrice');
+      const len = totalLenCm(), qty = Math.max(1, parseInt(cfg.qty, 10) || 1);
+      if (!len || !cfg.mount) { el.textContent = 'Zadejte rozměr'; return; }
+      const req = ++priceReq;
+      el.textContent = '…';
+      let unit = null;
+      try { unit = await Klient.price(baseCode(), len); } catch (e) { unit = null; }
+      if (req !== priceReq) return;   // mezitím se konfigurace změnila
+      el.textContent = unit == null ? 'Na dotaz' : `${Klient.czk(unit * qty)}${qty > 1 ? ` (${Klient.czk(unit)} / ks)` : ''}`;
+    }
+    if (window.Klient && Klient.enabled) {
+      Klient.ready.then(paintClientMode);
+      Klient.onChange(() => { paintClientMode(); updatePrice(); });
+    }
+
     function updateSummary() {
+      updatePrice();
       document.getElementById('sumModel').textContent = cfg.model ? cfg.model.name : '';
       document.getElementById('sumMountRow').style.display = '';
       document.getElementById('sumMount').textContent = cfg.mount ? cfg.mount.name : 'Nevybráno';
       document.getElementById('sumColor').textContent = cfg.color ? `${cfg.color.name} · ${colorNote(cfg.color)}` : '';
       document.getElementById('sumDim').textContent = cfg.shape ? dimSummary() : 'Nezadáno';
       document.getElementById('sumQty').textContent = cfg.qty ? `${cfg.qty} ks` : '—';
+      document.getElementById('sumNoteRow').hidden = !cfg.note;
+      document.getElementById('sumNote').textContent = cfg.note || '';
     }
     function openLevel3Specification(modelIndex, variantIndex) {
       const model = currentActiveModelsArray[modelIndex];
       if (!model) return;
       const variant = (model.variants && variantIndex != null) ? model.variants[variantIndex] : null;
+      // Model může povolit jen některé montáže (B line jen strop) — když je jediná, nastaví se sama.
+      const onlyMount = model.mounts && model.mounts.length === 1 ? MOUNTS[model.mounts[0]] : null;
       cfg = {
-        model, variant, glider: FIXED_GLIDER, holder: FIXED_HOLDER,
+        model, variant, glider: FIXED_GLIDER, holder: model.holder || FIXED_HOLDER,
         // u provedení (N1) montáž přichází z dlaždice, u ostatních modelů ji zákazník vybere v konfigurátoru
-        mount: variant ? (MOUNTS[variantMounts[variantIndex]] || null) : null,
+        mount: variant ? (MOUNTS[variantMounts[variantIndex]] || null) : onlyMount,
         shape: variant && variant.shape !== 'straight' ? 'U' : 'straight', dims: {}, activeDim: null, qty: 1
       };
       document.getElementById('level3BackLabel').textContent = variant ? 'Zpět na výběr provedení' : 'Zpět na výběr modelů';
       document.getElementById('dimError').hidden = true;
       qtyInput.value = '1';
+      cfg.note = '';
+      document.getElementById('itemNote').value = '';
       const photo = document.getElementById('activeModelRenderImg');
       photo.src = model.img;
       photo.alt = `${model.name} — náhled profilu`;
@@ -1213,7 +1404,7 @@
       renderColorSwatches(colors);
       applyColor(colors[0]);
       renderMountChoice();
-      document.getElementById('cfgMountSection').style.display = cfg.variant ? 'none' : '';
+      document.getElementById('cfgMountSection').style.display = (cfg.variant || onlyMount) ? 'none' : '';
       renderDimensions();
 
       const overlay = document.getElementById('level3SpecificationOverlay');
@@ -1249,6 +1440,7 @@
       }
       if (noMount) document.getElementById('cfgMountSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
       if (noMount || noDims) return;
+      if (isClient()) return addToCart();
       window.detedeInquiry = window.detedeInquiry || [];
       window.detedeInquiry.push({
         model: cfg.model.name, code: productCode(),
@@ -1256,28 +1448,214 @@
         variant: cfg.variant ? cfg.variant.name : '',
         color: cfg.color ? cfg.color.name : '', colorCode: cfg.color ? cfg.color.code : '',
         colorNote: cfg.color ? colorNote(cfg.color) : '',
-        set: SET_CONTENTS,
+        set: setContents(),
         glider: FIXED_GLIDER.name, gliderCode: FIXED_GLIDER.id,
-        holder: FIXED_HOLDER.name, holderCode: FIXED_HOLDER.id,
+        holder: cfg.holder.name, holderCode: cfg.holder.id,
         control: 'Ruční',
         shape: DIM_SHAPES[cfg.shape].label,
         dimensions: Object.fromEntries(dimSides().map(s => [s.key, +cfg.dims[s.key]])),
         dimensionUnit: 'cm',
         dimensionText: dimSummary(),
-        quantity: Math.max(1, parseInt(cfg.qty, 10) || 1)
+        quantity: Math.max(1, parseInt(cfg.qty, 10) || 1),
+        note: cfg.note || ''
       });
       openInquiryModal(window.detedeInquiry[window.detedeInquiry.length - 1]);
     }
 
+    // POZNÁMKA K POLOŽCE — ukládá se do konfigurace, ukáže se v rekapitulaci; Enter pole opustí.
+    const itemNote = document.getElementById('itemNote');
+    itemNote.addEventListener('input', () => { cfg.note = itemNote.value.replace(/\s+/g, ' ').trim().slice(0, 120); updateSummary(); });
+    itemNote.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); itemNote.blur(); } });
+
+    // KOŠÍK — položka pro přihlášeného klienta (uloží se v prohlížeči, objednávka se odesílá v zóně).
+    function addToCart() {
+      const color = cfg.color || {};
+      const item = {
+        code: productCode(), baseCode: baseCode(),
+        model: cfg.model.name, variant: cfg.variant ? cfg.variant.name : '',
+        color: color.name ? `${color.name} · ${colorNote(color)}` : '', colorSwatch: color.swatch || '#f4f4f5',
+        img: color.img || cfg.model.img, imgFilter: color.img ? 'none' : (color.filter || 'none'),
+        mount: cfg.mount ? cfg.mount.name : '',
+        dimensionText: dimSummary(), totalLenCm: totalLenCm(),
+        quantity: Math.max(1, parseInt(cfg.qty, 10) || 1),
+        note: cfg.note || '',
+        data: {
+          shape: DIM_SHAPES[cfg.shape].label,
+          dimensions: Object.fromEntries(dimSides().map(s => [s.key, +cfg.dims[s.key]])), dimensionUnit: 'cm',
+          mountCode: cfg.mount ? cfg.mount.code : '', colorCode: color.code || '',
+          set: setContents(), glider: FIXED_GLIDER.name, gliderCode: FIXED_GLIDER.id,
+          holder: cfg.holder.name, holderCode: cfg.holder.id, control: 'Ruční'
+        }
+      };
+      Klient.cart.add(item);
+      showAddedFlow(item);
+    }
+
+    // PŘIDÁNÍ DO KOŠÍKU — 1) kartička „Přidáno do košíku“ uprostřed, 2) kolejnice z ní „přeletí“
+    //   na své místo v panelu vpravo, zatímco panel vyjíždí (magic move). Klik nebo Esc první krok zkrátí.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    let popSkip = null;
+    async function showAddedFlow(item) {
+      if (reduceMotion) return openCartDrawer(item.code);
+      const pop = document.getElementById('cartPop');
+      const card = pop.querySelector('.kz-pop-card');
+      const fly = document.getElementById('cartPopItem');
+      const img = document.getElementById('cartPopImg');
+      img.src = item.img; img.style.filter = item.imgFilter || 'none';
+      document.getElementById('cartPopName').textContent = item.variant ? `${item.variant} · ${item.model}` : item.model;
+      document.getElementById('cartPopMeta').innerHTML = `${escHtml(item.color)}<br>${escHtml(item.dimensionText)} · ${item.quantity} ks`;
+      const popNote = document.getElementById('cartPopNote');
+      popNote.hidden = !item.note;
+      popNote.lastChild.textContent = item.note ? ` ${item.note}` : '';
+
+      // Znovu spustit vstupní animace (při opakovaném přidání).
+      [card, pop.querySelector('.kz-pop-check'), pop.querySelector('.kz-pop-check svg')].forEach(el => { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
+      pop.hidden = false;
+      document.body.style.overflow = 'hidden';
+
+      // 1) chvíli ukázat potvrzení
+      await Promise.race([sleep(1000), new Promise(r => { popSkip = r; })]);
+      popSkip = null;
+
+      // 2) panel vyjíždí; spočítat, kde přistane nová položka (v otevřeném panelu)
+      const from = fly.getBoundingClientRect();
+      openCartDrawer(item.code, true);
+      const li = cartDrawer.querySelector('.kz-drawer-item.is-landing');
+      const panel = cartDrawer.querySelector('.kz-drawer-panel');
+      if (!li) { pop.hidden = true; return; }
+      panel.style.transition = 'none'; panel.style.transform = 'translateX(0)';
+      const to = li.getBoundingClientRect();
+      panel.style.transform = ''; void panel.offsetWidth; panel.style.transition = '';
+
+      // Vytrhnout položku z kartičky (kartička má backdrop-filter, uvnitř by position:fixed nefungoval).
+      const home = fly.parentNode, next = fly.nextSibling;
+      fly.classList.add('is-flying');
+      Object.assign(fly.style, { left: `${from.left}px`, top: `${from.top}px`, width: `${from.width}px` });
+      pop.appendChild(fly);
+
+      const ease = 'cubic-bezier(0.32, 0.72, 0, 1)';
+      card.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.94)' }], { duration: 260, easing: 'ease-out', fill: 'forwards' });
+      await fly.animate([
+        { left: `${from.left}px`, top: `${from.top}px`, width: `${from.width}px` },
+        { left: `${to.left}px`, top: `${to.top}px`, width: `${to.width}px` }
+      ], { duration: 640, easing: ease, fill: 'forwards' }).finished.catch(() => { });
+
+      // 3) přistání: skutečná položka v panelu se ukáže, létající kopie zmizí
+      li.classList.remove('is-landing');
+      await fly.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, fill: 'forwards' }).finished.catch(() => { });
+      pop.hidden = true;
+      fly.getAnimations().forEach(a => a.cancel());
+      card.getAnimations().forEach(a => a.cancel());
+      fly.classList.remove('is-flying');
+      fly.removeAttribute('style');
+      home.insertBefore(fly, next);
+    }
+    document.getElementById('cartPop').addEventListener('click', () => { if (popSkip) popSkip(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && popSkip) popSkip(); });
+
+    // PANEL KOŠÍKU — vyjede zprava: právě přidaná položka nahoře, pak dalších (max. 5 celkem), mezisoučet.
+    const cartDrawer = document.getElementById('cartDrawer');
+    const DRAWER_MAX = 5;
+    let drawerTimer, drawerReturnFocus = null;
+    const escHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const pcs = n => `${n} ${n === 1 ? 'kus' : n >= 2 && n <= 4 ? 'kusy' : 'kusů'}`;
+    async function openCartDrawer(newCode, landing) {
+      clearTimeout(drawerTimer);
+      drawerReturnFocus = document.activeElement;
+      const all = Klient.cart.list().slice().sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
+      const shown = all.slice(0, DRAWER_MAX);
+      const pieces = all.reduce((n, it) => n + it.quantity, 0);
+      document.getElementById('cartDrawerTitle').textContent = newCode ? 'Přidáno do objednávky' : 'Vaše objednávka';
+      cartDrawer.querySelector('.kz-drawer-ok i').className = newCode ? 'fa-solid fa-check' : 'fa-solid fa-cart-shopping';
+      document.getElementById('cartDrawerCount').textContent = all.length
+        ? `V objednávce ${all.length === 1 ? 'je 1 položka' : all.length <= 4 ? `jsou ${all.length} položky` : `je ${all.length} položek`} · ${pcs(pieces)}`
+        : 'Objednávka je zatím prázdná';
+      document.getElementById('cartDrawerList').innerHTML = shown.map((it, i) => `
+        <li class="kz-drawer-item${newCode && i === 0 && it.code === newCode ? ' is-new' + (landing ? ' is-landing' : '') : ''}" style="--i:${i}" data-k="${i}">
+          <div class="kz-drawer-thumb"><img src="${escHtml(it.img)}" alt="" style="filter:${escHtml(it.imgFilter || 'none')}" /></div>
+          <div>
+            <p class="kz-drawer-name">${escHtml(it.variant ? `${it.variant} · ${it.model}` : it.model)}<span class="kz-drawer-tag">Nové</span></p>
+            <p class="kz-drawer-meta">${escHtml(it.color)}<br>${escHtml(it.dimensionText)} · ${it.quantity} ks</p>
+            ${it.note ? `<p class="kz-item-note"><i class="fa-regular fa-note-sticky"></i> ${escHtml(it.note)}</p>` : ''}
+          </div>
+          <div class="kz-drawer-price" data-price>…</div>
+        </li>`).join('');
+      const rest = all.length - shown.length;
+      const more = document.getElementById('cartDrawerMore');
+      more.hidden = rest <= 0;
+      more.textContent = rest > 0 ? `+ ${rest} ${rest === 1 ? 'další položka' : rest <= 4 ? 'další položky' : 'dalších položek'} v objednávce` : '';
+      document.getElementById('cartDrawerGo').hidden = !all.length;
+
+      cartDrawer.hidden = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => cartDrawer.classList.add('is-open')));
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => document.getElementById(all.length ? 'cartDrawerGo' : 'cartDrawerMoreBtn').focus({ preventScroll: true }), 350);
+
+      // Ceny podle ceníku klienta (mezisoučet za celý košík, nejen za zobrazené).
+      document.getElementById('cartDrawerTotal').textContent = '…';
+      let total = 0, unknown = false;
+      await Promise.all(all.map(async (it, k) => {
+        let unit = null;
+        try { unit = await Klient.price(it.baseCode, it.totalLenCm); } catch (e) { unit = null; }
+        if (unit == null) unknown = true; else total += unit * it.quantity;
+        const box = cartDrawer.querySelector(`[data-k="${k}"] [data-price]`);
+        if (box) box.innerHTML = unit == null ? '<small>Cena</small>na dotaz' : `${Klient.czk(unit * it.quantity)}${it.quantity > 1 ? `<small>${Klient.czk(unit)} / ks</small>` : ''}`;
+      }));
+      document.getElementById('cartDrawerTotal').textContent = !all.length ? '0 Kč' : unknown ? (total ? `${Klient.czk(total)} + na dotaz` : 'Na dotaz') : Klient.czk(total);
+      document.getElementById('cartDrawerNote').textContent = unknown
+        ? 'U položek „na dotaz“ doplníme cenu v potvrzení objednávky.'
+        : 'Ceny podle vašeho ceníku.';
+    }
+    function closeCartDrawer() {
+      if (cartDrawer.hidden) return;
+      cartDrawer.classList.remove('is-open');
+      document.body.style.overflow = '';
+      drawerTimer = setTimeout(() => { cartDrawer.hidden = true; }, 600);
+      if (drawerReturnFocus && drawerReturnFocus.focus) drawerReturnFocus.focus({ preventScroll: true });
+    }
+    cartDrawer.querySelectorAll('[data-drawer-close]').forEach(el => el.addEventListener('click', closeCartDrawer));
+    // „Pokračovat ve výběru“ → zavře panel i konfigurátor a vrátí na výběr modelů řady.
+    document.getElementById('cartDrawerMoreBtn').addEventListener('click', () => {
+      closeCartDrawer();
+      if (document.getElementById('level3SpecificationOverlay').classList.contains('active')) closeLevel3Specification();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !cartDrawer.hidden) { e.stopPropagation(); closeCartDrawer(); }
+      // Tab zůstává uvnitř panelu
+      if (e.key === 'Tab' && !cartDrawer.hidden) {
+        const f = [...cartDrawer.querySelectorAll('a[href]:not([hidden]), button:not([hidden])')].filter(el => el.offsetParent);
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    // Ikona účtu v hlavičce: přihlášený klient s plným košíkem otevře panel místo přechodu do zóny.
+    document.querySelector('.kz-head-link').addEventListener('click', e => {
+      if (isClient() && Klient.cart.count()) { e.preventDefault(); openCartDrawer(null); }
+    });
+
     // POTVRZENÍ POPTÁVKY — okno se shrnutím přidané kolejnice; pak kontakt, nebo výběr další kolejnice.
+    // U klienta (toCart) je to potvrzení košíku: tlačítka „Přejít do košíku“ a „Vybrat další kolejnici“.
     const inqModal = document.getElementById('inqModal');
-    let inqTimer;
-    function openInquiryModal(item) {
+    let inqTimer, inqToCart = false;
+    function openInquiryModal(item, toCart) {
       clearTimeout(inqTimer);
+      inqToCart = !!toCart;
+      document.getElementById('inqTitle').textContent = toCart ? 'Přidáno do objednávky' : 'Přidáno do poptávky';
+      document.getElementById('inqSub').textContent = toCart ? 'Do objednávky jsme přidali:' : 'Ve vaší poptávce je:';
+      inqModal.querySelector('.inq-btn--primary').textContent = toCart ? 'Přejít do objednávky' : 'Pokračovat k odeslání poptávky';
+      document.getElementById('inqMoreBtn').hidden = !toCart;
+      // Obsah sestavy podle modelu (B line má jiný držák než plastový).
+      const setList = inqModal.querySelector('.inq-set ul');
+      if (item.set) setList.innerHTML = item.set.map(s => {
+        const [name, qty] = s.split(' — ');
+        return `<li>${name}${qty && qty !== 'dle délky' ? ` <span>· ${qty}</span>` : ''}</li>`;
+      }).join('');
       const thumb = document.getElementById('inqThumb');
-      thumb.src = cfg.model.img;
+      thumb.src = (cfg.color && cfg.color.img) || cfg.model.img;
       thumb.alt = item.model;
-      thumb.style.filter = (cfg.color && cfg.color.filter) || 'none';
+      thumb.style.filter = (cfg.color && !cfg.color.img && cfg.color.filter) || 'none';
       document.getElementById('inqItemName').textContent = item.variant ? `${item.variant} · ${item.model}` : item.model;
       document.getElementById('inqItemCode').textContent = `Kód ${item.code}`;
       const row = (k, v) => `<div class="inq-row"><dt>${k}</dt><dd>${v}</dd></div>`;
@@ -1286,10 +1664,10 @@
         row('Barva', `<span class="inq-dot" style="background:${cfg.color ? cfg.color.swatch : '#f4f4f5'}"></span>${item.color} · ${item.colorNote}`) +
         row('Rozměr', item.dimensionText) +
         row('Množství', `${item.quantity} ks`);
-      const n = window.detedeInquiry.length;
+      const n = toCart ? Klient.cart.list().length : window.detedeInquiry.length;
       const cnt = document.getElementById('inqCount');
       cnt.hidden = n < 2;
-      cnt.textContent = `Celkem položek v poptávce: ${n}`;
+      cnt.textContent = toCart ? `Položek v objednávce: ${n}` : `Celkem položek v poptávce: ${n}`;
       inqModal.hidden = false;
       requestAnimationFrame(() => requestAnimationFrame(() => inqModal.classList.add('is-open')));
       inqModal.querySelector('.inq-btn--primary').focus({ preventScroll: true });
@@ -1300,6 +1678,7 @@
     }
     function inquiryContinue() {
       closeInquiryModal();
+      if (inqToCart) { location.href = 'klient.html#kosik'; return; }
       goToContactFromSpec();
     }
     document.addEventListener('keydown', (e) => {

@@ -33,6 +33,7 @@
 
   <link rel="stylesheet" href="assets/css/styles.css?v=34" />
   <link rel="stylesheet" href="assets/css/drive.css?v=9" />
+  <link rel="stylesheet" href="assets/css/klient.css?v=10" />
 </head>
 <body class="antialiased drive-page">
 
@@ -167,11 +168,7 @@
         <article class="sys-card reveal" id="ds" style="--accent:#1d7453; --accent-soft:rgba(29,116,83,0.14); --accent-line:rgba(29,116,83,0.45); transition-delay: 100ms;">
           <div class="sys-media">
             <span class="sys-badge"><span class="drive-dot"></span>02</span>
-            <!-- Zatím bez renderu DS — nahradit: <img class="sys-render" src="assets/img/katalog/drives/ds-render.webp" …> -->
-            <div class="sys-placeholder">
-              <img src="assets/img/katalog/drives/dt-render.webp" alt="" loading="lazy" decoding="async" />
-              <span>Render DS připravujeme</span>
-            </div>
+            <img class="sys-render" src="assets/img/katalog/drives/ds-render.png" alt="Motorizovaná kolejnice DS" width="2808" height="1392" loading="lazy" decoding="async" />
           </div>
           <div class="sys-body">
             <h3 class="sys-name">DS</h3>
@@ -536,6 +533,10 @@
       update();
     })();
   </script>
+  <!-- Klientská zóna: plovoucí tlačítko „Objednávka“ pro přihlášeného klienta -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+  <script src="assets/js/klient-config.js?v=2"></script>
+  <script src="assets/js/klient.js?v=6"></script>
   <script src="assets/js/site.js?v=8"></script>
 
 </body>

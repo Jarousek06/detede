@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Klientská zóna · Detede</title>
+  <meta name="description" content="Klientská zóna Detede pro obchodní partnery — ceny, objednávky a podklady ke stažení." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
+
+  <link rel="stylesheet" href="assets/css/tailwind.css?v=8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=34" />
+  <link rel="stylesheet" href="assets/css/klient.css?v=10" />
+</head>
+<body class="antialiased" data-no-cart-fab>
+
+  <header class="fixed top-0 inset-x-0 z-50 h-16 flex items-center">
+    <div class="mx-auto max-w-[1400px] w-full px-6 md:px-12 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-1.5">
+        <img src="assets/img/logo.png" alt="Detede Logo" class="h-10 w-auto object-contain" />
+        <span class="text-[13px] tracking-[0.22em] font-medium uppercase text-zinc-950">Detedetail</span>
+      </a>
+      <nav class="flex items-center gap-4 md:gap-6 text-[13px] font-medium">
+        <a href="kolejnice.html" class="kz-head-link" aria-label="Katalog kolejnic"><i class="fa-solid fa-grip-lines"></i><span class="kz-hide-sm">Katalog kolejnic</span></a>
+        <a href="index.html" aria-label="Zavřít a zpět na hlavní stranu"
+           class="flex items-center justify-center w-9 h-9 rounded-full border border-zinc-950/15 text-zinc-600 hover:bg-zinc-950 hover:text-white hover:border-zinc-950 transition-all duration-300">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="kz-main">
+
+    <!-- Načítání -->
+    <div id="viewLoading" class="kz-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Načítám…</div>
+
+    <!-- Zóna ještě není napojená na Supabase -->
+    <section id="viewOff" class="kz-narrow" hidden>
+      <div class="kz-card">
+        <span class="kz-eyebrow">Pro obchodní partnery</span>
+        <h1 class="kz-h1">Klientská zóna se připravuje</h1>
+        <p class="kz-lead">Brzy se tu naši partneři přihlásí ke svým cenám, objednávkám a podkladům. Do té doby nám pošlete nezávaznou poptávku z katalogu.</p>
+        <div style="margin-top:1.5rem"><a href="kolejnice.html" class="kz-btn kz-btn--block">Otevřít katalog kolejnic</a></div>
+      </div>
+    </section>
+
+    <!-- Přihlášení -->
+    <section id="viewLogin" class="kz-narrow" hidden>
+      <div class="kz-card">
+        <span class="kz-eyebrow">Pro obchodní partnery</span>
+        <h1 class="kz-h1">Klientská zóna</h1>
+        <p class="kz-lead">Přihlaste se ke svým cenám, objednávkám a podkladům ke stažení.</p>
+
+        <form id="loginForm" class="kz-form" novalidate>
+          <div class="kz-field">
+            <label class="kz-label" for="loginEmail">E-mail</label>
+            <input id="loginEmail" class="kz-input" type="email" name="email" autocomplete="username" inputmode="email" required />
+          </div>
+          <div class="kz-field">
+            <label class="kz-label" for="loginPass">Heslo</label>
+            <div class="kz-pass">
+              <input id="loginPass" class="kz-input" type="password" name="password" autocomplete="current-password" required />
+              <button type="button" class="kz-pass-toggle" data-toggle-pass="loginPass" aria-label="Zobrazit heslo"><i class="fa-regular fa-eye"></i></button>
+            </div>
+          </div>
+          <p id="loginMsg" class="kz-msg kz-msg--err" role="alert" hidden></p>
+          <button type="submit" class="kz-btn kz-btn--block">Přihlásit se</button>
+          <div class="kz-row" style="justify-content:center"><button type="button" class="kz-link" id="showReset">Zapomněli jste heslo?</button></div>
+        </form>
+
+        <form id="resetForm" class="kz-form" novalidate hidden>
+          <p class="kz-msg kz-msg--info">Zadejte e-mail svého účtu. Pošleme vám odkaz pro nastavení nového hesla.</p>
+          <div class="kz-field">
+            <label class="kz-label" for="resetEmail">E-mail</label>
+            <input id="resetEmail" class="kz-input" type="email" autocomplete="username" inputmode="email" required />
+          </div>
+          <p id="resetMsg" class="kz-msg" role="status" hidden></p>
+          <button type="submit" class="kz-btn kz-btn--block">Poslat odkaz</button>
+          <div class="kz-row" style="justify-content:center"><button type="button" class="kz-link" id="backToLogin">Zpět na přihlášení</button></div>
+        </form>
+
+        <p class="kz-note">Přístup do zóny zakládáme našim partnerům.<br>Nemáte ho? Napište na <a href="mailto:detede@detede.cz">detede@detede.cz</a>.</p>
+      </div>
+    </section>
+
+    <!-- Nové heslo (z odkazu v e-mailu) -->
+    <section id="viewRecovery" class="kz-narrow" hidden>
+      <div class="kz-card">
+        <span class="kz-eyebrow">Klientská zóna</span>
+        <h1 class="kz-h1">Nastavte si heslo</h1>
+        <p class="kz-lead">Tímto heslem se budete přihlašovat do klientské zóny.</p>
+        <form id="recoveryForm" class="kz-form" novalidate>
+          <div class="kz-field">
+            <label class="kz-label" for="newPass">Nové heslo (aspoň 8 znaků)</label>
+            <div class="kz-pass">
+              <input id="newPass" class="kz-input" type="password" autocomplete="new-password" minlength="8" required />
+              <button type="button" class="kz-pass-toggle" data-toggle-pass="newPass" aria-label="Zobrazit heslo"><i class="fa-regular fa-eye"></i></button>
+            </div>
+          </div>
+          <p id="recoveryMsg" class="kz-msg kz-msg--err" role="alert" hidden></p>
+          <button type="submit" class="kz-btn kz-btn--block">Uložit heslo</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Správce bez klientského účtu -->
+    <section id="viewAdmin" class="kz-narrow" hidden>
+      <div class="kz-card">
+        <span class="kz-eyebrow">Přihlášen jako správce</span>
+        <h1 class="kz-h1">Správa zóny</h1>
+        <p class="kz-lead">Klienty, objednávky, ceník a soubory spravujete na stránce Správa.</p>
+        <div style="margin-top:1.5rem;display:grid;gap:0.6rem">
+          <a href="spravce.html" class="kz-btn kz-btn--block">Otevřít správu</a>
+          <button type="button" class="kz-btn kz-btn--ghost kz-btn--block" id="adminLogoutBtn">Odhlásit</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zóna -->
+    <section id="viewZone" class="kz-wrap" hidden>
+      <div class="kz-account">
+        <div>
+          <span class="kz-eyebrow">Klientská zóna</span>
+          <h1 class="kz-h1" id="zoneCompany"></h1>
+          <p class="kz-lead" id="zoneContact" style="margin-top:0.4rem"></p>
+        </div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+          <a href="spravce.html" class="kz-btn kz-btn--ghost" id="adminLink" hidden><i class="fa-solid fa-gear"></i> Správa</a>
+          <button type="button" class="kz-btn kz-btn--ghost" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Odhlásit</button>
+        </div>
+      </div>
+
+      <div class="kz-tabs" role="tablist" aria-label="Klientská zóna">
+        <a class="kz-tab" role="tab" href="#kosik" data-tab="kosik"><i class="fa-solid fa-cart-shopping"></i> Nová objednávka <span class="kz-badge" data-cart-count hidden>0</span></a>
+        <a class="kz-tab" role="tab" href="#objednavky" data-tab="objednavky"><i class="fa-solid fa-receipt"></i> Objednávky</a>
+        <a class="kz-tab" role="tab" href="#ke-stazeni" data-tab="ke-stazeni"><i class="fa-solid fa-download"></i> Ke stažení</a>
+      </div>
+
+      <!-- KOŠÍK -->
+      <div id="tab-kosik" role="tabpanel" hidden>
+        <div id="orderDone" hidden></div>
+        <div id="cartEmpty" class="kz-card kz-empty" hidden>
+          <i class="fa-solid fa-cart-shopping"></i>
+          <h2>Objednávka je zatím prázdná</h2>
+          <p>Vyberte kolejnici v katalogu, nastavte barvu a rozměr a přidejte ji do objednávky.</p>
+          <a href="kolejnice.html" class="kz-btn">Otevřít katalog kolejnic</a>
+        </div>
+        <div id="cartFull" class="kz-cart" hidden>
+          <div>
+            <div id="cartItems" class="kz-items"></div>
+            <div style="margin-top:1rem"><a href="kolejnice.html" class="kz-link"><i class="fa-solid fa-plus"></i> Přidat další kolejnici</a></div>
+          </div>
+          <aside class="kz-card kz-summary" aria-label="Souhrn objednávky">
+            <h2>Souhrn</h2>
+            <div class="kz-sum-row"><span>Položek</span><span id="sumItems">0</span></div>
+            <div class="kz-sum-row"><span>Kusů celkem</span><span id="sumPieces">0</span></div>
+            <div class="kz-sum-row kz-sum-total"><span>Celkem</span><span id="sumTotal">—</span></div>
+            <p class="kz-sum-note" id="sumNote">Ceny podle vašeho ceníku. Konečnou cenu potvrdíme v potvrzení objednávky.</p>
+            <div class="kz-field" style="margin-top:1.25rem">
+              <label class="kz-label" for="orderNote">Poznámka k objednávce</label>
+              <textarea id="orderNote" class="kz-textarea" maxlength="2000" placeholder="Např. termín, adresa doručení, číslo zakázky…"></textarea>
+            </div>
+            <p id="orderMsg" class="kz-msg kz-msg--err" role="alert" hidden style="margin-top:1rem"></p>
+            <button type="button" id="orderBtn" class="kz-btn kz-btn--block" style="margin-top:1rem">Odeslat objednávku</button>
+          </aside>
+        </div>
+      </div>
+
+      <!-- OBJEDNÁVKY -->
+      <div id="tab-objednavky" role="tabpanel" hidden>
+        <div id="ordersList" class="kz-orders"></div>
+      </div>
+
+      <!-- KE STAŽENÍ -->
+      <div id="tab-ke-stazeni" role="tabpanel" hidden>
+        <div id="filesCrumbs" class="kz-crumbs"></div>
+        <div id="filesList"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+  <script src="assets/js/klient-config.js?v=2"></script>
+  <script src="assets/js/klient.js?v=6"></script>
+  <script>
+  (() => {
+    const $ = id => document.getElementById(id);
+    const views = ['viewLoading', 'viewOff', 'viewLogin', 'viewRecovery', 'viewAdmin', 'viewZone'];
+    const show = id => views.forEach(v => { $(v).hidden = v !== id; });
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const msg = (el, text, kind) => { el.textContent = text || ''; el.hidden = !text; if (kind) el.className = `kz-msg kz-msg--${kind}`; };
+    const busy = (btn, on, label) => { btn.disabled = on; if (label) btn.dataset.label = btn.dataset.label || btn.textContent; btn.textContent = on ? label : (btn.dataset.label || btn.textContent); };
+
+    // Zobrazit / skrýt heslo
+    document.querySelectorAll('[data-toggle-pass]').forEach(b => b.addEventListener('click', () => {
+      const inp = $(b.dataset.togglePass); const on = inp.type === 'password';
+      inp.type = on ? 'text' : 'password';
+      b.setAttribute('aria-label', on ? 'Skrýt heslo' : 'Zobrazit heslo');
+      b.innerHTML = `<i class="fa-regular ${on ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+    }));
+
+    if (!Klient.enabled) { show('viewOff'); return; }
+
+    // ---------------- Přihlášení ----------------
+    $('loginForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = e.submitter || $('loginForm').querySelector('button[type=submit]');
+      const email = $('loginEmail').value, pass = $('loginPass').value;
+      if (!email.trim() || !pass) return msg($('loginMsg'), 'Vyplňte prosím e-mail i heslo.', 'err');
+      msg($('loginMsg'), '');
+      busy(btn, true, 'Přihlašuji…');
+      try { await Klient.signIn(email, pass); $('loginPass').value = ''; }
+      catch (err) { msg($('loginMsg'), err.message, 'err'); }
+      finally { busy(btn, false); }
+    });
+    $('showReset').addEventListener('click', () => { $('loginForm').hidden = true; $('resetForm').hidden = false; $('resetEmail').value = $('loginEmail').value; $('resetEmail').focus(); });
+    $('backToLogin').addEventListener('click', () => { $('resetForm').hidden = true; $('loginForm').hidden = false; msg($('resetMsg'), ''); });
+    $('resetForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = $('resetForm').querySelector('button[type=submit]');
+      if (!$('resetEmail').value.trim()) return msg($('resetMsg'), 'Zadejte prosím e-mail.', 'err');
+      busy(btn, true, 'Odesílám…');
+      try { await Klient.resetPassword($('resetEmail').value); msg($('resetMsg'), 'Pokud účet existuje, poslali jsme vám odkaz pro nové heslo.', 'ok'); }
+      catch (err) { msg($('resetMsg'), err.message, 'err'); }
+      finally { busy(btn, false); }
+    });
+    $('recoveryForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = $('recoveryForm').querySelector('button[type=submit]');
+      if ($('newPass').value.length < 8) return msg($('recoveryMsg'), 'Heslo musí mít aspoň 8 znaků.', 'err');
+      busy(btn, true, 'Ukládám…');
+      try { await Klient.updatePassword($('newPass').value); render(); }
+      catch (err) { msg($('recoveryMsg'), err.message, 'err'); }
+      finally { busy(btn, false); }
+    });
+    $('logoutBtn').addEventListener('click', () => Klient.signOut());
+    $('adminLogoutBtn').addEventListener('click', () => Klient.signOut());
+
+    // ---------------- Záložky ----------------
+    const TABS = ['kosik', 'objednavky', 'ke-stazeni'];
+    const currentTab = () => { const h = location.hash.slice(1); return TABS.includes(h) ? h : 'kosik'; };
+    function showTab() {
+      const t = currentTab();
+      document.querySelectorAll('.kz-tab').forEach(a => a.setAttribute('aria-selected', String(a.dataset.tab === t)));
+      TABS.forEach(x => { $('tab-' + x).hidden = x !== t; });
+      if (t === 'kosik') renderCart();
+      if (t === 'objednavky') renderOrders();
+      if (t === 'ke-stazeni') renderFiles(filesPrefix);
+    }
+    window.addEventListener('hashchange', () => { if (Klient.client) showTab(); });
+
+    // ---------------- Košík ----------------
+    async function renderCart() {
+      const items = Klient.cart.list();
+      $('cartEmpty').hidden = items.length > 0 || !$('orderDone').hidden;
+      $('cartFull').hidden = items.length === 0;
+      if (!items.length) return;
+      $('orderDone').hidden = true;
+      $('cartItems').innerHTML = items.map((it, i) => `
+        <article class="kz-item" data-i="${i}">
+          <div class="kz-thumb"><img src="${esc(it.img)}" alt="" style="filter:${esc(it.imgFilter || 'none')}" /></div>
+          <div>
+            <h3 class="kz-item-name">${esc(it.variant ? it.variant + ' · ' + it.model : it.model)}</h3>
+            <p class="kz-item-code">${esc(it.code)}</p>
+            <p class="kz-specs">
+              <span><span class="kz-dot" style="background:${esc(it.colorSwatch || '#f4f4f5')}"></span><b>${esc(it.color)}</b></span>
+              ${it.mount ? `<span>Montáž <b>${esc(it.mount)}</b></span>` : ''}
+              <span>Rozměr <b>${esc(it.dimensionText)}</b></span>
+            </p>
+            <input class="kz-note-input" data-note type="text" maxlength="120" value="${esc(it.note || '')}"
+                   placeholder="Poznámka k položce (pokoj, místnost…)" aria-label="Poznámka k položce" />
+          </div>
+          <div class="kz-item-side">
+            <div class="kz-price" data-price>…</div>
+            <div class="kz-item-actions">
+              <div class="kz-qty" aria-label="Množství">
+                <button type="button" data-step="-1" aria-label="Ubrat kus"><i class="fa-solid fa-minus"></i></button>
+                <input type="text" inputmode="numeric" maxlength="3" value="${it.quantity}" aria-label="Počet kusů" />
+                <button type="button" data-step="1" aria-label="Přidat kus"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <button type="button" class="kz-icon-btn" data-remove aria-label="Odebrat z objednávky"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+          </div>
+        </article>`).join('');
+
+      const pieces = items.reduce((n, it) => n + it.quantity, 0);
+      $('sumItems').textContent = items.length;
+      $('sumPieces').textContent = `${pieces} ks`;
+      $('sumTotal').textContent = '…';
+
+      // Ceny z ceníku klienta (počítá je server; při odeslání se přepočítají znovu).
+      let total = 0, unknown = false;
+      await Promise.all(items.map(async (it, i) => {
+        const box = $('cartItems').querySelector(`[data-i="${i}"] [data-price]`);
+        let unit = null;
+        try { unit = await Klient.price(it.baseCode, it.totalLenCm); } catch (e) { unit = null; }
+        if (unit == null) { unknown = true; box.innerHTML = '<span class="kz-price-ask">Cena na dotaz</span>'; return; }
+        total += unit * it.quantity;
+        box.innerHTML = `<div class="kz-price-line">${Klient.czk(unit * it.quantity)}</div><div class="kz-price-unit">${Klient.czk(unit)} / ks</div>`;
+      }));
+      $('sumTotal').textContent = unknown ? (total ? `${Klient.czk(total)} + na dotaz` : 'Na dotaz') : Klient.czk(total);
+      $('sumNote').textContent = unknown
+        ? 'U položek „na dotaz“ doplníme cenu v potvrzení objednávky.'
+        : 'Ceny podle vašeho ceníku. Konečnou cenu potvrdíme v potvrzení objednávky.';
+    }
+
+    $('cartItems').addEventListener('click', e => {
+      const row = e.target.closest('[data-i]'); if (!row) return;
+      const i = +row.dataset.i, items = Klient.cart.list();
+      const step = e.target.closest('[data-step]');
+      if (step) { Klient.cart.setQty(i, items[i].quantity + +step.dataset.step); renderCart(); }
+      if (e.target.closest('[data-remove]')) { Klient.cart.remove(i); renderCart(); }
+    });
+    $('cartItems').addEventListener('change', e => {
+      const row = e.target.closest('[data-i]'); if (!row || e.target.tagName !== 'INPUT') return;
+      // Poznámka se jen uloží (bez překreslení, ať neodskočí kurzor), množství přepočítá ceny.
+      if (e.target.matches('[data-note]')) { Klient.cart.setNote(+row.dataset.i, e.target.value); return; }
+      Klient.cart.setQty(+row.dataset.i, e.target.value); renderCart();
+    });
+    $('cartItems').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur(); });
+
+    $('orderBtn').addEventListener('click', async () => {
+      const btn = $('orderBtn');
+      msg($('orderMsg'), '');
+      busy(btn, true, 'Odesílám objednávku…');
+      try {
+        const { orderId, emailOk } = await Klient.placeOrder($('orderNote').value);
+        $('orderNote').value = '';
+        const list = await Klient.orders().catch(() => []);
+        const o = list.find(x => x.id === orderId);
+        $('orderDone').innerHTML = `
+          <div class="kz-card kz-empty">
+            <i class="fa-solid fa-circle-check" style="color:#15803d"></i>
+            <h2>Objednávka${o ? ' č. ' + o.number : ''} je odeslaná</h2>
+            <p>${emailOk ? 'Děkujeme. Ozveme se s potvrzením a termínem.' : 'Objednávku jsme uložili. Potvrzení vám pošleme, jakmile ji zpracujeme.'}<br>Najdete ji v záložce Objednávky.</p>
+            <a href="#objednavky" class="kz-btn">Zobrazit objednávky</a>
+          </div>`;
+        $('orderDone').hidden = false;
+        $('cartFull').hidden = true; $('cartEmpty').hidden = true;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) { msg($('orderMsg'), err.message, 'err'); }
+      finally { busy(btn, false); }
+    });
+
+    // ---------------- Objednávky ----------------
+    const STATUS = { nova: 'Nová', prijata: 'Přijatá', vyrizena: 'Vyřízená', zrusena: 'Zrušená' };
+    async function renderOrders() {
+      const box = $('ordersList');
+      box.innerHTML = '<div class="kz-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Načítám objednávky…</div>';
+      try {
+        const list = await Klient.orders();
+        if (!list.length) {
+          box.innerHTML = `<div class="kz-card kz-empty"><i class="fa-solid fa-receipt"></i><h2>Zatím žádné objednávky</h2><p>Odeslané objednávky uvidíte tady.</p><a href="#kosik" class="kz-btn">Nová objednávka</a></div>`;
+          return;
+        }
+        box.innerHTML = list.map(o => `
+          <details class="kz-order">
+            <summary>
+              <span class="kz-order-no">Objednávka č. ${o.number}</span>
+              <span class="kz-order-date">${new Date(o.created_at).toLocaleString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+              <span class="kz-status kz-status--${esc(o.status)}">${esc(STATUS[o.status] || o.status)}</span>
+              <span class="kz-order-total">${o.total_czk == null ? 'Na dotaz' : Klient.czk(Number(o.total_czk))}</span>
+            </summary>
+            <div class="kz-order-body">
+              <table class="kz-table">
+                <thead><tr><th>Kód</th><th>Model</th><th>Barva</th><th>Rozměr</th><th class="num">Ks</th><th class="num">Cena/ks</th><th class="num">Celkem</th></tr></thead>
+                <tbody>${(o.order_items || []).sort((a, b) => a.id - b.id).map(it => `
+                  <tr><td class="kz-mono">${esc(it.code)}</td><td>${esc(it.model)}${it.data && it.data.note ? `<br><span class="kz-item-note"><i class="fa-regular fa-note-sticky"></i> ${esc(it.data.note)}</span>` : ''}</td><td>${esc(it.color)}</td><td>${esc(it.dimension_text)}</td>
+                  <td class="num">${it.quantity}</td><td class="num">${it.unit_price_czk == null ? 'na dotaz' : Klient.czk(Number(it.unit_price_czk))}</td>
+                  <td class="num">${it.line_total_czk == null ? 'na dotaz' : Klient.czk(Number(it.line_total_czk))}</td></tr>`).join('')}
+                </tbody>
+              </table>
+              ${o.note ? `<p class="kz-sum-note" style="margin-top:0.9rem"><b>Poznámka:</b> ${esc(o.note)}</p>` : ''}
+            </div>
+          </details>`).join('');
+      } catch (err) {
+        box.innerHTML = `<p class="kz-msg kz-msg--err">${esc(err.message)}</p>`;
+      }
+    }
+
+    // ---------------- Ke stažení ----------------
+    let filesPrefix = '';
+    const fileIcon = n => /\.pdf$/i.test(n) ? 'fa-file-pdf' : /\.(xlsx?|csv)$/i.test(n) ? 'fa-file-excel' : /\.(docx?)$/i.test(n) ? 'fa-file-word' : /\.(png|jpe?g|webp|svg)$/i.test(n) ? 'fa-file-image' : /\.zip$/i.test(n) ? 'fa-file-zipper' : 'fa-file';
+    const fileSize = b => !b ? '' : b > 1048576 ? `${(b / 1048576).toLocaleString('cs-CZ', { maximumFractionDigits: 1 })} MB` : `${Math.max(1, Math.round(b / 1024))} kB`;
+    async function renderFiles(prefix) {
+      filesPrefix = prefix;
+      const box = $('filesList');
+      const parts = prefix ? prefix.split('/') : [];
+      $('filesCrumbs').innerHTML = parts.length
+        ? `<button type="button" class="kz-link" data-dir="">Všechny soubory</button>` + parts.map((p, i) => ` <span>/</span> ${i === parts.length - 1 ? `<b>${esc(p)}</b>` : `<button type="button" class="kz-link" data-dir="${esc(parts.slice(0, i + 1).join('/'))}">${esc(p)}</button>`}`).join('')
+        : '';
+      box.innerHTML = '<div class="kz-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Načítám soubory…</div>';
+      try {
+        const list = await Klient.files(prefix);
+        if (!list.length) {
+          box.innerHTML = `<div class="kz-card kz-empty"><i class="fa-regular fa-folder-open"></i><h2>Zatím tu nic není</h2><p>Ceníky, technické listy a katalogy pro partnery sem doplníme.</p></div>`;
+          return;
+        }
+        // Složky (bez id) napřed, pak soubory.
+        list.sort((a, b) => (!!a.id - !!b.id) || a.name.localeCompare(b.name, 'cs'));
+        box.innerHTML = `<div class="kz-files">${list.map(f => {
+          const path = prefix ? `${prefix}/${f.name}` : f.name;
+          return f.id
+            ? `<button type="button" class="kz-file" data-file="${esc(path)}"><i class="fa-regular ${fileIcon(f.name)} kz-file-ico"></i><span class="kz-file-name">${esc(f.name)}</span><span class="kz-file-meta">${fileSize(f.metadata && f.metadata.size)}</span><i class="fa-solid fa-download" style="color:#71717a"></i></button>`
+            : `<button type="button" class="kz-file" data-dir="${esc(path)}"><i class="fa-regular fa-folder kz-file-ico"></i><span class="kz-file-name">${esc(f.name)}</span><i class="fa-solid fa-chevron-right" style="color:#71717a"></i></button>`;
+        }).join('')}</div>`;
+      } catch (err) { box.innerHTML = `<p class="kz-msg kz-msg--err">${esc(err.message)}</p>`; }
+    }
+    $('tab-ke-stazeni').addEventListener('click', async e => {
+      const dir = e.target.closest('[data-dir]');
+      if (dir) return renderFiles(dir.dataset.dir);
+      const file = e.target.closest('[data-file]');
+      if (!file) return;
+      file.disabled = true;
+      try { location.href = await Klient.fileUrl(file.dataset.file); }
+      catch (err) { alert(err.message); }
+      finally { file.disabled = false; }
+    });
+
+    // ---------------- Přepínání pohledů ----------------
+    function render() {
+      if (Klient.recovery) return show('viewRecovery');
+      if (!Klient.client && Klient.admin) { show('viewAdmin'); return; }
+      if (!Klient.client) { show('viewLogin'); return; }
+      $('adminLink').hidden = !Klient.admin;
+      const c = Klient.client;
+      $('zoneCompany').textContent = c.company;
+      $('zoneContact').textContent = [c.contact_name, Klient.user && Klient.user.email].filter(Boolean).join(' · ');
+      show('viewZone');
+      showTab();
+    }
+    let lastUser;
+    Klient.ready.then(() => { lastUser = Klient.user && Klient.user.id; render(); });
+    Klient.onChange(s => {
+      const uid = s.user && s.user.id;
+      if (uid !== lastUser || Klient.recovery) { lastUser = uid; render(); }
+    });
+  })();
+  </script>
+</body>
+</html>

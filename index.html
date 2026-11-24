@@ -66,7 +66,8 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=8" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=11" />
+  <link rel="stylesheet" href="assets/css/klient.css?v=10" />
 </head>
 <body>
 
@@ -83,6 +84,7 @@
         <a href="#about" class="text-[13px] text-zinc-600 hover:text-zinc-950 transition-colors">O nás</a>
       </nav>
       <div class="flex items-center gap-3">
+        <a href="klient.html" class="hidden md:inline-flex items-center gap-1.5 text-[13px] text-zinc-600 hover:text-zinc-950 transition-colors mr-3"><i class="fa-regular fa-user"></i> Klientská zóna</a>
         <button onclick="scrollToContact()" class="hidden md:inline-block text-[13px] cursor-pointer px-4 py-2 rounded-full border border-zinc-950/15 hover:border-zinc-950 hover:bg-zinc-950 hover:text-white transition-all duration-300">Rychlý kontakt</button>
         <button class="mobile-menu-btn" aria-label="Otevřít menu" aria-expanded="false" aria-controls="mobile-menu">
           <i class="fa-solid fa-bars"></i>
@@ -98,6 +100,7 @@
         <a href="#materialy" class="mobile-menu-link">Reference</a>
         <a href="#smart" class="mobile-menu-link">Smart Home</a>
         <a href="#about" class="mobile-menu-link">O nás</a>
+        <a href="klient.html" class="mobile-menu-link">Klientská zóna</a>
       </nav>
       <button onclick="scrollToContact()" class="mobile-menu-cta">Rychlý kontakt</button>
     </div>
@@ -414,6 +417,107 @@
 
         </div>
 
+        <!-- SMART HOME — „Váš den“: plánované scény (6:30 ráno, poledne, večer, noc).
+             Časová osa řídí scénu (nebe, slunce/měsíc, závěsy) i telefon s automatizacemi. JS v site.js. -->
+        <div class="sd" id="sdDay">
+          <div class="sd-head reveal">
+            <h3 class="sd-title">Váš den. Naplánovaný jednou.</h3>
+            <p class="sd-lead">Nastavte si v aplikaci, kdy se mají závěsy otevřít a kdy zavřít. Ráno vás probudí denní světlo, v poledne vás chrání před sluncem a večer vám zajistí soukromí. Sami, každý den.</p>
+          </div>
+
+          <div class="sd-card reveal">
+            <!-- Telefon s automatizacemi -->
+            <div class="sd-phone-col">
+              <div class="sh-iphone sd-iphone">
+                <div class="sh-side sh-side-l1"></div>
+                <div class="sh-side sh-side-l2"></div>
+                <div class="sh-side sh-side-l3"></div>
+                <div class="sh-side sh-side-r"></div>
+                <div class="sh-iphone-screen sd-screen">
+                  <div class="sh-island"></div>
+                  <div class="sh-statusbar">
+                    <span id="sdClock">6:30</span>
+                    <span class="sh-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></span>
+                  </div>
+
+                  <div class="sd-notif" id="sdNotif" aria-live="polite">
+                    <img src="assets/img/apple-touch-icon.png" alt="" class="sd-notif-icon" />
+                    <div class="sd-notif-text">
+                      <div class="sd-notif-top"><span>Detede</span><span>nyní</span></div>
+                      <div class="sd-notif-title" id="sdNotifTitle">Dobré ráno</div>
+                      <div class="sd-notif-body" id="sdNotifBody">Závěsy se otevírají.</div>
+                    </div>
+                  </div>
+
+                  <div class="sd-screen-body">
+                    <div class="sd-app-title">Automatizace</div>
+                    <div class="sd-app-sub">Obývací pokoj · 4 aktivní</div>
+                    <ul class="sd-list" id="sdList"></ul>
+                  </div>
+                  <div class="sh-home-ind"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scéna dne + časová osa -->
+            <div class="sd-scene-col">
+              <div class="sd-scene" id="sdScene" role="img" aria-label="Okno se závěsy během dne">
+                <div class="sd-sky sd-sky-0 is-on"></div>
+                <div class="sd-sky sd-sky-1"></div>
+                <div class="sd-sky sd-sky-2"></div>
+                <div class="sd-sky sd-sky-3"></div>
+                <div class="sd-stars"></div>
+                <div class="sd-orb" id="sdOrb"></div>
+                <div class="sd-hills"></div>
+                <div class="sd-frame"><span class="sd-mv"></span><span class="sd-mh"></span></div>
+                <div class="sd-dim" id="sdDim"></div>
+                <div class="sd-lamp" id="sdLamp"></div>
+                <div class="sh-rail sd-rail"></div>
+                <div class="sd-drape sd-drape-l" id="sdDrapeL"><div class="sh-drape-fabric"></div></div>
+                <div class="sd-drape sd-drape-r" id="sdDrapeR"><div class="sh-drape-fabric"></div></div>
+
+                <div class="sd-badge">
+                  <div class="sd-badge-time" id="sdTime">6:30</div>
+                  <div class="sd-badge-state"><span id="sdState">Otevřeno</span> · <span id="sdPct">100</span> %</div>
+                </div>
+              </div>
+
+              <div class="sd-caption" aria-live="polite">
+                <div class="sd-cap-title" id="sdCapTitle">Dobré ráno</div>
+                <p class="sd-cap-text" id="sdCapText">Závěsy se pomalu roztáhnou. Budí vás denní světlo, ne budík.</p>
+              </div>
+
+              <div class="sd-track" id="sdTrack" role="tablist" aria-label="Časová osa dne">
+                <div class="sd-line"><div class="sd-line-fill" id="sdLineFill"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Co dalšího umí -->
+          <div class="sd-features">
+            <div class="sd-feat reveal">
+              <span class="sd-feat-icon"><i class="fa-solid fa-mobile-screen"></i></span>
+              <div class="sd-feat-title">Odkudkoli na světě</div>
+              <p class="sd-feat-text">Zapomněli jste zatáhnout? Stačí mobil, i z dovolené.</p>
+            </div>
+            <div class="sd-feat reveal">
+              <span class="sd-feat-icon"><i class="fa-solid fa-microphone"></i></span>
+              <div class="sd-feat-title">Hlasem</div>
+              <p class="sd-feat-text">„Hej Siri, zatáhni závěsy.“ A je hotovo.</p>
+            </div>
+            <div class="sd-feat reveal">
+              <span class="sd-feat-icon"><i class="fa-solid fa-film"></i></span>
+              <div class="sd-feat-title">Scény na jedno klepnutí</div>
+              <p class="sd-feat-text">Kino, Práce, Hosté. Jedno klepnutí pohne všemi okny.</p>
+            </div>
+            <div class="sd-feat reveal">
+              <span class="sd-feat-icon"><i class="fa-solid fa-suitcase-rolling"></i></span>
+              <div class="sd-feat-title">Když nejste doma</div>
+              <p class="sd-feat-text">Závěsy se otevírají a zavírají, jako by doma někdo byl.</p>
+            </div>
+          </div>
+        </div>
+
         <div class="mt-12 md:mt-16 flex items-center gap-x-6 gap-y-2 flex-wrap text-[13px] text-zinc-400 reveal">
           <span>Matter · HomeKit · KNX</span>
           <span class="hidden sm:inline text-zinc-300">·</span>
@@ -623,7 +727,11 @@
     </div>
   </footer>
 
-  <script src="assets/js/site.js?v=8"></script>
+  <!-- Klientská zóna: plovoucí tlačítko „Objednávka“ pro přihlášeného klienta -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+  <script src="assets/js/klient-config.js?v=2"></script>
+  <script src="assets/js/klient.js?v=6"></script>
+  <script src="assets/js/site.js?v=10"></script>
   <script>
     // Count-up animace statistik (27 / 1 400+ / 10 / 28 dB) při vjezdu do viewportu
     (function () {

@@ -108,3 +108,105 @@ document.querySelectorAll('.business-hours-badge').forEach(el => {
 
   render();
 })();
+
+// Smart Home „Váš den“ (jen index.html) — časová osa 4 automatizací. Každý okamžik
+// nastaví nebe, slunce/měsíc, polohu závěsů, telefon (hodiny, notifikace, zvýrazněná
+// automatizace) i popisek. Sám se přehrává, jen když je sekce vidět; klik na čas
+// přehrávání na chvíli pozastaví.
+(function () {
+  const root = document.getElementById('sdDay');
+  if (!root) return;
+  const MOMENTS = [
+    { time: '6:30',  h: 6.5,  icon: 'fa-sun',        name: 'Dobré ráno',        open: 100, sky: 0, orb: [20, 64],
+      text: 'Závěsy se pomalu roztáhnou. Budí vás denní světlo, ne budík.',
+      notif: 'Závěsy se otevírají.' },
+    { time: '13:00', h: 13,   icon: 'fa-temperature-half', name: 'Polední slunce', open: 50, sky: 1, orb: [52, 22],
+      text: 'Když slunce praží nejvíc, závěsy se zatáhnou napůl. Uvnitř zůstane příjemný chládek a nábytek nevybledne.',
+      notif: 'Stínění na 50 % proti slunci.' },
+    { time: '19:30', h: 19.5, icon: 'fa-house-lock', name: 'Večerní soukromí',   open: 0, sky: 2, orb: [80, 70],
+      text: 'S prvním šerem se závěsy zavřou. Rozsvítíte a nikdo z ulice vám neuvidí do obýváku.',
+      notif: 'Závěsy se zavírají. Užijte si večer.' },
+    { time: '23:00', h: 23,   icon: 'fa-moon',       name: 'Dobrou noc',        open: 0, sky: 3, orb: [70, 26], night: true,
+      text: 'Před spaním vše zkontroluje za vás. Všechna okna v domě jsou zatažená, nemusíte vstávat z postele.',
+      notif: 'Všechna okna jsou zatažená. Dobrou noc.' }
+  ];
+
+  const $ = id => document.getElementById(id);
+  const scene = $('sdScene'), orb = $('sdOrb'), L = $('sdDrapeL'), R = $('sdDrapeR');
+  const dim = $('sdDim'), lamp = $('sdLamp'), list = $('sdList'), track = $('sdTrack');
+  const skies = root.querySelectorAll('.sd-sky');
+  const caption = root.querySelector('.sd-caption');
+  const notif = $('sdNotif');
+
+  list.innerHTML = MOMENTS.map(m =>
+    '<li class="sd-item"><span class="sd-item-icon"><i class="fa-solid ' + m.icon + '"></i></span>' +
+    '<span class="sd-item-main"><span class="sd-item-time" style="display:block">' + m.time + '</span>' +
+    '<span class="sd-item-name" style="display:block">' + m.name + '</span></span><span class="sd-toggle" aria-hidden="true"></span></li>'
+  ).join('');
+  const items = list.querySelectorAll('.sd-item');
+
+  // časová osa: pozice podle hodin (osa 5:00–24:00)
+  const pos = h => ((h - 5) / 19) * 100;
+  MOMENTS.forEach((m, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'sd-stop'; b.setAttribute('role', 'tab');
+    b.setAttribute('aria-label', m.time + ' ' + m.name);
+    b.style.left = pos(m.h) + '%';
+    b.innerHTML = '<span class="sd-dot"><i class="fa-solid ' + m.icon + '"></i></span><span class="sd-stop-label">' + m.time + '</span>';
+    b.addEventListener('click', () => { go(i); pause(); });
+    track.appendChild(b);
+  });
+  const stops = track.querySelectorAll('.sd-stop');
+
+  let cur = -1, notifTimer, visible = false, seen = false;
+  function go(i) {
+    if (i === cur) return;
+    cur = i;
+    const m = MOMENTS[i];
+    skies.forEach((s, k) => s.classList.toggle('is-on', k === m.sky));
+    scene.classList.toggle('is-night', !!m.night);
+    orb.style.left = m.orb[0] + '%'; orb.style.top = m.orb[1] + '%';
+    const k = 1 - 0.84 * (m.open / 100);
+    L.style.transform = R.style.transform = 'scaleX(' + k + ')';
+    dim.style.opacity = m.sky === 3 ? 0.55 : m.sky === 2 ? 0.2 : 0;
+    lamp.style.opacity = m.sky >= 2 ? 1 : 0;
+    $('sdTime').textContent = $('sdClock').textContent = m.time;
+    $('sdPct').textContent = m.open;
+    $('sdState').textContent = m.open === 0 ? 'Zataženo' : m.open === 100 ? 'Otevřeno' : 'Přivřeno';
+    $('sdCapTitle').textContent = m.name;
+    $('sdCapText').textContent = m.text;
+    caption.classList.remove('is-swap'); void caption.offsetWidth; caption.classList.add('is-swap');
+    $('sdLineFill').style.width = pos(m.h) + '%';
+    items.forEach((el, k) => el.classList.toggle('is-active', k === i));
+    stops.forEach((el, k) => {
+      el.classList.toggle('is-active', k === i);
+      el.classList.toggle('is-past', k < i);
+      el.setAttribute('aria-selected', k === i ? 'true' : 'false');
+    });
+    if (visible) showNotif(m);
+  }
+  // notifikace: vyjede, chvíli zůstane, zajede
+  function showNotif(m) {
+    notif.classList.remove('is-in');
+    clearTimeout(notifTimer);
+    notifTimer = setTimeout(() => {
+      $('sdNotifTitle').textContent = m.name;
+      $('sdNotifBody').textContent = m.notif;
+      notif.classList.add('is-in');
+      notifTimer = setTimeout(() => notif.classList.remove('is-in'), 3200);
+    }, 450);
+  }
+
+  // automatické přehrávání jen ve viditelné oblasti
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let timer = null, pausedUntil = 0;
+  function tick() { if (Date.now() >= pausedUntil) go((cur + 1) % MOMENTS.length); }
+  function start() { if (!timer && !reduce) timer = setInterval(tick, 5200); }
+  function stop() { clearInterval(timer); timer = null; }
+  function pause() { pausedUntil = Date.now() + 15000; }
+  new IntersectionObserver(es => es.forEach(e => {
+    visible = e.isIntersecting;
+    if (visible) { if (!seen) { seen = true; showNotif(MOMENTS[cur]); } start(); } else stop();
+  }), { threshold: 0.3 }).observe(scene);
+  go(0);
+})();

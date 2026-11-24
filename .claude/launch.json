@@ -2,10 +2,156 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "polovinakafe-allessek",
+      "runtimeExecutable": "C:\\Users\\perli\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5205",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "C:\\Users\\weby\\polovinakafe-allessek"
+      ],
+      "port": 5205
+    },
+    {
       "name": "detede",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5173"],
+      "runtimeExecutable": "C:\\Users\\perli\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5173",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "C:\\Users\\weby"
+      ],
       "port": 5173
+    },
+    {
+      "name": "domek-v3",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": [
+        "C:\\Users\\perli\\AppData\\Local\\Temp\\claude\\C--Users-weby\\56e987c5-1d28-47c0-a8cd-48f03b36148a\\scratchpad\\serve.js",
+        "C:\\Users\\weby\\zmrzlinovy-domek-v3",
+        "5174"
+      ],
+      "port": 5174
+    },
+    {
+      "name": "domek-v4",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": [
+        "C:\\Users\\perli\\AppData\\Local\\Temp\\claude\\C--Users-weby\\56e987c5-1d28-47c0-a8cd-48f03b36148a\\scratchpad\\serve.js",
+        "C:\\Users\\weby\\zmrzlinovy-domek-v4",
+        "5175"
+      ],
+      "port": 5175
+    },
+    {
+      "name": "domek-preview",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:\\Users\\perli\\AppData\\Local\\Temp\\claude\\C--Users-weby\\b3c0a4b0-e32c-48aa-bcf0-d4d304204777\\scratchpad\\serve.ps1"
+      ],
+      "port": 5943
+    },
+    {
+      "name": "domek-v4-upgrade",
+      "runtimeExecutable": "C:\\Users\\perli\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": [
+        "C:\\Users\\weby\\_sablona\\web\\server.py",
+        "5176",
+        "C:\\Users\\weby\\zmrzlinovy-domek-v4"
+      ],
+      "port": 5176
+    },
+    {
+      "name": "efekty-demo",
+      "runtimeExecutable": "C:\\Users\\perli\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": [
+        "C:\\Users\\weby\\_sablona\\web\\server.py",
+        "5310",
+        "C:\\Users\\weby\\_sablona\\efekty"
+      ],
+      "port": 5310
+    },
+    {
+      "name": "pepper-monkeys",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": [
+        "C:\\Users\\perli\\pepper-monkeys\\node_modules\\vite\\bin\\vite.js",
+        "C:\\Users\\perli\\pepper-monkeys",
+        "--port",
+        "5195",
+        "--host"
+      ],
+      "port": 5195
+    },
+    {
+      "name": "hecni",
+      "runtimeExecutable": "C:\\Users\\perli\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": [
+        "C:\\Users\\weby\\_sablona\\web\\server.py",
+        "5211",
+        "C:\\Users\\weby\\hecni"
+      ],
+      "port": 5211
+    },
+    {
+      "name": "susak",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": [
+        "C:\\Users\\weby\\susak-na-pradlo\\node_modules\\next\\dist\\bin\\next",
+        "start",
+        "C:\\Users\\weby\\susak-na-pradlo",
+        "-p",
+        "5210"
+      ],
+      "port": 5210
+    },
+    {
+      "name": "jara-uci",
+      "runtimeExecutable": "C:/Program Files/nodejs/node.exe",
+      "runtimeArgs": [
+        "C:/Users/weby/jara-uci/dev.mjs",
+        "5212"
+      ],
+      "port": 5212
+    },
+    {
+      "name": "jayvee",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": [
+        "C:\\Users\\weby\\jara-ales-studio\\node_modules\\vite\\bin\\vite.js",
+        "C:\\Users\\weby\\jara-ales-studio",
+        "--port",
+        "5206"
+      ],
+      "port": 5206
+    },
+    {
+      "name": "perlik-monteri",
+      "runtimeExecutable": "C:\\Users\\perli\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": [
+        "C:\\Users\\weby\\perlik-monteri\\server.py",
+        "5215"
+      ],
+      "port": 5215
+    },
+    {
+      "name": "unimik",
+      "runtimeExecutable": "C:/Program Files/nodejs/node.exe",
+      "runtimeArgs": [
+        "C:/Users/weby/unimik/tools/serve.mjs",
+        "5216"
+      ],
+      "port": 5216
     }
   ]
 }
